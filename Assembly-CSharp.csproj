@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\DialogueTools\DialogueTree.cs" />
+    <Compile Include="Assets\DialogueTools\DialogueTreeAsset.cs" />
     <Compile Include="Assets\ParseAndDisplayXML.cs" />
   </ItemGroup>
   <ItemGroup>

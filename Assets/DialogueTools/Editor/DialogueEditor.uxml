@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+>
+  
+  
+  <editor:Toolbar name="toolbar" class="toolbar">
+    <Style src ="DialogueEditor.uss"/>
+    <editor:ToolbarButton name="import" text="Import..." class="toolbar_button"/>
+    <editor:ToolbarButton name="export" text="Export..." class="toolbar_button"/>
+    <editor:ToolbarButton name="newTree" text="Create New Tree..." class="toolbar_button"/>
+    <editor:ToolbarButton name="newNode" text="Create New Node" class="toolbar_button"/>
+  </editor:Toolbar>
+  <engine:VisualElement name = "slots">
+    <Style src ="DialogueEditor.uss"/>
+    <engine:VisualElement name ="slot_row1" class="slot_row">
+      <Style src ="DialogueEditor.uss"/>
+      <engine:VisualElement name="slot1" class="slot">
+        <Style src ="DialogueEditor.uss"/>
+      </engine:VisualElement>
+      <engine:VisualElement name="slot2" class="slot"/>
+    </engine:VisualElement>
+    <engine:VisualElement name="slot_row2" class="slot_row">
+      <engine:VisualElement name="slot1" class="slot" />
+      <engine:VisualElement name="slot2" class="slot" />
+    </engine:VisualElement>
+  </engine:VisualElement>
+  <engine:VisualElement name="object" class="object">
+    <Style src ="DialogueEditor.uss"/>
+  </engine:VisualElement>
+
+
+</engine:UXML>

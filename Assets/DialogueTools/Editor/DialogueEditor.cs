@@ -1,99 +1,76 @@
-﻿using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using System.Collections.Generic;
+
 
 public class DialogueEditor : EditorWindow
 {
-    public static DialogueEditor Instance
+    public static DialogueEditor instance;
+
+    private NodeManipulator manipulator;
+
+    [MenuItem("Tools/DialogueEditor")]
+    public static void ShowExample()
     {
-        get 
-        {
-            if (instance == null)
-            {
-                instance = (DialogueEditor)GetWindow(typeof(DialogueEditor));
-            }
-            return instance;
-        }
+        instance = GetWindow<DialogueEditor>();
+        instance.titleContent = new GUIContent("DialogueEditor");
     }
 
-    private static DialogueEditor instance;
-
-    private DialogueEditorSettings settings;
-    private float nodePosX = 0;
-    private float nodePosY = 0;
-
-    [MenuItem("Tools/Dialogue Editor")]
-    public static void ShowWindow()
+    public void CreateGUI()
     {
-        EditorWindow.GetWindow(typeof(DialogueEditor));
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+
+        // Import UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/DialogueTools/Editor/DialogueEditor.uxml");
+        VisualElement labelFromUXML = visualTree.CloneTree();
+        root.Add(labelFromUXML);
+
+        // A stylesheet can be added to a VisualElement.
+        // The style will be applied to the VisualElement and all of its children.
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/DialogueTools/Editor/DialogueEditor.uss");
+
+        var importButton = root.Q<Button>("import");
+        importButton.clicked += OnClickImport;
+
+        var exportButton = root.Q<Button>("export");
+        exportButton.clicked += OnClickExport;
+
+        var newTreeButton = root.Q<Button>("newTree");
+        newTreeButton.clicked += OnClickNewTree;
+
+        var newNodeButton = root.Q<Button>("newNode");
+        newNodeButton.clicked += OnClickNewNode;
+
+        if (manipulator != null) manipulator.UnregisterCallbacksOnTarget();
+        manipulator = new NodeManipulator(rootVisualElement.Q<VisualElement>("object"));
+        manipulator.RegisterCallbacksOnTarget();
     }
 
-    private void Awake()
+    private void OnClickImport()
     {
-        settings = DialogueEditorSettings.instance;
+        Debug.Log("Import button pressed!");
     }
 
-
-    private void OnGUI()
+    private void OnClickExport()
     {
-        GUILayout.BeginHorizontal(GUILayout.Height(30), GUILayout.Width(500));
-        if (GUILayout.Button("Import...")) OnClickImport();
-        if (GUILayout.Button("Export...")) OnClickExport();
-        if (GUILayout.Button("New Dialogue Tree...")) OnClickNewTree();
-        if (GUILayout.Button("New Dialogue Node")) OnClickNewNode();
-        if (GUILayout.Button("Reset node"))
-        {
-            nodePosX = 0;
-            nodePosY = 0;
-        }
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginArea(new Rect(0, 0, 1000, 1000));
-        Rect nodeRect = new Rect(20, 20, 150, 100);
-        nodeRect = GUI.Window(0, nodeRect, DrawNode, "Sample Node");
-        GUILayout.EndArea();
-
-        //Rect nodeRect = new Rect(nodePosX, nodePosY, 150, 100);
-        //Vector2 centerOffset = nodeRect.center - new Vector2(nodeRect.x, nodeRect.y);
-        //if (GUI.RepeatButton(nodeRect, "This is a node mockup."))
-        //{
-        //    DragNode(centerOffset);
-        //    thisFrame = true;
-        //}
-        //else thisFrame = false;
+        Debug.Log("Export button pressed!");
     }
 
-    private void DrawNode(int windowID)
+    private void OnClickNewTree()
     {
-        GUI.Box(new Rect(0, 0, 150, 100), settings.UnselectedTexture);
-        GUI.DragWindow(new Rect(0, 0, 10000, 1000));
+        Debug.Log("New Tree button pressed!");
     }
 
-    private static void OnClickImport()
+    private void OnClickNewNode()
     {
-        Debug.Log("Import button pressed.");
+        Debug.Log("New Node button pressed!");
     }
 
-    private static void OnClickExport()
+    private void OnDestroy()
     {
-        Debug.Log("Export button pressed.");
-    }
-
-    private static void OnClickNewTree()
-    {
-        Debug.Log("New Tree button pressed.");
-    }
-
-    private static void OnClickNewNode()
-    {
-        Debug.Log("New Node button pressed.");
-    }
-
-    private void DragNode(Vector2 center)
-    {
-        nodePosX = Event.current.mousePosition.x - center.x;
-        nodePosY = Event.current.mousePosition.y - center.y;
+        manipulator.UnregisterCallbacksOnTarget();
+        manipulator = null;
     }
 }

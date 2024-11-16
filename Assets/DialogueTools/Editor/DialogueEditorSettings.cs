@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Dialogue Editor Settings", menuName = "Tools/Dialogue Editor Settings")]
+[CreateAssetMenu(fileName = "Dialogue Editor Settings", menuName = "Tools/Dialogue Editor Settings", order = 99)]
 public class DialogueEditorSettings : ScriptableObject
 {
     public static DialogueEditorSettings instance;
