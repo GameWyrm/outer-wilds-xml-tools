@@ -66,48 +66,7 @@ public class NodeManipulator
     {
         if (enabled)
         {
-            VisualElement slotsContainer = root.Q<VisualElement>("slots");
-            UQueryBuilder<VisualElement> allSlots = slotsContainer.Query<VisualElement>(className: "slot");
-            UQueryBuilder<VisualElement> overlappingSlots = allSlots.Where(OverlapsTarget);
-            VisualElement closestOverlappingSlot = FindClosestSlot(overlappingSlots);
-            Vector3 closestPos = Vector3.zero;
-            if (closestOverlappingSlot != null)
-            {
-                closestPos = RootSpaceOfSlot(closestOverlappingSlot);
-                closestPos = new Vector2(closestPos.x - 5, closestPos.y - 5);
-            }
-            target.transform.position = closestOverlappingSlot != null ? closestPos : new Vector3(targetStartPosition.x, targetStartPosition.y, 0);
-
             enabled = false;
         }
-    }
-
-    private bool OverlapsTarget(VisualElement slot)
-    {
-        return target.worldBound.Overlaps(slot.worldBound);
-    }
-
-    private VisualElement FindClosestSlot(UQueryBuilder<VisualElement> slots)
-    {
-        List<VisualElement> slotsList = slots.ToList();
-        float bestDistanceSq = float.MaxValue;
-        VisualElement closest = null;
-        foreach (VisualElement slot in slotsList)
-        {
-            Vector3 displacement = RootSpaceOfSlot(slot) - target.transform.position;
-            float distanceSq = displacement.sqrMagnitude;
-            if (distanceSq < bestDistanceSq)
-            {
-                bestDistanceSq = distanceSq;
-                closest = slot;
-            }
-        }
-        return closest;
-    }
-
-    private Vector3 RootSpaceOfSlot(VisualElement slot)
-    {
-        Vector2 slotWorldSpace = slot.parent.LocalToWorld(slot.layout.position);
-        return root.WorldToLocal(slotWorldSpace);
     }
 }

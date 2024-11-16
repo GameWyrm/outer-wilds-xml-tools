@@ -22,5 +22,6 @@ public class DialogueTreeEditor : Editor
     private void OpenEditor()
     {
         DialogueEditor.ShowExample();
+        DialogueEditor.selection = selectedAsset;
     }
 }

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 /// <summary>
 /// Dummy script to parse Dialogue XML files to
 /// </summary>
-[XmlRoot("DialogueTree")]
+[XmlRoot("DialogueTree"), Serializable]
 public class DialogueTree
 {
     [XmlElement("DialogueNode")]
