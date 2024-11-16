@@ -1,0 +1,67 @@
+<DialogueTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/dialogue_schema.xsd">
+  <NameField>TEST</NameField>
+  
+  <DialogueNode>
+    <Name>Start</Name>
+    <EntryCondition>DEFAULT</EntryCondition>
+    <EntryCondition>SecondaryDefault</EntryCondition>
+    <Randomize/>
+    <Dialogue>
+      <Page>This is page one.</Page>
+      <Page>And this is page two.</Page>
+    </Dialogue>
+    <Dialogue>
+      <Page>This is a randomized page one.</Page>
+      <Page>And this is a randomized page two.</Page>
+    </Dialogue>
+    <RevealFacts>
+      <FactID>CoolFact1</FactID>
+      <FactID>CoolFact2</FactID>
+    </RevealFacts>
+    <SetPersistentCondition>CoolPersistentCondition</SetPersistentCondition>
+    <SetCondition>CoolTempCondition</SetCondition>
+    <SetCondition>LameTempCondition</SetCondition>
+    <DisablePersistentCondition>RipPersistentCondition</DisablePersistentCondition>
+    <DialogueTargetShipLogCondition>ShipLogCondition</DialogueTargetShipLogCondition>
+    <DialogueTargetShipLogCondition>AnotherShipLogCondition</DialogueTargetShipLogCondition>
+    <DialogueTarget>SecondNode</DialogueTarget>
+    <DialogueOptionsList>
+      <DialogueOption>
+        <RequiredLogCondition>ReqLog1</RequiredLogCondition>
+        <RequiredLogCondition>ReqLog2</RequiredLogCondition>
+        <RequiredPersistentCondition>ReqPersist1</RequiredPersistentCondition>
+        <RequiredPersistentCondition>ReqPersist2</RequiredPersistentCondition>
+        <CancelledPersistentCondition>CanPersistCon1</CancelledPersistentCondition>
+        <CancelledPersistentCondition>CanPersistCon2</CancelledPersistentCondition>
+        <RequiredCondition>ReqCon</RequiredCondition>
+        <CancelledCondition>CanCon</CancelledCondition>
+        <Text>This is an option.</Text>
+        <DialogueTarget>ThirdNode</DialogueTarget>
+        <ConditionToSet>SetCon</ConditionToSet>
+        <ConditionToCancel>CancelCon</ConditionToCancel>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Sup</Text>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>SecondNode</Name>
+    <Dialogue>
+      <Page>Hey</Page>
+    </Dialogue>
+    <DialogueOptionsList>
+      <ReuseDialogueOptionsListFrom>Start</ReuseDialogueOptionsListFrom>
+    </DialogueOptionsList>    
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>ThirdNode</Name>
+    <Dialogue>
+      <Page>Whoa</Page>
+    </Dialogue>
+  </DialogueNode>
+  
+</DialogueTree>
