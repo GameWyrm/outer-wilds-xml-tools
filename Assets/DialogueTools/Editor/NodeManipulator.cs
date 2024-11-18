@@ -11,6 +11,8 @@ public class NodeManipulator
         root = target.parent;
     }
 
+    public List<ArrowManipulator> arrows;
+
     private VisualElement target;
     private VisualElement root;
     private Vector2 targetStartPosition;
@@ -36,9 +38,11 @@ public class NodeManipulator
 
     private void OnPointerDown(PointerDownEvent e)
     {
+        if (!DialogueEditor.isFocused) return;
         targetStartPosition = target.transform.position;
         pointerStartPosition = e.position;
         target.CapturePointer(e.pointerId);
+        DialogueEditor.instance.SelectNode(target);
         enabled = true;
     }
 
@@ -51,6 +55,11 @@ public class NodeManipulator
             target.transform.position = new Vector2(
                 Mathf.Clamp(targetStartPosition.x + pointerDelta.x, 0, target.panel.visualTree.worldBound.width),
                 Mathf.Clamp(targetStartPosition.y + pointerDelta.y, 0, target.panel.visualTree.worldBound.height));
+
+            foreach (var arrow in arrows)
+            {
+                arrow.OrientArrow();
+            }
         }
     }
 

@@ -14,23 +14,8 @@
     <editor:ToolbarButton name="newTree" text="Create New Tree..." class="toolbar_button"/>
     <editor:ToolbarButton name="newNode" text="Create New Node" class="toolbar_button"/>
   </editor:Toolbar>
-  <engine:VisualElement name = "slots">
-    <Style src ="DialogueEditor.uss"/>
-    <engine:VisualElement name ="slot_row1" class="slot_row">
-      <Style src ="DialogueEditor.uss"/>
-      <engine:VisualElement name="slot1" class="slot">
-        <Style src ="DialogueEditor.uss"/>
-      </engine:VisualElement>
-      <engine:VisualElement name="slot2" class="slot"/>
-    </engine:VisualElement>
-    <engine:VisualElement name="slot_row2" class="slot_row">
-      <engine:VisualElement name="slot1" class="slot" />
-      <engine:VisualElement name="slot2" class="slot" />
-    </engine:VisualElement>
-  </engine:VisualElement>
-  <engine:VisualElement name="object" class="object">
-    <Style src ="DialogueEditor.uss"/>
-  </engine:VisualElement>
-
+  <engine:Box name="bg" class="bg">
+    <Style src ="DialogueEditor.uss"/> 
+  </engine:Box>
 
 </engine:UXML>

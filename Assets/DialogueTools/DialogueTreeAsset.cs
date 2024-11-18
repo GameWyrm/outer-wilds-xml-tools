@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +9,26 @@ public class DialogueTreeAsset : ScriptableObject
     [HideInInspector]
     public DialogueTree tree;
     [HideInInspector]
-    public DialogueNode selectedNode;
+    public DialogueNodeInfo selectedNode;
     [HideInInspector]
-    public List<DialogueNode> nodes;
+    public List<DialogueNodeInfo> nodes;
 
-    public class DialogueNode
+    [Serializable]
+    public class DialogueNodeInfo
     {
-        public DialogueTree.DialogueNode node;
-        public Dictionary<string, Color> targetColors;
+        public DialogueNode node;
+        public LabelColor labelColor;
         public Vector2 position;
         public string label;
     }
+    public enum LabelColor
+    {
+        Pink = 0,
+        Orange = 1,
+        Yellow = 2,
+        Green = 3,
+        Blue = 4,
+        Magenta = 5
+    }
 }
+

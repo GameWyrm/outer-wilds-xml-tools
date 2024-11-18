@@ -56,11 +56,13 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DialogueTools\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\DialogueTree.cs" />
     <Compile Include="Assets\DialogueTools\DialogueTreeAsset.cs" />
     <Compile Include="Assets\ParseAndDisplayXML.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\TextAssets\Imports\EndingMagister.xml" />
     <None Include="Assets\TextAssets\Imports\TestDialogue.xml" />
   </ItemGroup>
   <ItemGroup>

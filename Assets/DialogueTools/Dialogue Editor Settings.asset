@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnselectedTexture: {fileID: 2800000, guid: 1afedb70f69f9464fb543e971e5db922, type: 3}
   SelectedTexture: {fileID: 2800000, guid: 080321036f4b40f4180779d4159ad388, type: 3}
+  LineTexture: {fileID: 2800000, guid: 189f62f240d3a2d4c9472ac85a97ea11, type: 3}
+  ArrowTexture: {fileID: 2800000, guid: 53dcee4fd58f7134b813a413b5daf820, type: 3}
+  Style: {fileID: 7433441132597879392, guid: 43dfde9cac121d2409a6385702748753, type: 3}

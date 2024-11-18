@@ -1,0 +1,523 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0254753c86a5f2049ac0f2d799615f99, type: 3}
+  m_Name: reee
+  m_EditorClassIdentifier: 
+  tree:
+    dialogueNodes:
+    - nodeName: Start
+      entryConditions:
+      - DEFAULT
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMIntro1
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions:
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMIntro1A
+          dialogueTarget: Intro2
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMIntro1B
+          dialogueTarget: Intro2
+          conditionToSet: 
+          conditionToCancel: 
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: Intro2
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMIntro2
+        - $HN2EndMIntro3
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: Hub
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMHub1
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions:
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubA
+          dialogueTarget: Why
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubD
+          dialogueTarget: Door
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubE
+          dialogueTarget: Find
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubQuit
+          dialogueTarget: 
+          conditionToSet: 
+          conditionToCancel: 
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: Why
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMWhy1
+        - $HN2EndMWhy2
+        - $HN2EndMWhy3
+        - $HN2EndMWhy4
+        - $HN2EndMWhy5
+        - $HN2EndMWhy6
+        - $HN2EndMWhy7
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: Door
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMDoor1
+        - $HN2EndMDoor2
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: HN2_P_HORRORDOOR
+      setConditions:
+      - HN2_REDUCEDFRIGHT
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions:
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMDoorA
+          dialogueTarget: DoorA
+          conditionToSet: 
+          conditionToCancel: HN2_REDUCEDFRIGHT
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMDoorB
+          dialogueTarget: DoorB
+          conditionToSet: HN2_REDUCEDFRIGHT
+          conditionToCancel: 
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: DoorA
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMDoor3A
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: DoorB
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMDoor3B
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    - nodeName: Find
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMFind1
+        - $HN2EndMFind2
+        - $HN2EndMFind3
+        - $HN2EndMFind4
+        - $HN2EndMFind5
+        - $HN2EndMFind6
+        - $HN2EndMFind7
+        - $HN2EndMFind8
+        - $HN2EndMFind9
+        - $HN2EndMFind10
+        - $HN2EndMFind11
+        - $HN2EndMFind12
+        - $HN2EndMFind13
+        - $HN2EndMFind14
+        - $HN2EndMFind15
+      revealFacts:
+        factIDs:
+        - HN2_Device2
+        - HN2_Device3
+      setPersistentCondition: 
+      setConditions:
+      - HN2_ENDMAGISTER
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    nameField: $HN2MagisterName
+  selectedNode:
+    node:
+      nodeName: 
+      entryConditions: []
+      randomize: 
+      dialogues: []
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 0
+    position: {x: 0, y: 0}
+    label: 
+  nodes:
+  - node:
+      nodeName: Start
+      entryConditions:
+      - DEFAULT
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMIntro1
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions:
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMIntro1A
+          dialogueTarget: Intro2
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMIntro1B
+          dialogueTarget: Intro2
+          conditionToSet: 
+          conditionToCancel: 
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 5
+    position: {x: 20, y: 20}
+    label: Start
+  - node:
+      nodeName: Intro2
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMIntro2
+        - $HN2EndMIntro3
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 2
+    position: {x: 40, y: 40}
+    label: Intro2
+  - node:
+      nodeName: Hub
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMHub1
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions:
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubA
+          dialogueTarget: Why
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubD
+          dialogueTarget: Door
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubE
+          dialogueTarget: Find
+          conditionToSet: 
+          conditionToCancel: 
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMHubQuit
+          dialogueTarget: 
+          conditionToSet: 
+          conditionToCancel: 
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 0
+    position: {x: 60, y: 60}
+    label: Hub
+  - node:
+      nodeName: Why
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMWhy1
+        - $HN2EndMWhy2
+        - $HN2EndMWhy3
+        - $HN2EndMWhy4
+        - $HN2EndMWhy5
+        - $HN2EndMWhy6
+        - $HN2EndMWhy7
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 4
+    position: {x: 80, y: 80}
+    label: Why
+  - node:
+      nodeName: Door
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMDoor1
+        - $HN2EndMDoor2
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: HN2_P_HORRORDOOR
+      setConditions:
+      - HN2_REDUCEDFRIGHT
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions:
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMDoorA
+          dialogueTarget: DoorA
+          conditionToSet: 
+          conditionToCancel: HN2_REDUCEDFRIGHT
+        - requiredLogConditions: []
+          requiredPersistentConditions: []
+          cancelledPersistentConditions: []
+          requiredCondition: 
+          cancelledCondition: 
+          text: $HN2EndMDoorB
+          dialogueTarget: DoorB
+          conditionToSet: HN2_REDUCEDFRIGHT
+          conditionToCancel: 
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 4
+    position: {x: 100, y: 100}
+    label: Door
+  - node:
+      nodeName: DoorA
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMDoor3A
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 4
+    position: {x: 120, y: 120}
+    label: DoorA
+  - node:
+      nodeName: DoorB
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMDoor3B
+      revealFacts:
+        factIDs: []
+      setPersistentCondition: 
+      setConditions: []
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: Hub
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 2
+    position: {x: 140, y: 140}
+    label: DoorB
+  - node:
+      nodeName: Find
+      entryConditions: []
+      randomize: 
+      dialogues:
+      - pages:
+        - $HN2EndMFind1
+        - $HN2EndMFind2
+        - $HN2EndMFind3
+        - $HN2EndMFind4
+        - $HN2EndMFind5
+        - $HN2EndMFind6
+        - $HN2EndMFind7
+        - $HN2EndMFind8
+        - $HN2EndMFind9
+        - $HN2EndMFind10
+        - $HN2EndMFind11
+        - $HN2EndMFind12
+        - $HN2EndMFind13
+        - $HN2EndMFind14
+        - $HN2EndMFind15
+      revealFacts:
+        factIDs:
+        - HN2_Device2
+        - HN2_Device3
+      setPersistentCondition: 
+      setConditions:
+      - HN2_ENDMAGISTER
+      disablePersistentCondition: 
+      dialogueTargetShipLogConditions: []
+      dialogueTarget: 
+      dialogueOptionsList:
+        dialogueOptions: []
+        ReuseDialogueOptionsListFrom: 
+    labelColor: 2
+    position: {x: 160, y: 160}
+    label: Find
