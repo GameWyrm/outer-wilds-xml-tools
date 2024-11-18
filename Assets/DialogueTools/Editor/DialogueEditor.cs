@@ -100,7 +100,7 @@ public class DialogueEditor : EditorWindow
                 arrowsRoot.Add(CreateArrow(sourceNode, targetNode, node.nodeName, node.dialogueTarget));
             }
 
-            if (node.dialogueOptionsList != null || node.dialogueOptionsList.dialogueOptions != null)
+            if (node.dialogueOptionsList != null && node.dialogueOptionsList.dialogueOptions != null)
             {
                 foreach (var option in node.dialogueOptionsList.dialogueOptions)
                 {
