@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Dialogue Tree", menuName = "Tools/Dialogue Tree", order = 0)]
@@ -16,19 +16,15 @@ public class DialogueTreeAsset : ScriptableObject
     [Serializable]
     public class DialogueNodeInfo
     {
-        public DialogueNode node;
-        public LabelColor labelColor;
+        public string nodeName;
         public Vector2 position;
         public string label;
     }
-    public enum LabelColor
+
+    public void SetNodePosition(string nodeName, Vector2 position)
     {
-        Pink = 0,
-        Orange = 1,
-        Yellow = 2,
-        Green = 3,
-        Blue = 4,
-        Magenta = 5
+        var node = nodes.First(x => x.nodeName == nodeName);
+        node.position = position;
     }
 }
 

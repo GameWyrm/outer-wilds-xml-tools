@@ -17,11 +17,17 @@ public class DialogueEditor : EditorWindow
 
     private Dictionary<string, VisualElement> nodes;
     private DialogueTree dialogueTree;
+    private VisualElement panRoot;
     private VisualElement arrowsRoot;
     private VisualElement nodesRoot;
     private Dictionary<string, NodeManipulator> nodeManipulators;
     private VisualElement selectedNode;
-
+    private VisualElement defaultNode;
+    private List<VisualElement> exitNodes;
+    private VisualElement background;
+    private PannerManipulator panner;
+    // should be 1 for creating the GUI, 2 for resetting the nodes
+    private int initializingState;
 
     [MenuItem("Tools/XML Editors/Dialogue Editor")]
     public static void ShowExample()
@@ -32,6 +38,7 @@ public class DialogueEditor : EditorWindow
 
     public static void OpenWindowWithSelection(DialogueTreeAsset newSelection)
     {
+        AssetDatabase.SaveAssets();
         selection = newSelection;
         ShowExample();
     }
@@ -47,14 +54,18 @@ public class DialogueEditor : EditorWindow
         VisualElement labelFromUXML = visualTree.CloneTree();
         root.Add(labelFromUXML);
 
+        panRoot = new VisualElement();
+        panRoot.name = "Pan Root";
         arrowsRoot = new VisualElement();
         arrowsRoot.name = "Arrows Root";
         nodesRoot = new VisualElement();
         nodesRoot.name = "Node Root";
-        root.Add(arrowsRoot);
-        root.Add(nodesRoot);
+        panRoot.Add(arrowsRoot);
+        panRoot.Add(nodesRoot);
 
+        initializingState = 1;
         if (selection != null) CreateNodes();
+        initializingState = 2;
 
         var importButton = root.Q<Button>("import");
         importButton.clicked += OnClickImport;
@@ -68,12 +79,30 @@ public class DialogueEditor : EditorWindow
         var newNodeButton = root.Q<Button>("newNode");
         newNodeButton.clicked += OnClickNewNode;
 
+        var resetButton = root.Q<Button>("resetNodes");
+        resetButton.clicked += OnClickResetNodes;
+
+        var toolbar = root.Q<Toolbar>("toolbar");
+        toolbar.parent.Add(panRoot);
+
+        background = root.Q<Box>("bg");
+        if (panner != null) panner.UnregisterCallbacks();
+        panner = new PannerManipulator();
+        panner.background = background;
+        panner.panRoot = panRoot;
+        panner.RegisterCallbacks();
+        
+        toolbar.BringToFront();
+
         isFocused = true;
     }
 
     private void CreateNodes()
     {
         nodesRoot.Clear();
+        arrowsRoot.Clear();
+        defaultNode = null;
+        exitNodes = new List<VisualElement>();
         nodeManipulators = new Dictionary<string, NodeManipulator>();
         nodes = new Dictionary<string, VisualElement>();
         if (selection.tree == null || selection.tree.dialogueNodes == null) return;
@@ -82,8 +111,39 @@ public class DialogueEditor : EditorWindow
         {
             var node = selection.tree.dialogueNodes[i];
             var nodeInfo = selection.nodes[i];
-            VisualElement newNode = CreateNewNode(node.nodeName, nodeInfo.labelColor);
-            newNode.transform.position = nodeInfo.position;
+            VisualElement newNode = CreateNewNode(node.nodeName);
+            newNode.transform.position = panRoot.LocalToWorld(nodeInfo.position);
+
+            if (node.entryConditions.Contains("DEFAULT"))
+            {
+                defaultNode = newNode;
+                newNode.EnableInClassList("node_bg", false);
+                newNode.EnableInClassList("node_default", true);
+            }
+            else
+            {
+                bool hasExit = false;
+                if (string.IsNullOrEmpty(node.dialogueTarget))
+                {
+                    if (node.dialogueOptionsList == null || node.dialogueOptionsList.dialogueOptions == null || node.dialogueOptionsList.dialogueOptions.Length == 0)
+                    {
+                        hasExit = true;
+                    }
+                    else
+                    {
+                        foreach (var option in node.dialogueOptionsList.dialogueOptions)
+                        {
+                            if (string.IsNullOrEmpty(option.dialogueTarget)) hasExit = true;
+                        }
+                    }
+                }
+                if (hasExit)
+                {
+                    exitNodes.Add(newNode);
+                    newNode.EnableInClassList("node_bg", false);
+                    newNode.EnableInClassList("node_exit", true);
+                }
+            }
             nodesRoot.Add(newNode);
             nodes.Add(node.nodeName, newNode);
         }
@@ -107,6 +167,7 @@ public class DialogueEditor : EditorWindow
                     if (!string.IsNullOrEmpty(option.dialogueTarget))
                     {
                         targetNode = nodes[option.dialogueTarget];
+                        
                         arrowsRoot.Add(CreateArrow(sourceNode, targetNode, node.nodeName, option.dialogueTarget));
                     }
                 }
@@ -131,7 +192,7 @@ public class DialogueEditor : EditorWindow
         newArrow.EnableInClassList("arrow", true);
         element.Add(newArrow);
 
-        ArrowManipulator arrowManipulator = new ArrowManipulator();
+        var arrowManipulator = new ArrowManipulator();
         arrowManipulator.sourceNode = source;
         arrowManipulator.targetNode = target;
         arrowManipulator.line = newLine;
@@ -140,12 +201,12 @@ public class DialogueEditor : EditorWindow
         nodeManipulators[nodeName].arrows.Add(arrowManipulator);
         nodeManipulators[targetName].arrows.Add(arrowManipulator);
 
-        arrowManipulator.OrientArrow();
+        arrowManipulator.OrientArrow(initializingState);
 
         return element;
     }
 
-    private VisualElement CreateNewNode(string nodeName, DialogueTreeAsset.LabelColor styleID)
+    private VisualElement CreateNewNode(string nodeName)
     {
         var settings = DialogueEditorSettings.Instance;
         VisualElement newNode = new VisualElement();
@@ -155,8 +216,7 @@ public class DialogueEditor : EditorWindow
         Label label = new Label(nodeName);
         label.styleSheets.Add(settings.Style);
         label.name = "node_label";
-        string labelColor = "label_" + styleID.ToString().ToLower();
-        label.EnableInClassList(labelColor, true);
+        label.EnableInClassList("node_label", true);
         newNode.Add(label);
 
         var nodeManipulator = new NodeManipulator(newNode);
@@ -197,16 +257,14 @@ public class DialogueEditor : EditorWindow
 
                 // populate with default node data
                 dialogueTreeAsset.nodes = new List<DialogueTreeAsset.DialogueNodeInfo>();
-                int counter = 1;
-                foreach (var node in dialogueTreeAsset.tree.dialogueNodes)
+                for(int i = 0; i < dialogueTreeAsset.tree.dialogueNodes.Length; i++)
                 {
+                    var node = dialogueTreeAsset.tree.dialogueNodes[i];
                     DialogueTreeAsset.DialogueNodeInfo newNode = new DialogueTreeAsset.DialogueNodeInfo();
-                    newNode.node = node;
-                    newNode.position = new Vector2(counter * 20, counter * 20);
+                    newNode.nodeName = node.nodeName;
+                    newNode.position = GetResetPosition(i);
                     newNode.label = node.nodeName;
-                    newNode.labelColor = (DialogueTreeAsset.LabelColor)Random.Range((int)0, (int)6);
                     dialogueTreeAsset.nodes.Add(newNode);
-                    counter++;
                 }
 
                 AssetDatabase.CreateAsset(dialogueTreeAsset, savePath);
@@ -267,10 +325,36 @@ public class DialogueEditor : EditorWindow
         Debug.Log("New Node button pressed!");
     }
 
+    private void OnClickResetNodes()
+    {
+        panRoot.transform.position = Vector3.zero;
+        int i = 0;
+        foreach (var node in nodes.Keys)
+        {
+            selection.SetNodePosition(node, GetResetPosition(i));
+            i++;
+        }
+
+        CreateNodes();
+    }
+
+    private Vector2 GetResetPosition(int index)
+    {
+        float x = 50;
+        float y = 50;
+        if (index != 0)
+        {
+            x += 350 * (index % 4);
+            y += 200 * Mathf.Floor(index / 4);
+        }
+        return new Vector2(x, y);
+    }
+
     private void OnDestroy()
     {
         DialogueTreeEditor.activeNode = null;
         isFocused = false;
+        AssetDatabase.SaveAssets();
     }
 
     private void OnSelectionChange()
@@ -288,6 +372,7 @@ public class DialogueEditor : EditorWindow
     private void OnLostFocus()
     {
         isFocused = false;
+        AssetDatabase.SaveAssets();
     }
 
     // The Inspector doesn't automatically update to the new selection when you click into the editor.
@@ -309,16 +394,33 @@ public class DialogueEditor : EditorWindow
     {
         if (selectedNode != null)
         {
-            selectedNode.EnableInClassList("node_bg", true);
             selectedNode.EnableInClassList("node_selected", false);
+            if (selectedNode == defaultNode)
+            {
+                selectedNode.EnableInClassList("node_default", true);
+            }
+            else if (exitNodes.Contains(selectedNode))
+            {
+                selectedNode.EnableInClassList("node_exit", true);
+            }
+            else selectedNode.EnableInClassList("node_bg", true);
         }
 
+
         newSelection.EnableInClassList("node_bg", false);
+        newSelection.EnableInClassList("node_default", false);
+        newSelection.EnableInClassList("node_exit", false);
         newSelection.EnableInClassList("node_selected", true);
         selectedNode = newSelection;
 
         DialogueTreeEditor.SelectionUpdate(GetNode(selectedNode.name));
         Selection.activeObject = selection;
+        EditorUtility.SetDirty(selection);
+    }
+
+    public void MoveNode(VisualElement node, Vector2 newPosition)
+    {
+        selection.SetNodePosition(node.name, panRoot.WorldToLocal(newPosition));
         EditorUtility.SetDirty(selection);
     }
 }

@@ -33,6 +33,20 @@
     background-color: rgb(13, 109, 173);
 }
 
+.node_default {
+    width: 200px;
+    height: 50px;
+    position: absolute;
+    background-color: darkgreen;
+}
+
+.node_exit {
+    width: 200px;
+    height: 50px;
+    position: absolute;
+    background-color: darkred;
+}
+
 .node_label {
     width: auto;
     min-width: 80px;
@@ -40,67 +54,7 @@
     min-height: 40px;
     padding: 10px;
     align-self: center;
-    color: green;
-}
-
-.label_pink {
-    width: auto;
-    min-width: 80px;
-    height: auto;
-    min-height: 40px;
-    padding: 10px;
-    align-self: center;
-    color: pink;
-}
-
-.label_orange {
-    width: auto;
-    min-width: 80px;
-    height: auto;
-    min-height: 40px;
-    padding: 10px;
-    align-self: center;
-    color: orange;
-}
-
-.label_yellow {
-    width: auto;
-    min-width: 80px;
-    height: auto;
-    min-height: 40px;
-    padding: 10px;
-    align-self: center;
-    color: yellow;
-}
-
-.label_green {
-    width: auto;
-    min-width: 80px;
-    height: auto;
-    min-height: 40px;
-    padding: 10px;
-    align-self: center;
-    color: lightgreen;
-}
-
-.label_blue {
-    width: auto;
-    min-width: 80px;
-    height: auto;
-    min-height: 40px;
-    padding: 10px;
-    align-self: center;
-    color: lightskyblue;
-}
-
-.label_magenta {
-    width: auto;
-    min-width: 80px;
-    height: auto;
-    min-height: 40px;
-    padding: 10px;
-    align-self: center;
-    color: magenta;
+    color: whitesmoke;
 }
 
 .arrow_container {

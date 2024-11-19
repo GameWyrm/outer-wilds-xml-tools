@@ -1,0 +1,65 @@
+using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
+
+public class PannerManipulator
+{
+    public VisualElement background;
+    public VisualElement panRoot;
+
+    private bool enabled;
+    private Vector2 panRootStartPosition;
+    private Vector3 pointerStartPosition;
+
+    // I don't have the luxery of inheriting from PointerManipulator so I have to call these manually.
+    public void RegisterCallbacks()
+    {
+        background.RegisterCallback<PointerDownEvent>(OnPointerDown);
+        background.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        background.RegisterCallback<PointerUpEvent>(OnPointerUp);
+        background.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+    }
+
+    public void UnregisterCallbacks()
+    {
+        background.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+        background.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+        background.UnregisterCallback<PointerUpEvent>(OnPointerUp);
+        background.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+    }
+
+    private void OnPointerDown(PointerDownEvent e)
+    {
+        if (!DialogueEditor.isFocused) return;
+        panRootStartPosition = panRoot.transform.position;
+        pointerStartPosition = e.position;
+        background.CapturePointer(e.pointerId);
+        enabled = true;
+    }
+
+    private void OnPointerMove(PointerMoveEvent e)
+    {
+        if (enabled && background.HasPointerCapture(e.pointerId))
+        {
+            Vector3 pointerDelta = e.position - pointerStartPosition;
+
+            panRoot.transform.position = panRootStartPosition + (Vector2)pointerDelta;
+        }
+    }
+
+    private void OnPointerUp(PointerUpEvent e)
+    {
+        if (enabled && background.HasPointerCapture(e.pointerId))
+        {
+            background.ReleasePointer(e.pointerId);
+        }
+    }
+
+    private void OnPointerCaptureOut(PointerCaptureOutEvent e)
+    {
+        if (enabled)
+        {
+            enabled = false;
+        }
+    }
+}

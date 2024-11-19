@@ -52,14 +52,14 @@ public class NodeManipulator
         {
             Vector3 pointerDelta = e.position - pointerStartPosition;
 
-            target.transform.position = new Vector2(
-                Mathf.Clamp(targetStartPosition.x + pointerDelta.x, 0, target.panel.visualTree.worldBound.width),
-                Mathf.Clamp(targetStartPosition.y + pointerDelta.y, 0, target.panel.visualTree.worldBound.height));
+            target.transform.position = new Vector2(targetStartPosition.x + pointerDelta.x, targetStartPosition.y + pointerDelta.y);
 
             foreach (var arrow in arrows)
             {
-                arrow.OrientArrow();
+                arrow.OrientArrow(0);
             }
+
+            DialogueEditor.instance.MoveNode(target, target.transform.position);
         }
     }
 

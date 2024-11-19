@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +15,10 @@ public class DialogueTreeEditor : Editor
     private static bool showRevealFacts;
     private static bool showSetConditions;
     private static bool showDialogueTargetConditions;
+    private static List<bool> showRequiredConditions;
+    private static List<bool> showRequiredPersistentConditions;
+    private static List<bool> showCancelledPersistentConditions;
+    private static List<string> nodeNames;
 
     private void OnEnable()
     {
@@ -28,11 +33,50 @@ public class DialogueTreeEditor : Editor
         showRevealFacts = true;
         showSetConditions = true;
         showDialogueTargetConditions = true;
+        if (activeNode.dialogueOptionsList != null && activeNode.dialogueOptionsList.dialogueOptions != null)
+        {
+            showRequiredConditions = new List<bool>(new bool[activeNode.dialogueOptionsList.dialogueOptions.Length]);
+            showRequiredPersistentConditions = new List<bool>(new bool[activeNode.dialogueOptionsList.dialogueOptions.Length]);
+            showCancelledPersistentConditions = new List<bool>(new bool[activeNode.dialogueOptionsList.dialogueOptions.Length]);
+        }
+        else
+        {
+            showRequiredConditions = null;
+            showRequiredPersistentConditions = null;
+            showCancelledPersistentConditions = null;
+        }
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+
+        nodeNames = new List<string>();
+        nodeNames.Add(string.Empty);
+        bool defaultError = true;
+        bool duplicateNodeError = false;
+        List<string> offendingNodes = new List<string>();
+        foreach (var node in selectedAsset.tree.dialogueNodes)
+        {
+            if (node.entryConditions.Contains("DEFAULT")) defaultError = false;
+            if (nodeNames.Contains(node.nodeName))
+            {
+                duplicateNodeError = true;
+                if (!offendingNodes.Contains(node.nodeName)) offendingNodes.Add(node.nodeName);
+            }
+            else
+            {
+                nodeNames.Add(node.nodeName);
+            }
+        }
+        if (defaultError || duplicateNodeError)
+        {
+            string errorText = "ERRORS: ";
+            if (defaultError) errorText += "\nThere is no \"DEFAULT\" node set. Dialogue cannot be started.";
+            if (duplicateNodeError) errorText += $"\nYou have two nodes with the same name. {offendingNodes.ToString()}";
+            EditorGUILayout.HelpBox(errorText, MessageType.Error);
+        }
+
         if (activeNode == null)
         {
             // When no node is selected
@@ -50,9 +94,9 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
 
         // Entry Conditions
+        showEntryConditions = EditorGUILayout.BeginFoldoutHeaderGroup(showEntryConditions, "Entry Conditions");
         if (activeNode.entryConditions != null)
         {
-            showEntryConditions = EditorGUILayout.BeginFoldoutHeaderGroup(showEntryConditions, "Entry Conditions");
             if (showEntryConditions)
             {
                 for (int i = 0; i < activeNode.entryConditions.Length; i++)
@@ -61,8 +105,9 @@ public class DialogueTreeEditor : Editor
                     EditorGUILayout.DelayedTextField($"Condition {i}", condition);
                 }
             }
-            EditorGUILayout.EndFoldoutHeaderGroup();
         }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUILayout.Space();
 
         // Randomize
         EditorGUILayout.Toggle("Randomize", activeNode.randomize != null);
@@ -84,6 +129,7 @@ public class DialogueTreeEditor : Editor
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUILayout.Space();
 
         // Reveal Facts
         showRevealFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showRevealFacts, "Reveal Facts");
@@ -96,6 +142,7 @@ public class DialogueTreeEditor : Editor
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUILayout.Space();
 
         // Set Persistent Condition
         EditorGUILayout.DelayedTextField("Set Persistent Condition", activeNode.setPersistentCondition);
@@ -110,6 +157,7 @@ public class DialogueTreeEditor : Editor
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUILayout.Space();
 
         // Disable Persistent Condition
         EditorGUILayout.DelayedTextField("Disable Persistent Condition", activeNode.disablePersistentCondition);
@@ -123,11 +171,65 @@ public class DialogueTreeEditor : Editor
                 EditorGUILayout.DelayedTextField($"Shiplog Fact {i}", activeNode.dialogueTargetShipLogConditions[i]);
             }
         }
+        EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Dialogue Target
-        EditorGUILayout.DelayedTextField("Dialogue Target", activeNode.dialogueTarget);
+        CreateDropdown("Dialogue Target", nodeNames, activeNode.dialogueTarget);
+        //EditorGUILayout.DelayedTextField("Dialogue Target", activeNode.dialogueTarget);
+        EditorGUILayout.Space();
 
         // Dialogue Options List
+        EditorGUILayout.LabelField("Dialogue Options");
+        if (activeNode.dialogueOptionsList != null && activeNode.dialogueOptionsList.dialogueOptions != null)
+        {
+            for (int i = 0; i < activeNode.dialogueOptionsList.dialogueOptions.Length; i++)
+            {
+                var option = activeNode.dialogueOptionsList.dialogueOptions[i];
+                string optionName = option.dialogueTarget;
+                if (string.IsNullOrEmpty(optionName)) optionName = "EXIT";
+                EditorGUILayout.LabelField($"- Option {optionName}");
+
+                showRequiredConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredConditions[i], "Required Ship Log Conditions");
+                if (showRequiredConditions[i] && option.requiredLogConditions != null)
+                {
+                    for (int j = 0; j < option.requiredLogConditions.Length; j++)
+                    {
+                        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredLogConditions[j]);
+                    }
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+
+                showRequiredPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredPersistentConditions[i], "Required Persistent Conditions");
+                if (showRequiredPersistentConditions[i] && option.requiredPersistentConditions != null)
+                {
+                    for (int j = 0; j < option.requiredLogConditions.Length; j++)
+                    {
+                        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredPersistentConditions[j]);
+                    }
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+
+                showCancelledPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showCancelledPersistentConditions[i], "Cancelled Persistent Conditions");
+                if (showCancelledPersistentConditions[i] && option.cancelledPersistentConditions != null)
+                {
+                    for (int j = 0; j < option.cancelledPersistentConditions.Length; j++)
+                    {
+                        EditorGUILayout.DelayedTextField($"Cancelled Condition {j}", option.requiredPersistentConditions[j]);
+                    }
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+
+                EditorGUILayout.DelayedTextField("Required Loop Condition", option.requiredCondition);
+                EditorGUILayout.DelayedTextField("Cancelled Loop Condition", option.cancelledCondition);
+                EditorGUILayout.DelayedTextField("Text", option.text);
+                CreateDropdown("Dialogue Target", nodeNames, option.dialogueTarget);
+                //EditorGUILayout.DelayedTextField("Dialogue Target", option.dialogueTarget);
+                EditorGUILayout.DelayedTextField("Loop Condition To Set", option.conditionToSet);
+                EditorGUILayout.DelayedTextField("Loop Condition To Cancel", option.conditionToCancel);
+
+                EditorGUILayout.Space();
+            }
+        }
     }
 
     private void OpenEditor()
@@ -141,5 +243,29 @@ public class DialogueTreeEditor : Editor
         {
             Debug.LogError($"{serializedObject.targetObject.name} is still null for some reason.");
         }
+    }
+
+    private void CreateDropdown(string label, List<string> items, string shownItem)
+    {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(label);
+
+        
+
+        if (EditorGUILayout.DropdownButton(new GUIContent(shownItem), FocusType.Passive))
+        {
+            GenericMenu menu = new GenericMenu();
+            foreach (string item in items)
+            {
+                menu.AddItem(new GUIContent(item), false, EditMenuSelection);
+            }
+            menu.ShowAsContext();
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void EditMenuSelection()
+    {
+        // TODO add code
     }
 }

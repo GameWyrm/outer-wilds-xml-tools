@@ -13,6 +13,7 @@
     <editor:ToolbarButton name="export" text="Export..." class="toolbar_button"/>
     <editor:ToolbarButton name="newTree" text="Create New Tree..." class="toolbar_button"/>
     <editor:ToolbarButton name="newNode" text="Create New Node" class="toolbar_button"/>
+    <editor:ToolbarButton name="resetNodes" text="Reset Node Positions" class="toolbar_button"/>
   </editor:Toolbar>
   <engine:Box name="bg" class="bg">
     <Style src ="DialogueEditor.uss"/> 
