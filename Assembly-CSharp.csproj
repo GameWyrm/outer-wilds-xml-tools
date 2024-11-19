@@ -59,9 +59,15 @@
     <Compile Include="Assets\DialogueTools\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\DialogueTree.cs" />
     <Compile Include="Assets\DialogueTools\DialogueTreeAsset.cs" />
+    <Compile Include="Assets\DialogueTools\NomaiText.cs" />
+    <Compile Include="Assets\DialogueTools\ShipLogEntry.cs" />
+    <Compile Include="Assets\DialogueTools\Translation.cs" />
+    <Compile Include="Assets\DialogueTools\XMLEditorSettings.cs" />
+    <Compile Include="Assets\DialogueTools\XMLUserSettings.cs" />
     <Compile Include="Assets\ParseAndDisplayXML.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Newtonsoft.Json.dll" />
     <None Include="Assets\TextAssets\Imports\EndingMagister.xml" />
     <None Include="Assets\TextAssets\Imports\TestDialogue.xml" />
   </ItemGroup>
@@ -248,6 +254,9 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.39f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.39f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>

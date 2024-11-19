@@ -2,7 +2,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CreateAssetMenu(fileName = "Dialogue Editor Settings", menuName = "Tools/Dialogue Editor Settings", order = 99)]
+// Do not touch this file unless you know what you are doing
+//[CreateAssetMenu(fileName = "Dialogue Editor Settings", menuName = "Tools/Dialogue Editor Settings", order = 99)]
 public class DialogueEditorSettings : ScriptableObject
 {
     public static DialogueEditorSettings Instance
@@ -24,5 +25,5 @@ public class DialogueEditorSettings : ScriptableObject
     public Texture LineTexture;
     public Texture ArrowTexture;
     public StyleSheet Style;
-
+    public VisualTreeAsset VisualTree;
 }

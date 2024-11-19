@@ -50,7 +50,7 @@ public class DialogueEditor : EditorWindow
         VisualElement root = rootVisualElement;
 
         // Import UXML
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/DialogueTools/Editor/DialogueEditor.uxml");
+        var visualTree = DialogueEditorSettings.Instance.VisualTree;
         VisualElement labelFromUXML = visualTree.CloneTree();
         root.Add(labelFromUXML);
 
