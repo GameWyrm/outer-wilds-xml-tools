@@ -58,7 +58,10 @@ public class DialogueTreeEditor : Editor
         List<string> offendingNodes = new List<string>();
         foreach (var node in selectedAsset.tree.dialogueNodes)
         {
-            if (node.entryConditions.Contains("DEFAULT")) defaultError = false;
+            if (node.entryConditions != null)
+            {
+                if (node.entryConditions.Contains("DEFAULT")) defaultError = false;
+            }
             if (nodeNames.Contains(node.nodeName))
             {
                 duplicateNodeError = true;
@@ -110,7 +113,7 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Space();
 
         // Randomize
-        EditorGUILayout.Toggle("Randomize", activeNode.randomize != null);
+        EditorGUILayout.Toggle("Randomize", activeNode.randomize);
 
         // Dialogues
         showDialogues = EditorGUILayout.BeginFoldoutHeaderGroup(showDialogues, "Dialogues");
@@ -174,7 +177,7 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.EndFoldoutHeaderGroup();
 
         // Dialogue Target
-        CreateDropdown("Dialogue Target", nodeNames, activeNode.dialogueTarget);
+        GUIBuilder.CreateDropdown("Dialogue Target", nodeNames, activeNode.dialogueTarget);
         //EditorGUILayout.DelayedTextField("Dialogue Target", activeNode.dialogueTarget);
         EditorGUILayout.Space();
 
@@ -222,7 +225,7 @@ public class DialogueTreeEditor : Editor
                 EditorGUILayout.DelayedTextField("Required Loop Condition", option.requiredCondition);
                 EditorGUILayout.DelayedTextField("Cancelled Loop Condition", option.cancelledCondition);
                 EditorGUILayout.DelayedTextField("Text", option.text);
-                CreateDropdown("Dialogue Target", nodeNames, option.dialogueTarget);
+                GUIBuilder.CreateDropdown("Dialogue Target", nodeNames, option.dialogueTarget);
                 //EditorGUILayout.DelayedTextField("Dialogue Target", option.dialogueTarget);
                 EditorGUILayout.DelayedTextField("Loop Condition To Set", option.conditionToSet);
                 EditorGUILayout.DelayedTextField("Loop Condition To Cancel", option.conditionToCancel);
@@ -245,27 +248,5 @@ public class DialogueTreeEditor : Editor
         }
     }
 
-    private void CreateDropdown(string label, List<string> items, string shownItem)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField(label);
 
-        
-
-        if (EditorGUILayout.DropdownButton(new GUIContent(shownItem), FocusType.Passive))
-        {
-            GenericMenu menu = new GenericMenu();
-            foreach (string item in items)
-            {
-                menu.AddItem(new GUIContent(item), false, EditMenuSelection);
-            }
-            menu.ShowAsContext();
-        }
-        EditorGUILayout.EndHorizontal();
-    }
-
-    private void EditMenuSelection()
-    {
-        // TODO add code
-    }
 }

@@ -41,7 +41,7 @@ public class ParseAndDisplayXML : MonoBehaviour
             newText += "\n";
             newText += $"NAME: {node.nodeName}\n";
             if (node.entryConditions != null) foreach (var entryCondition in node.entryConditions) newText += $"ENTRY CONDITION: {entryCondition}\n";
-            if (node.randomize != null) newText += "RANDOMIZED!\n";
+            if (node.randomize) newText += "RANDOMIZED!\n";
             if (node.dialogues != null)
             {
                 foreach (var dialogue in node.dialogues)

@@ -60,8 +60,10 @@
     <Compile Include="Assets\DialogueTools\Editor\DialogueEditor.cs" />
     <Compile Include="Assets\DialogueTools\Editor\DialogueEditorSettings.cs" />
     <Compile Include="Assets\DialogueTools\Editor\DialogueTreeEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Editor\GUIBuilder.cs" />
     <Compile Include="Assets\DialogueTools\Editor\NodeManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Editor\PannerManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Editor\XMLEditorSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\DialogueTools\Editor\DialogueEditor.uss" />
@@ -260,6 +262,9 @@
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.39f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="log4netPlastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@1.14.16\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
     </Reference>
@@ -271,9 +276,6 @@
     </Reference>
     <Reference Include="unityplastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@1.14.16\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>

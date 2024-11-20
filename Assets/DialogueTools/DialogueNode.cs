@@ -8,8 +8,10 @@ public class DialogueNode
     public string nodeName;
     [XmlElement("EntryCondition")]
     public string[] entryConditions;
+    /// <summary>Do no use this unless serializing. Use randomize instead.</summary>
     [XmlElement("Randomize")]
-    public string randomize;
+    public string m_randomize;
+    public bool randomize;
     [XmlElement("Dialogue")]
     public Dialogue[] dialogues;
     [XmlElement("RevealFacts")]

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 [CreateAssetMenu(fileName = "XML Editor Settings", menuName = "Tools/XML Editor Settings")]
 public class XMLEditorSettings : ScriptableObject
@@ -17,21 +18,33 @@ public class XMLEditorSettings : ScriptableObject
         }
     }
 
+    [Tooltip("The prefix that will be automatically added to all your conditions and ship log entries.")]
+    public string modPrefix = "";
+    [Tooltip("Casing to use for new conditions")]
+    public Casing conditionCase = Casing.SCREAMING_SNAKE_CASE;
+    [Tooltip("Casing to use for new ship log entries")]
+    public Casing shipLogCase = Casing.SCREAMING_SNAKE_CASE;
+    [Tooltip("Casing to use for new translation keys")]
+    public Casing translationCase = Casing.PascalCase;
+
     private static XMLEditorSettings instance;
 
-    private List<string> loopConditions;
-    private List<string> persistentConditions;
-
+    private List<string> loopConditions = new List<string>();
+    private List<string> persistentConditions = new List<string>();
 
     // First string is the condition name, second string is the user name, int is number of times it is used
     private Dictionary<string, Dictionary<string, int>> loopConditionUsers;
     private Dictionary<string, Dictionary<string, int>> persistentConditionUsers;
 
+
+    private void Awake()
+    {
+        loopConditions = new List<string>();
+        persistentConditions = new List<string>();
+    }
+
     public void RegisterCondition(string conditionName, bool isPersistent)
     {
-        if (loopConditions == null) loopConditions = new List<string>();
-        if (persistentConditions == null) persistentConditions = new List<string>();
-
         if (isPersistent)
         {
             if (!persistentConditions.Contains(conditionName))
@@ -50,9 +63,6 @@ public class XMLEditorSettings : ScriptableObject
 
     public void RemoveCondition(string conditionName, bool isPersistent)
     {
-        if (loopConditions == null) loopConditions = new List<string>();
-        if (persistentConditions == null) persistentConditions = new List<string>();
-
         if (isPersistent)
         {
             if (persistentConditions.Contains(conditionName))
@@ -73,8 +83,6 @@ public class XMLEditorSettings : ScriptableObject
 
     public List<string> GetConditionList(bool isPersistent)
     {
-        if (loopConditions == null || persistentConditions == null) return null;
-
         List<string> list;
         if (isPersistent)
         {
@@ -87,4 +95,20 @@ public class XMLEditorSettings : ScriptableObject
         return list;
     }
 
+    /// <summary>
+    /// Overwrite an entire conditions list. You probably want to use RegisterCondition or RemoveCondition instead.
+    /// </summary>
+    /// <param name="conditions"></param>
+    /// <param name="isPersistent"></param>
+    public void SetConditionList(List<string> conditions, bool isPersistent)
+    {
+        if (isPersistent)
+        {
+            persistentConditions = conditions;
+        }
+        else
+        {
+            loopConditions = conditions;
+        }
+    }
 }

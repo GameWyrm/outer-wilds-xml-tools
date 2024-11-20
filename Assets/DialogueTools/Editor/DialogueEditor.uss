@@ -17,6 +17,7 @@
     position: absolute;
     margin-top: 30px;
     background-color: rgb(30, 30, 30);
+    cursor: pan;
 }
 
 .node_bg {
@@ -24,6 +25,7 @@
     height: 50px;
     position: absolute;
     background-color: rgb(60, 60, 60);
+    cursor: move-arrow;
 }
 
 .node_selected {
@@ -31,6 +33,7 @@
     height: 50px;
     position: absolute;
     background-color: rgb(13, 109, 173);
+    cursor: move-arrow;
 }
 
 .node_default {
@@ -38,6 +41,7 @@
     height: 50px;
     position: absolute;
     background-color: darkgreen;
+    cursor: move-arrow;
 }
 
 .node_exit {
@@ -45,6 +49,7 @@
     height: 50px;
     position: absolute;
     background-color: darkred;
+    cursor: move-arrow;
 }
 
 .node_label {
@@ -55,11 +60,12 @@
     padding: 10px;
     align-self: center;
     color: whitesmoke;
+    cursor: move-arrow;
 }
 
 .arrow_container {
-    width: 200px;
-    height: 200px;
+    width: 0px;
+    height: 0px;
     position: absolute;
 }
 
