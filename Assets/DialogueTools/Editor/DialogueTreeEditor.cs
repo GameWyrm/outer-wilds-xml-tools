@@ -15,9 +15,9 @@ public class DialogueTreeEditor : Editor
     private static bool showRevealFacts;
     private static bool showSetConditions;
     private static bool showDialogueTargetConditions;
-    private static List<bool> showRequiredConditions;
-    private static List<bool> showRequiredPersistentConditions;
-    private static List<bool> showCancelledPersistentConditions;
+    private static bool[] showRequiredLogConditions;
+    private static bool[] showRequiredPersistentConditions;
+    private static bool[] showCancelledPersistentConditions;
     private static List<string> nodeNames;
 
     private void OnEnable()
@@ -35,13 +35,13 @@ public class DialogueTreeEditor : Editor
         showDialogueTargetConditions = true;
         if (activeNode.dialogueOptionsList != null && activeNode.dialogueOptionsList.dialogueOptions != null)
         {
-            showRequiredConditions = new List<bool>(new bool[activeNode.dialogueOptionsList.dialogueOptions.Length]);
-            showRequiredPersistentConditions = new List<bool>(new bool[activeNode.dialogueOptionsList.dialogueOptions.Length]);
-            showCancelledPersistentConditions = new List<bool>(new bool[activeNode.dialogueOptionsList.dialogueOptions.Length]);
+            showRequiredLogConditions = new bool[activeNode.dialogueOptionsList.dialogueOptions.Length];
+            showRequiredPersistentConditions = new bool[activeNode.dialogueOptionsList.dialogueOptions.Length];
+            showCancelledPersistentConditions = new bool[activeNode.dialogueOptionsList.dialogueOptions.Length];
         }
         else
         {
-            showRequiredConditions = null;
+            showRequiredLogConditions = null;
             showRequiredPersistentConditions = null;
             showCancelledPersistentConditions = null;
         }
@@ -93,23 +93,47 @@ public class DialogueTreeEditor : Editor
 
     private void DrawNodeData()
     {
+        string[] loopConditions = XMLEditorSettings.Instance.GetConditionList(false).ToArray();
+        string[] persistentConditions = XMLEditorSettings.Instance.GetConditionList(true).ToArray();
+        bool rebuildNodeTree = false;
+
         // Name
         EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
 
         // Entry Conditions
-        showEntryConditions = EditorGUILayout.BeginFoldoutHeaderGroup(showEntryConditions, "Entry Conditions");
-        if (activeNode.entryConditions != null)
+        List<string> entryList = new List<string>();
+        entryList.Add("DEFAULT");
+        entryList.Add("");
+        entryList.AddRange(loopConditions);
+        entryList.Add("");
+        entryList.AddRange(persistentConditions);
+
+        bool hasADefaultNode = false;
+        foreach (var entry in activeNode.entryConditions)
         {
-            if (showEntryConditions)
+            if (entry == "DEFAULT")
             {
-                for (int i = 0; i < activeNode.entryConditions.Length; i++)
-                {
-                    var condition = activeNode.entryConditions[i];
-                    EditorGUILayout.DelayedTextField($"Condition {i}", condition);
-                }
+                hasADefaultNode = true;
+                break;
             }
         }
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        bool didHaveADefaultNode = hasADefaultNode;
+        activeNode.entryConditions = GUIBuilder.CreateDropdownArray(ref showEntryConditions, "Entry Conditions", "Condition", activeNode.entryConditions, entryList.ToArray());
+        hasADefaultNode = false;
+        foreach (var entry in activeNode.entryConditions)
+        {
+            if (entry == "DEFAULT")
+            {
+                hasADefaultNode = true;
+                break;
+            }
+        }
+        if (hasADefaultNode != didHaveADefaultNode)
+        {
+            string debug = "Rebuilding";
+            Debug.Log(debug);
+            rebuildNodeTree = true;
+        }
         EditorGUILayout.Space();
 
         // Randomize
@@ -148,22 +172,16 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Space();
 
         // Set Persistent Condition
-        EditorGUILayout.DelayedTextField("Set Persistent Condition", activeNode.setPersistentCondition);
+        activeNode.setPersistentCondition = GUIBuilder.CreateDropdown("Set Persistent Condition", activeNode.setPersistentCondition, persistentConditions);
+        EditorGUILayout.Space();
 
         // Set Conditions
-        showSetConditions = EditorGUILayout.BeginFoldoutHeaderGroup(showSetConditions, "Set Loop Conditions");
-        if (activeNode.setConditions != null && showSetConditions)
-        {
-            for (int i = 0; i < activeNode.setConditions.Length; i++)
-            {
-                EditorGUILayout.DelayedTextField($"Set Condition {i}", activeNode.setConditions[i]);
-            }
-        }
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        activeNode.setConditions = GUIBuilder.CreateDropdownArray(ref showSetConditions, "Set Loop Conditions", "Condition", activeNode.setConditions, loopConditions);
         EditorGUILayout.Space();
 
         // Disable Persistent Condition
-        EditorGUILayout.DelayedTextField("Disable Persistent Condition", activeNode.disablePersistentCondition);
+        activeNode.disablePersistentCondition = GUIBuilder.CreateDropdown("Disable Persistent Condition", activeNode.disablePersistentCondition, persistentConditions);
+        EditorGUILayout.Space();
 
         // Dialogue Target Shiplog Conditions
         showDialogueTargetConditions = EditorGUILayout.BeginFoldoutHeaderGroup(showDialogueTargetConditions, "Dialogue Target Shiplog Conditions");
@@ -175,16 +193,50 @@ public class DialogueTreeEditor : Editor
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUILayout.Space();
 
         // Dialogue Target
-        GUIBuilder.CreateDropdown("Dialogue Target", nodeNames, activeNode.dialogueTarget);
-        //EditorGUILayout.DelayedTextField("Dialogue Target", activeNode.dialogueTarget);
+        string oldTarget = activeNode.dialogueTarget;
+        activeNode.dialogueTarget = GUIBuilder.CreateDropdown("Dialogue Target", activeNode.dialogueTarget, nodeNames.ToArray());
+        if (oldTarget != activeNode.dialogueTarget)
+        {
+            rebuildNodeTree = true;
+        }
         EditorGUILayout.Space();
 
         // Dialogue Options List
         EditorGUILayout.LabelField("Dialogue Options");
+
+        bool addNew = GUILayout.Button("+ Add New Option");
+        if (addNew)
+        {
+            if (activeNode.dialogueOptionsList == null) activeNode.dialogueOptionsList = new DialogueNode.DialogueOptionsList();
+            if (activeNode.dialogueOptionsList.dialogueOptions == null) activeNode.dialogueOptionsList.dialogueOptions = new DialogueNode.DialogueOption[0];
+
+            List<DialogueNode.DialogueOption> newOptions = new List<DialogueNode.DialogueOption>(activeNode.dialogueOptionsList.dialogueOptions);
+            DialogueNode.DialogueOption option = new DialogueNode.DialogueOption();
+            option.requiredLogConditions = new string[0];
+            option.requiredPersistentConditions = new string[0];
+            option.cancelledPersistentConditions = new string[0];
+
+            List<bool> newLogBools = new List<bool>(showRequiredLogConditions);
+            newLogBools.Add(false);
+            showRequiredLogConditions = newLogBools.ToArray();
+            List<bool> newReqBools = new List<bool>(showRequiredPersistentConditions);
+            newReqBools.Add(false);
+            showRequiredPersistentConditions = newReqBools.ToArray();
+            List<bool> newCancelledBools = new List<bool>(showCancelledPersistentConditions);
+            newCancelledBools.Add(false);
+            showCancelledPersistentConditions = newCancelledBools.ToArray();
+
+            newOptions.Add(option);
+            activeNode.dialogueOptionsList.dialogueOptions = newOptions.ToArray();
+            EditorUtility.SetDirty(selectedAsset);
+        }
+
         if (activeNode.dialogueOptionsList != null && activeNode.dialogueOptionsList.dialogueOptions != null)
         {
+            int clearIndex = -1;
             for (int i = 0; i < activeNode.dialogueOptionsList.dialogueOptions.Length; i++)
             {
                 var option = activeNode.dialogueOptionsList.dialogueOptions[i];
@@ -192,45 +244,71 @@ public class DialogueTreeEditor : Editor
                 if (string.IsNullOrEmpty(optionName)) optionName = "EXIT";
                 EditorGUILayout.LabelField($"- Option {optionName}");
 
-                showRequiredConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredConditions[i], "Required Ship Log Conditions");
-                if (showRequiredConditions[i] && option.requiredLogConditions != null)
-                {
-                    for (int j = 0; j < option.requiredLogConditions.Length; j++)
-                    {
-                        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredLogConditions[j]);
-                    }
-                }
-                EditorGUILayout.EndFoldoutHeaderGroup();
+                // TODO replace with log selector
+                //showRequiredLogConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredLogConditions[i], "Required Ship Log Conditions");
+                //if (showRequiredLogConditions[i] && option.requiredLogConditions != null)
+                //{
+                //    for (int j = 0; j < option.requiredLogConditions.Length; j++)
+                //    {
+                //        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredLogConditions[j]);
+                //    }
+                //}
+                //EditorGUILayout.EndFoldoutHeaderGroup();
 
-                showRequiredPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredPersistentConditions[i], "Required Persistent Conditions");
-                if (showRequiredPersistentConditions[i] && option.requiredPersistentConditions != null)
-                {
-                    for (int j = 0; j < option.requiredLogConditions.Length; j++)
-                    {
-                        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredPersistentConditions[j]);
-                    }
-                }
-                EditorGUILayout.EndFoldoutHeaderGroup();
+                option.requiredPersistentConditions = GUIBuilder.CreateDropdownArray(ref showRequiredPersistentConditions[i], "Required Persistent Conditions", "Condition", option.requiredPersistentConditions, persistentConditions);
+                //showRequiredPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredPersistentConditions[i], "Required Persistent Conditions");
+                //if (showRequiredPersistentConditions[i] && option.requiredPersistentConditions != null)
+                //{
+                //    for (int j = 0; j < option.requiredLogConditions.Length; j++)
+                //    {
+                //        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredPersistentConditions[j]);
+                //    }
+                //}
+                //EditorGUILayout.EndFoldoutHeaderGroup();
 
-                showCancelledPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showCancelledPersistentConditions[i], "Cancelled Persistent Conditions");
-                if (showCancelledPersistentConditions[i] && option.cancelledPersistentConditions != null)
-                {
-                    for (int j = 0; j < option.cancelledPersistentConditions.Length; j++)
-                    {
-                        EditorGUILayout.DelayedTextField($"Cancelled Condition {j}", option.requiredPersistentConditions[j]);
-                    }
-                }
-                EditorGUILayout.EndFoldoutHeaderGroup();
+                option.cancelledPersistentConditions = GUIBuilder.CreateDropdownArray(ref showCancelledPersistentConditions[i], "Cancelled Persistent Conditions", "Condition", option.cancelledPersistentConditions, persistentConditions);
+                //showCancelledPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showCancelledPersistentConditions[i], "Cancelled Persistent Conditions");
+                //if (showCancelledPersistentConditions[i] && option.cancelledPersistentConditions != null)
+                //{
+                //    for (int j = 0; j < option.cancelledPersistentConditions.Length; j++)
+                //    {
+                //        EditorGUILayout.DelayedTextField($"Cancelled Condition {j}", option.requiredPersistentConditions[j]);
+                //    }
+                //}
+                //EditorGUILayout.EndFoldoutHeaderGroup();
 
-                EditorGUILayout.DelayedTextField("Required Loop Condition", option.requiredCondition);
-                EditorGUILayout.DelayedTextField("Cancelled Loop Condition", option.cancelledCondition);
+                option.requiredCondition = GUIBuilder.CreateDropdown("Required Loop Condition", option.requiredCondition, loopConditions);
+                //EditorGUILayout.DelayedTextField("Required Loop Condition", option.requiredCondition);
+                option.cancelledCondition = GUIBuilder.CreateDropdown("Cancelled Loop Condition", option.cancelledCondition, loopConditions);
+                //EditorGUILayout.DelayedTextField("Cancelled Loop Condition", option.cancelledCondition);
+                // TODO translated text field
                 EditorGUILayout.DelayedTextField("Text", option.text);
-                GUIBuilder.CreateDropdown("Dialogue Target", nodeNames, option.dialogueTarget);
+                GUIBuilder.CreateDropdown("Dialogue Target", option.dialogueTarget, nodeNames.ToArray());
                 //EditorGUILayout.DelayedTextField("Dialogue Target", option.dialogueTarget);
-                EditorGUILayout.DelayedTextField("Loop Condition To Set", option.conditionToSet);
-                EditorGUILayout.DelayedTextField("Loop Condition To Cancel", option.conditionToCancel);
-
+                option.conditionToSet = GUIBuilder.CreateDropdown("Loop Condition To Set", option.conditionToSet, loopConditions);
+                option.conditionToCancel = GUIBuilder.CreateDropdown("Loop Condition To Cancel", option.conditionToCancel, loopConditions);
+                //EditorGUILayout.DelayedTextField("Loop Condition To Set", option.conditionToSet);
+                //EditorGUILayout.DelayedTextField("Loop Condition To Cancel", option.conditionToCancel);
                 EditorGUILayout.Space();
+                bool deleteOption = GUILayout.Button("Delete this option (No Undo)");
+                if (deleteOption) clearIndex = i;
+                EditorGUILayout.Space();
+            }
+            if (clearIndex != -1)
+            {
+                List<DialogueNode.DialogueOption> workingOptions = new List<DialogueNode.DialogueOption>(activeNode.dialogueOptionsList.dialogueOptions);
+                workingOptions.RemoveAt(clearIndex);
+                activeNode.dialogueOptionsList.dialogueOptions = workingOptions.ToArray();
+                EditorUtility.SetDirty(selectedAsset);
+            }
+            
+        }
+
+        if (rebuildNodeTree)
+        {
+            if (DialogueEditor.instance != null)
+            {
+                DialogueEditor.instance.BuildNodeTree();
             }
         }
     }

@@ -4,6 +4,8 @@ using System.Reflection;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
+using UnityEngine.UIElements.Experimental;
 
 public class GUIBuilder
 {
@@ -98,6 +100,63 @@ public class GUIBuilder
         return data;
     }
 
+    public static string[] CreateDropdownArray(ref bool isShowing, string title, string itemsLabel, string[] selectedConditions, string[] items)
+    {
+        int clearValue = -1;
+        List<string> data = new List<string>(selectedConditions);
+        isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, title);
+        if (isShowing)
+        {
+            List<string> itemList = new List<string>();
+            itemList.Add("(None)");
+            itemList.AddRange(items);
+            for (int i = 0; i < data.Count; i++)
+            {
+                int index = -1;
+                if (itemList.Contains(data[i])) index = itemList.IndexOf(data[i]);
+                else
+                {
+                    itemList.Add(data[i]);
+                    index = itemList.Count - 1;
+                }
+
+                string newItem = CreateDropdownArrayItem($"{itemsLabel} {i}", itemList, index, out bool shouldClear);
+                if (shouldClear) clearValue = i;
+                if (newItem == "(None)") newItem = "";
+
+                data[i] = newItem;
+                if (clearValue >= 0) data.RemoveAt(clearValue);
+            }
+            bool addNew = GUILayout.Button("+ Add New");
+            if (addNew)
+            {
+                data.Add("");
+            }
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        return data.ToArray();
+    }
+
+    public static string CreateDropdown(string label, string selectedCondition, string[] items)
+    {
+        int index = -1;
+        List<string> conditionList = new List<string>();
+        conditionList.Add("(None)");
+        conditionList.AddRange(items);
+        if (conditionList.Contains(selectedCondition)) index = conditionList.IndexOf(selectedCondition);
+        {
+            conditionList.Add(selectedCondition);
+            index = conditionList.Count - 1;
+        }
+
+        selectedCondition = CreateDropdownItem(label, conditionList, index);
+
+        if (selectedCondition == "(None)") selectedCondition = "";
+
+        return selectedCondition;
+    }
+
     private static void CreateTranslatedArrayItem()
     {
 
@@ -118,23 +177,29 @@ public class GUIBuilder
         return data;
     }
 
-    public static void CreateDropdown(string label, List<string> items, string shownItem)
+    private static string CreateDropdownArrayItem(string label, List<string> items, int shownItemIndex, out bool shouldClear)
+    {
+        shouldClear = false;
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(label);
+        shownItemIndex = EditorGUILayout.Popup(shownItemIndex, items.ToArray());
+
+        bool clear = GUILayout.Button("X", GUILayout.Width(20));
+        if (clear)
+        {
+            shouldClear = true;
+        }
+        EditorGUILayout.EndHorizontal();
+        return items[shownItemIndex];
+    }
+
+    private static string CreateDropdownItem(string label, List<string> items, int shownItemIndex)
     {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField(label);
-
-
-
-        if (EditorGUILayout.DropdownButton(new GUIContent(shownItem), FocusType.Passive))
-        {
-            GenericMenu menu = new GenericMenu();
-            foreach (string item in items)
-            {
-                menu.AddItem(new GUIContent(item), false, EditMenuSelection);
-            }
-            menu.ShowAsContext();
-        }
+        shownItemIndex = EditorGUILayout.Popup(shownItemIndex, items.ToArray());
         EditorGUILayout.EndHorizontal();
+        return items[shownItemIndex];
     }
 
     
@@ -186,9 +251,5 @@ public class GUIBuilder
         return text;
     }
 
-    private static void EditMenuSelection()
-    {
-        // TODO add code
-    }
     #endregion
 }

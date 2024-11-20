@@ -97,14 +97,16 @@ public class DialogueEditor : EditorWindow
         isFocused = true;
     }
 
-    private void BuildNodeTree()
+    public void BuildNodeTree()
     {
+        Vector2 oldPanRootPosition = panRoot.transform.position;
         nodesRoot.Clear();
         arrowsRoot.Clear();
         defaultNode = null;
         exitNodes = new List<VisualElement>();
         nodeManipulators = new Dictionary<string, NodeManipulator>();
         nodes = new Dictionary<string, VisualElement>();
+        panRoot.transform.position = Vector2.zero;
         if (selection.tree == null || selection.tree.dialogueNodes == null) return;
         dialogueTree = selection.tree;
         for (int i = 0; i < selection.tree.dialogueNodes.Length; i++)
@@ -173,6 +175,7 @@ public class DialogueEditor : EditorWindow
                 }
             }
         }
+        panRoot.transform.position = oldPanRootPosition;
     }
 
     private void OnClickImport()
