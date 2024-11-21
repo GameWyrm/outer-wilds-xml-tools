@@ -60,6 +60,8 @@
     <Compile Include="Assets\DialogueTools\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\DialogueTree.cs" />
     <Compile Include="Assets\DialogueTools\DialogueTreeAsset.cs" />
+    <Compile Include="Assets\DialogueTools\Language.cs" />
+    <Compile Include="Assets\DialogueTools\LanguageType.cs" />
     <Compile Include="Assets\DialogueTools\NomaiText.cs" />
     <Compile Include="Assets\DialogueTools\ShipLogEntry.cs" />
     <Compile Include="Assets\DialogueTools\Translation.cs" />

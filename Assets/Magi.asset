@@ -266,19 +266,19 @@ MonoBehaviour:
     label: 
   nodes:
   - nodeName: Start
-    position: {x: -35, y: 14}
+    position: {x: 41, y: 103}
     label: Start
   - nodeName: Intro2
-    position: {x: 401, y: 24}
+    position: {x: 469, y: 47}
     label: Intro2
   - nodeName: Hub
-    position: {x: 396, y: 169}
+    position: {x: 513, y: 237}
     label: Hub
   - nodeName: Why
     position: {x: 848, y: 102}
     label: Why
   - nodeName: Door
-    position: {x: 471, y: 405}
+    position: {x: 491, y: 476}
     label: Door
   - nodeName: DoorA
     position: {x: 37, y: 310}
