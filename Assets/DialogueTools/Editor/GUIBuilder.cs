@@ -147,17 +147,17 @@ public class GUIBuilder
         {
             for (int i = 0; i < dialogueKeys.Length; i++)
             {
-                CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, out bool shouldClear);
+                CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, true, out bool shouldClear);
                 if (shouldClear) clearValue = i;
             }
             if (clearValue >= 0) data.RemoveAt(clearValue);
 
-            EditorGUILayout.LabelField($"Add New {itemsLabel}");
+            EditorGUILayout.LabelField($"------------------ ADD NEW {itemsLabel.ToUpper()} ------------------");
             string prefix = XMLEditorSettings.Instance.modPrefix.ToUpper();
             if (GUILayout.Button("New Entry (Auto)"))
             {
                 string newName = "";
-                if (!string.IsNullOrEmpty(prefix)) newName += prefix + "_";
+                if (!string.IsNullOrEmpty(prefix)) newName = prefix + "_";
                 newName += $"{dialogueName.ToUpper()}_{nodeName.ToUpper()}_{data.Count}";
                 data.Add(newName);
             }
@@ -198,12 +198,16 @@ public class GUIBuilder
         return selectedCondition;
     }
 
-    public static void CreateTranslatedArrayItem(string label, string key, Language lang, out bool shouldClear)
+    public static string CreateTranslatedArrayItem(string label, string key, Language lang, bool clearable, out bool shouldClear)
     {
         EditorGUILayout.BeginHorizontal();
         string newKey = EditorGUILayout.DelayedTextField(label, key);
-        bool clear = GUILayout.Button("X", GUILayout.Width(20));
-        shouldClear = clear;
+        if (clearable)
+        {
+            bool clear = GUILayout.Button("X", GUILayout.Width(20));
+            shouldClear = clear;
+        }
+        else shouldClear = false;
         EditorGUILayout.EndHorizontal();
         if (newKey != key)
         {
@@ -211,6 +215,7 @@ public class GUIBuilder
             if (!success)
             {
                 Debug.LogError($"Dialogue dictionary for {lang.name} already includes key {newKey}. Aborting key change.");
+                newKey = key;
             }
             else
             {
@@ -219,10 +224,11 @@ public class GUIBuilder
                     if (language == lang) continue;
                     language.TryRenameDialogueKey(key, newKey);
                 }
+                Debug.Log($"Renamed key {key} to {newKey}.");
             }
-            Debug.Log($"Renamed key {key} to {newKey}.");
         }
         lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
+        return newKey;
     }
 
     private static string CreateArrayItem(string itemLabel, string data, out bool shouldClear)

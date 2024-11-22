@@ -18,12 +18,24 @@ MonoBehaviour:
   - HN2/Test
   - $HN2EndMHub1
   - $HN2EndMIntro1
+  - $HN2EndMHubA
+  - $HN2EndMHubD
+  - $HN2EndMHubE
+  - $HN2EndMHubQuit
   dialogueKeys:
   - HN2_Test
   - $HN2EndMHub1
   - $HN2EndMIntro1
+  - $HN2EndMHubA
+  - $HN2EndMHubD
+  - $HN2EndMHubE
+  - $HN2EndMHubQuit
   dialogueValues:
   - This is a test.
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   shipLogKeys: []

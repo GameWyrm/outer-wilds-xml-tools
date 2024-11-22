@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.PlayerSettings.Switch;
 
 [CustomEditor(typeof(DialogueTreeAsset))]
 public class DialogueTreeEditor : Editor
@@ -19,6 +20,8 @@ public class DialogueTreeEditor : Editor
     private static bool[] showRequiredPersistentConditions;
     private static bool[] showCancelledPersistentConditions;
     private static List<string> nodeNames;
+
+    private static List<string> characters = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
     private void OnEnable()
     {
@@ -101,6 +104,7 @@ public class DialogueTreeEditor : Editor
     private void DrawNodeData()
     {
         XMLEditorSettings settings = XMLEditorSettings.Instance;
+        Language language = settings.GetSelectedLanguage();
         string[] loopConditions = settings.GetConditionList(false).ToArray();
         string[] persistentConditions = settings.GetConditionList(true).ToArray();
         bool rebuildNodeTree = false;
@@ -154,24 +158,8 @@ public class DialogueTreeEditor : Editor
         // Dialogues
         for (int i = 0; i < activeNode.dialogues.Length; i++)
         {
-            activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", settings.GetSelectedLanguage(), activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName);
+            activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", language, activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName);
         }
-        //showDialogues = EditorGUILayout.BeginFoldoutHeaderGroup(showDialogues, "Dialogues");
-        //if (activeNode.dialogues != null && showDialogues)
-        //{
-        //    foreach (var dialogue in activeNode.dialogues)
-        //    {
-        //        if (dialogue.pages != null &&  dialogue.pages.Length > 0)
-        //        {
-        //            for (int i = 0; i < dialogue.pages.Length; i++)
-        //            {
-        //                EditorGUILayout.DelayedTextField($"Page {i + 1}", dialogue.pages[i]);
-        //            }
-        //        }
-        //        EditorGUILayout.Space();
-        //    }
-        //}
-        //EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.Space();
 
         // Reveal Facts
@@ -221,9 +209,44 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Space();
 
         // Dialogue Options List
-        EditorGUILayout.LabelField("Dialogue Options");
+        EditorGUILayout.LabelField("================== Dialogue Options ==================");
 
-        bool addNew = GUILayout.Button("+ Add New Option");
+        EditorGUILayout.LabelField("================== CREATE NEW OPTION ==================");
+        string prefix = settings.modPrefix.ToUpper();
+        string newKey = "";
+        bool addNew = false;
+        if (GUILayout.Button("New Entry (Auto)"))
+        {
+            if (!string.IsNullOrEmpty(prefix)) newKey = prefix + "_";
+            string suffix = "";
+            if (activeNode.dialogueOptionsList == null || activeNode.dialogueOptionsList.dialogueOptions == null) suffix = characters[0];
+            else
+            {
+                int i = activeNode.dialogueOptionsList.dialogueOptions.Length;
+                if (i > characters.Count) suffix = characters[Mathf.FloorToInt(i / characters.Count)];
+            }
+            newKey += $"{selectedAsset.tree.nameField.ToUpper()}_{activeNode.nodeName.ToUpper()}_{suffix}";
+            addNew = true;
+        }
+        string newCustomTranslation = EditorGUILayout.DelayedTextField("New Entry", "");
+        if (!string.IsNullOrEmpty(newCustomTranslation))
+        {
+            if (!newCustomTranslation.ToUpper().StartsWith(prefix)) newCustomTranslation = prefix + "_" + newCustomTranslation;
+            newKey = newCustomTranslation;
+            addNew = true;
+        }
+        if (language.tieredDialogueKeys != null)
+        {
+            int reuseIndex = EditorGUILayout.Popup("Reuse entry", 0, language.tieredDialogueKeys.ToArray());
+            string reusedTranslation = language.tieredDialogueKeys[reuseIndex];
+            if (reuseIndex > 0)
+            {
+                newKey = reusedTranslation;
+                addNew = true;
+            }
+        }
+
+        //bool addNew = GUILayout.Button("+ Add New Option");
         if (addNew)
         {
             if (activeNode.dialogueOptionsList == null) activeNode.dialogueOptionsList = new DialogueNode.DialogueOptionsList();
@@ -234,6 +257,8 @@ public class DialogueTreeEditor : Editor
             option.requiredLogConditions = new string[0];
             option.requiredPersistentConditions = new string[0];
             option.cancelledPersistentConditions = new string[0];
+
+            option.text = newKey;
 
             List<bool> newLogBools = new List<bool>(showRequiredLogConditions);
             newLogBools.Add(false);
@@ -258,7 +283,7 @@ public class DialogueTreeEditor : Editor
                 var option = activeNode.dialogueOptionsList.dialogueOptions[i];
                 string optionName = option.dialogueTarget;
                 if (string.IsNullOrEmpty(optionName)) optionName = "EXIT";
-                EditorGUILayout.LabelField($"- Option {optionName}");
+                EditorGUILayout.LabelField($"------------------ Option {optionName} ------------------");
 
                 // TODO replace with log selector
                 //showRequiredLogConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredLogConditions[i], "Required Ship Log Conditions");
@@ -297,8 +322,8 @@ public class DialogueTreeEditor : Editor
                 //EditorGUILayout.DelayedTextField("Required Loop Condition", option.requiredCondition);
                 option.cancelledCondition = GUIBuilder.CreateDropdown("Cancelled Loop Condition", option.cancelledCondition, loopConditions);
                 //EditorGUILayout.DelayedTextField("Cancelled Loop Condition", option.cancelledCondition);
-                // TODO translated text field
-                EditorGUILayout.DelayedTextField("Text", option.text);
+                option.text = GUIBuilder.CreateTranslatedArrayItem("Text", option.text, settings.GetSelectedLanguage(), false, out _);
+                //EditorGUILayout.DelayedTextField("Text", option.text);
                 GUIBuilder.CreateDropdown("Dialogue Target", option.dialogueTarget, nodeNames.ToArray());
                 //EditorGUILayout.DelayedTextField("Dialogue Target", option.dialogueTarget);
                 option.conditionToSet = GUIBuilder.CreateDropdown("Loop Condition To Set", option.conditionToSet, loopConditions);
