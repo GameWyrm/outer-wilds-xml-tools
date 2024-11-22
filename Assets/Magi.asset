@@ -272,7 +272,7 @@ MonoBehaviour:
     position: {x: 512, y: 33}
     label: Intro2
   - nodeName: Hub
-    position: {x: 520, y: 220}
+    position: {x: 520, y: 200}
     label: Hub
   - nodeName: Why
     position: {x: 965, y: 32}

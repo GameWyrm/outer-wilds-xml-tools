@@ -4,10 +4,21 @@ using UnityEditor;
 
 public class Language : ScriptableObject
 {
-    [HideInInspector]
-    public Translation translation;
+    //private Translation translation;
+    
     [HideInInspector]
     public LanguageType type;
+
+    public List<string> tieredDialogueKeys;
+
+    [SerializeField, Header("DO NOT ADD OR REMOVE ELEMENTS DIRECTLY.")]
+    private List<string> dialogueKeys;
+    [SerializeField]
+    private List<string> dialogueValues;
+    [SerializeField]
+    private List<string> shipLogKeys;
+    [SerializeField]
+    private List<string> shipLogValues;
 
     public static Dictionary<LanguageType, string> GetLanguageFileName = new Dictionary<LanguageType, string>
     {
@@ -26,105 +37,172 @@ public class Language : ScriptableObject
         {LanguageType.Custom, "custom" }
     };
 
-    private void OnDestroy()
+    private void BuildTieredDialogueKeys()
     {
-        if ( XMLEditorSettings.Instance.supportedLanguages.Contains(this))
+        tieredDialogueKeys = new List<string>();
+        tieredDialogueKeys.Add("Select...");
+        foreach (string key in dialogueKeys)
         {
-            XMLEditorSettings.Instance.supportedLanguages.Remove(this);
-            Debug.Log($"Removed language {name}.");
+            tieredDialogueKeys.Add(key.Replace('_', '/'));
         }
-        else
+    }
+
+    public Translation GetTranslation()
+    {
+        Translation translation = new Translation();
+        if (dialogueKeys != null && dialogueValues != null)
         {
-            Debug.LogError($"{name} was not correctly removed from the supported languages! Double-check that it's not still there.");
+            translation.DialogueDictionary = new Dictionary<string, string>();
+            for (int i = 0; i < dialogueKeys.Count; i++)
+            {
+                translation.DialogueDictionary.Add(dialogueKeys[i], dialogueValues[i]);
+            }
         }
+        if (shipLogKeys != null && shipLogValues != null)
+        {
+            translation.ShipLogDictionary = new Dictionary<string, string>();
+            for (int i = 0; i < shipLogKeys.Count; i++)
+            {
+                translation.ShipLogDictionary.Add(shipLogKeys[i], shipLogValues[i]);
+            }
+        }
+        return translation;
     }
 
     public string GetDialogueValue(string key)
     {
-        if (translation == null || translation.DialogueDictionary == null || !translation.DialogueDictionary.ContainsKey(key)) return string.Empty;
+        if (dialogueKeys == null || !dialogueKeys.Contains(key)) return string.Empty;
 
-        return translation.DialogueDictionary[key];
+        int index = dialogueKeys.IndexOf(key);
+
+        return dialogueValues[index];
     }
 
     public void SetDialogueValue(string key, string value)
     {
-        if (translation == null)
+        if (dialogueKeys == null)
         {
-            Debug.LogError($"Translation for {name} missing!");
-            return;
+            dialogueKeys = new List<string>();
+            dialogueValues = new List<string>();
         }
-        if (translation.DialogueDictionary == null) translation.DialogueDictionary = new Dictionary<string, string>();
-        if (translation.DialogueDictionary.ContainsKey(key))
+        if (dialogueKeys.Contains(key))
         {
-            translation.DialogueDictionary[key] = value;
+            int i = dialogueKeys.IndexOf(key);
+            dialogueValues[i] = value;
         }
         else
         {
-            translation.DialogueDictionary.Add(key, value);
+            dialogueKeys.Add(key);
+            dialogueValues.Add(value);
         }
+        BuildTieredDialogueKeys();
         EditorUtility.SetDirty(this);
+    }
+
+    public bool TryRenameDialogueKey(string oldName, string newName)
+    {
+        if (dialogueKeys.Contains(newName)) return false;
+
+        if (dialogueKeys.Contains(oldName))
+        {
+            int i = dialogueKeys.IndexOf(oldName);
+            dialogueKeys[i] = newName;
+        }
+        else
+        {
+            SetDialogueValue(newName, "");
+        }
+        BuildTieredDialogueKeys();
+        return true;
     }
 
     public string GetShipLogValue(string key)
     {
-        if (translation == null || translation.ShipLogDictionary == null || !translation.ShipLogDictionary.ContainsKey(key)) return string.Empty;
+        if (shipLogKeys == null || !shipLogKeys.Contains(key)) return string.Empty;
 
-        return translation.ShipLogDictionary[key];
+        int index = shipLogKeys.IndexOf(key);
+
+        return shipLogValues[index];
     }
 
     public void SetShipLogValue(string key, string value)
     {
-        if (translation == null)
+        if (shipLogKeys == null)
         {
-            Debug.LogError($"Translation for {name} missing!");
-            return;
+            shipLogKeys = new List<string>();
+            shipLogValues = new List<string>();
         }
-        if (translation.ShipLogDictionary == null) translation.ShipLogDictionary = new Dictionary<string, string>();
-        if (translation.ShipLogDictionary.ContainsKey(key))
+        if (shipLogKeys.Contains(key))
         {
-            translation.ShipLogDictionary[key] = value;
+            int i = shipLogKeys.IndexOf(key);
+            shipLogValues[i] = value;
         }
         else
         {
-            translation.ShipLogDictionary.Add(key, value);
+            shipLogKeys.Add(key);
+            shipLogValues.Add(value);
         }
+        BuildTieredDialogueKeys();
         EditorUtility.SetDirty(this);
+    }
+
+    public bool TryRenameShipLogKey(string oldName, string newName)
+    {
+        if (shipLogKeys.Contains(newName)) return false;
+
+        if (shipLogKeys.Contains(oldName))
+        {
+            int i = shipLogKeys.IndexOf(oldName);
+            shipLogKeys[i] = newName;
+        }
+        else
+        {
+            SetShipLogValue(newName, "");
+        }
+        BuildTieredDialogueKeys();
+        return true;
     }
 
     public static void SyncTranslations(Language targetLanguage, Language sourceLanguage)
     {
-        Translation target = targetLanguage.translation;
-        Translation source = sourceLanguage.translation;
-
-        if (target.DialogueDictionary == null)
+        if (targetLanguage.dialogueKeys == null)
         {
-            target.DialogueDictionary = source.DialogueDictionary;
+            targetLanguage.dialogueKeys = new List<string>(sourceLanguage.dialogueKeys);
+            targetLanguage.dialogueValues = new List<string>(sourceLanguage.dialogueValues);
         }
         else
         {
-            foreach (var key in source.DialogueDictionary.Keys)
+            for (int i = 0; i < sourceLanguage.dialogueKeys.Count; i++)
             {
-                if (!target.DialogueDictionary.ContainsKey(key))
+                var key = sourceLanguage.dialogueKeys[i];
+                var value = sourceLanguage.dialogueValues[i];
+                if (!targetLanguage.dialogueKeys.Contains(key))
                 {
-                    target.DialogueDictionary.Add(key, source.DialogueDictionary[key]);
+                    targetLanguage.dialogueKeys.Add(key);
+                    targetLanguage.dialogueValues.Add(value);
                 }
             }
         }
 
-        if (target.ShipLogDictionary == null)
+        if (targetLanguage.shipLogKeys == null)
         {
-            target.ShipLogDictionary = source.ShipLogDictionary;
+            targetLanguage.shipLogKeys = new List<string>(sourceLanguage.shipLogKeys);
+            targetLanguage.shipLogValues = new List<string>(sourceLanguage.shipLogValues);
         }
         else
         {
-            foreach (var key in source.ShipLogDictionary.Keys)
+            for (int i = 0; i < sourceLanguage.shipLogKeys.Count; i++)
             {
-                if (!target.ShipLogDictionary.ContainsKey(key))
+                var key = sourceLanguage.shipLogKeys[i];
+                var value = sourceLanguage.shipLogValues[i];
+                if (!targetLanguage.shipLogKeys.Contains(key))
                 {
-                    target.ShipLogDictionary.Add(key, source.ShipLogDictionary[key]);
+                    targetLanguage.shipLogKeys.Add(key);
+                    targetLanguage.shipLogValues.Add(value);
                 }
             }
         }
+        targetLanguage.BuildTieredDialogueKeys();
         EditorUtility.SetDirty(targetLanguage);
     }
 }

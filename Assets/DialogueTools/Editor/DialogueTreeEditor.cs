@@ -11,7 +11,7 @@ public class DialogueTreeEditor : Editor
     public static DialogueNode activeNode;
 
     private static bool showEntryConditions;
-    private static bool showDialogues;
+    private static bool[] showDialogues;
     private static bool showRevealFacts;
     private static bool showSetConditions;
     private static bool showDialogueTargetConditions;
@@ -29,7 +29,14 @@ public class DialogueTreeEditor : Editor
     {
         activeNode = node;
         showEntryConditions = true;
-        showDialogues = true;
+        if (activeNode.dialogues != null)
+        {
+            showDialogues = new bool[activeNode.dialogues.Length];
+        }
+        else
+        {
+            showDialogues = null;
+        }
         showRevealFacts = true;
         showSetConditions = true;
         showDialogueTargetConditions = true;
@@ -105,8 +112,6 @@ public class DialogueTreeEditor : Editor
         // Name
         EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
 
-        GUIBuilder.CreateTranslatedArrayItem("Page Test", "HN2_Test", settings.supportedLanguages[settings.selectedLanguage], out _);
-
         // Entry Conditions
         List<string> entryList = new List<string>();
         entryList.Add("DEFAULT");
@@ -147,22 +152,26 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Toggle("Randomize", activeNode.randomize);
 
         // Dialogues
-        showDialogues = EditorGUILayout.BeginFoldoutHeaderGroup(showDialogues, "Dialogues");
-        if (activeNode.dialogues != null && showDialogues)
+        for (int i = 0; i < activeNode.dialogues.Length; i++)
         {
-            foreach (var dialogue in activeNode.dialogues)
-            {
-                if (dialogue.pages != null &&  dialogue.pages.Length > 0)
-                {
-                    for (int i = 0; i < dialogue.pages.Length; i++)
-                    {
-                        EditorGUILayout.DelayedTextField($"Page {i + 1}", dialogue.pages[i]);
-                    }
-                }
-                EditorGUILayout.Space();
-            }
+            activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", settings.GetSelectedLanguage(), activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName);
         }
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        //showDialogues = EditorGUILayout.BeginFoldoutHeaderGroup(showDialogues, "Dialogues");
+        //if (activeNode.dialogues != null && showDialogues)
+        //{
+        //    foreach (var dialogue in activeNode.dialogues)
+        //    {
+        //        if (dialogue.pages != null &&  dialogue.pages.Length > 0)
+        //        {
+        //            for (int i = 0; i < dialogue.pages.Length; i++)
+        //            {
+        //                EditorGUILayout.DelayedTextField($"Page {i + 1}", dialogue.pages[i]);
+        //            }
+        //        }
+        //        EditorGUILayout.Space();
+        //    }
+        //}
+        //EditorGUILayout.EndFoldoutHeaderGroup();
         EditorGUILayout.Space();
 
         // Reveal Facts

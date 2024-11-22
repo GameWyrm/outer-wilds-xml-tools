@@ -100,10 +100,10 @@ public class GUIBuilder
         return data;
     }
 
-    public static string[] CreateDropdownArray(ref bool isShowing, string title, string itemsLabel, string[] selectedConditions, string[] items)
+    public static string[] CreateDropdownArray(ref bool isShowing, string title, string itemsLabel, string[] selectedItems, string[] items)
     {
         int clearValue = -1;
-        List<string> data = new List<string>(selectedConditions);
+        List<string> data = new List<string>(selectedItems);
         isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, title);
         if (isShowing)
         {
@@ -131,6 +131,47 @@ public class GUIBuilder
             if (addNew)
             {
                 data.Add("");
+            }
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        return data.ToArray();
+    }
+
+    public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName)
+    {
+        int clearValue = -1;
+        List<string> data = new List<string>(dialogueKeys);
+        isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, title);
+        if (isShowing)
+        {
+            for (int i = 0; i < dialogueKeys.Length; i++)
+            {
+                CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, out bool shouldClear);
+                if (shouldClear) clearValue = i;
+            }
+            if (clearValue >= 0) data.RemoveAt(clearValue);
+
+            EditorGUILayout.LabelField($"Add New {itemsLabel}");
+            string prefix = XMLEditorSettings.Instance.modPrefix.ToUpper();
+            if (GUILayout.Button("New Entry (Auto)"))
+            {
+                string newName = "";
+                if (!string.IsNullOrEmpty(prefix)) newName += prefix + "_";
+                newName += $"{dialogueName.ToUpper()}_{nodeName.ToUpper()}_{data.Count}";
+                data.Add(newName);
+            }
+            string newCustomTranslation = EditorGUILayout.DelayedTextField("New Entry", "");
+            if (!string.IsNullOrEmpty(newCustomTranslation))
+            {
+                if (!newCustomTranslation.ToUpper().StartsWith(prefix)) newCustomTranslation = prefix + "_" + newCustomTranslation;
+                data.Add(newCustomTranslation);
+            }
+            if (language.tieredDialogueKeys != null)
+            {
+                int reuseIndex = EditorGUILayout.Popup("Reuse entry", 0, language.tieredDialogueKeys.ToArray());
+                string reusedTranslation = language.tieredDialogueKeys[reuseIndex];
+                if (reuseIndex > 0) data.Add(reusedTranslation);
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -166,7 +207,8 @@ public class GUIBuilder
         EditorGUILayout.EndHorizontal();
         if (newKey != key)
         {
-            if (lang.translation.DialogueDictionary.ContainsKey(newKey))
+            bool success = lang.TryRenameDialogueKey(key, newKey);
+            if (!success)
             {
                 Debug.LogError($"Dialogue dictionary for {lang.name} already includes key {newKey}. Aborting key change.");
             }
@@ -174,12 +216,11 @@ public class GUIBuilder
             {
                 foreach (var language in XMLEditorSettings.Instance.supportedLanguages)
                 {
-                    string oldText = language.GetDialogueValue(key);
-                    if (language.translation.DialogueDictionary.ContainsKey(key)) language.translation.DialogueDictionary.Remove(key);
-                    language.SetDialogueValue(newKey, oldText);
+                    if (language == lang) continue;
+                    language.TryRenameDialogueKey(key, newKey);
                 }
-                Debug.Log($"Renamed key {key} to {newKey}.");
             }
+            Debug.Log($"Renamed key {key} to {newKey}.");
         }
         lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
     }

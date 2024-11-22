@@ -47,6 +47,11 @@ public class XMLEditorSettings : ScriptableObject
         persistentConditions = new List<string>();
     }
 
+    public Language GetSelectedLanguage()
+    {
+        return supportedLanguages[selectedLanguage];
+    }
+
     public void RegisterCondition(string conditionName, bool isPersistent)
     {
         if (isPersistent)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-[Serializable]
 public class Translation
 {
     public Dictionary<string, string> DialogueDictionary;

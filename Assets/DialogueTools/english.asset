@@ -13,3 +13,18 @@ MonoBehaviour:
   m_Name: english
   m_EditorClassIdentifier: 
   type: 0
+  tieredDialogueKeys:
+  - Select...
+  - HN2/Test
+  - $HN2EndMHub1
+  - $HN2EndMIntro1
+  dialogueKeys:
+  - HN2_Test
+  - $HN2EndMHub1
+  - $HN2EndMIntro1
+  dialogueValues:
+  - This is a test.
+  - 
+  - 
+  shipLogKeys: []
+  shipLogValues: []

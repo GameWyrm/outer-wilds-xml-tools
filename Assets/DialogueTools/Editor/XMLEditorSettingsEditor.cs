@@ -86,9 +86,6 @@ public class XMLEditorSettingsEditor : Editor
 
         Language lang = ScriptableObject.CreateInstance<Language>();
         lang.name = languageName;
-        lang.translation = new Translation();
-        lang.translation.DialogueDictionary = new Dictionary<string, string>();
-        lang.translation.ShipLogDictionary = new Dictionary<string, string>();
         lang.type = type;
 
         if (instance.supportedLanguages != null && instance.supportedLanguages.Count > 1 && !string.IsNullOrEmpty(instance.defaultLanguage))
