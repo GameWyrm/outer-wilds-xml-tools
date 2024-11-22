@@ -9,6 +9,7 @@ public class Language : ScriptableObject
     [HideInInspector]
     public LanguageType type;
 
+    [HideInInspector]
     public List<string> tieredDialogueKeys;
 
     [SerializeField, Header("DO NOT ADD OR REMOVE ELEMENTS DIRECTLY.")]

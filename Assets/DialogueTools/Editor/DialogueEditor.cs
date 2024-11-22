@@ -30,7 +30,7 @@ public class DialogueEditor : EditorWindow
     private int initializingState;
 
     [MenuItem("Tools/XML Editors/Dialogue Editor")]
-    public static void ShowExample()
+    public static void ShowWindow()
     {
         instance = GetWindow<DialogueEditor>();
         instance.titleContent = new GUIContent("Dialogue Editor");
@@ -40,7 +40,7 @@ public class DialogueEditor : EditorWindow
     {
         AssetDatabase.SaveAssets();
         selection = newSelection;
-        ShowExample();
+        ShowWindow();
     }
 
     public void CreateGUI()

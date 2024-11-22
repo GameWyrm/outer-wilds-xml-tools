@@ -33,9 +33,15 @@ public class XMLEditorSettingsEditor : Editor
             
             if (instance.supportedLanguages == null) instance.supportedLanguages = new List<Language>();
             List<string> languageNames = instance.supportedLanguages.Select(x => x.name).ToList();
-            foreach (string languageName in languageNames)
+            foreach (Language supportedLanguage in instance.supportedLanguages)
             {
-                EditorGUILayout.LabelField(languageName);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(supportedLanguage.name);
+                if (GUILayout.Button("Sellect Asset"))
+                {
+                    Selection.activeObject = supportedLanguage;
+                }
+                EditorGUILayout.EndHorizontal();
             }
             if (languageNames.Count > 0)
             {
