@@ -20,7 +20,8 @@ public class Language : ScriptableObject
         {LanguageType.Russian, "russian" },
         {LanguageType.Chinese, "chinese_simple" },
         {LanguageType.Spanish, "spanish_la" },
-        {LanguageType.Turkish, "turkish" }
+        {LanguageType.Turkish, "turkish" },
+        {LanguageType.Custom, "custom" }
     };
 
     public string GetDialogueValue(string key)
