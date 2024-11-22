@@ -14,6 +14,7 @@ public class XMLEditorSettingsEditor : Editor
     private static bool showPersistentConditions;
     //private static bool 
     private static string customLanguageName = "new_custom_lang";
+    private static string defaultLanguage;
 
     private void OnEnable()
     {
@@ -29,10 +30,18 @@ public class XMLEditorSettingsEditor : Editor
         showLanguages = EditorGUILayout.BeginFoldoutHeaderGroup(showLanguages, "Supported Languages");
         if (showLanguages)
         {
-            List<string> languageNames = instance.supportedLanguages.Select(x => x.languageID).ToList();
+            List<string> languageNames = instance.supportedLanguages.Select(x => x.name).ToList();
             foreach (string languageName in languageNames)
             {
                 EditorGUILayout.LabelField(languageName);
+            }
+            if (languageNames.Count > 0)
+            {
+                int index = 0;
+                if (languageNames.Contains(defaultLanguage)) index = languageNames.IndexOf(defaultLanguage);
+                else Debug.LogWarning($"Could not find language {defaultLanguage} in the supported languages list! Defaulting to {languageNames[0]}, but this may lead to unexpected behavior.");
+                index = EditorGUILayout.Popup(index, languageNames.ToArray());
+                defaultLanguage = languageNames[index];
             }
             selectedLanguage = (LanguageType)EditorGUILayout.EnumPopup("Create new language", selectedLanguage);
             string newLanguageName = Language.GetLanguageFileName[selectedLanguage];
@@ -40,9 +49,16 @@ public class XMLEditorSettingsEditor : Editor
             {
                 customLanguageName = EditorGUILayout.DelayedTextField("Custom Language File Name", customLanguageName);
             }
-            bool createNewLanguage = GUILayout.Button("Create New Language Asset");
             string lang = selectedLanguage == LanguageType.Custom ? customLanguageName : newLanguageName;
-            if (createNewLanguage) CreateNewLanguage(lang);
+            if (languageNames.Contains(lang))
+            {
+                EditorGUILayout.HelpBox($"Language \"{lang}\" already exists. You cannot add another language of this type.", MessageType.Error);
+            }
+            else
+            {
+                bool createNewLanguage = GUILayout.Button($"Create New Language Asset \"{lang}\"");
+                if (createNewLanguage) CreateNewLanguage(lang, selectedLanguage);
+            }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -60,8 +76,32 @@ public class XMLEditorSettingsEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void CreateNewLanguage(string languageName)
-    { 
-    
+    private void CreateNewLanguage(string languageName, LanguageType type)
+    {
+        string[] pathPieces = AssetDatabase.GetAssetPath(instance).Split('/');
+        string sourceName = pathPieces[pathPieces.Length - 1];
+        string path = AssetDatabase.GetAssetPath(instance).Replace(sourceName, $"{languageName}.asset");
+
+        Language lang = ScriptableObject.CreateInstance<Language>();
+        lang.name = languageName;
+        lang.translation = new Translation();
+        lang.translation.DialogueDictionary = new Dictionary<string, string>();
+        lang.translation.ShipLogDictionary = new Dictionary<string, string>();
+        lang.type = type;
+
+        if (instance.supportedLanguages != null && instance.supportedLanguages.Count > 1 && !string.IsNullOrEmpty(instance.defaultLanguage))
+        {
+            Language defaultLanguage = instance.supportedLanguages.Find(x => x.name == instance.defaultLanguage);
+            if (defaultLanguage != null) Language.SyncTranslations(lang, defaultLanguage);
+        }
+
+        AssetDatabase.CreateAsset(lang, path);
+        AssetDatabase.SaveAssets();
+
+        if (instance.supportedLanguages == null) instance.supportedLanguages = new List<Language>();
+        instance.supportedLanguages.Add(lang);
+        if (string.IsNullOrEmpty(instance.defaultLanguage)) instance.defaultLanguage = languageName;
+
+        Debug.Log("Created new language asset at path " + path);
     }
 }

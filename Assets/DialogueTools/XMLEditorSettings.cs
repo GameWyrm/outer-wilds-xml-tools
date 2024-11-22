@@ -18,7 +18,7 @@ public class XMLEditorSettings : ScriptableObject
         }
     }
 
-    public Language selectedLanguage;
+    public string defaultLanguage;
     public List<Language> supportedLanguages;
 
     [Tooltip("The prefix that will be automatically added to all your conditions and ship log entries.")]

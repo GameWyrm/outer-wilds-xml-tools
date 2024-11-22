@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class Language : ScriptableObject
 {
     public Translation translation;
-    public string languageID;
     public LanguageType type;
 
     public static Dictionary<LanguageType, string> GetLanguageFileName = new Dictionary<LanguageType, string>
