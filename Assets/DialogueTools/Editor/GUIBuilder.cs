@@ -157,9 +157,31 @@ public class GUIBuilder
         return selectedCondition;
     }
 
-    private static void CreateTranslatedArrayItem()
+    public static void CreateTranslatedArrayItem(string label, string key, Language lang, out bool shouldClear)
     {
-
+        EditorGUILayout.BeginHorizontal();
+        string newKey = EditorGUILayout.DelayedTextField(label, key);
+        bool clear = GUILayout.Button("X", GUILayout.Width(20));
+        shouldClear = clear;
+        EditorGUILayout.EndHorizontal();
+        if (newKey != key)
+        {
+            if (lang.translation.DialogueDictionary.ContainsKey(newKey))
+            {
+                Debug.LogError($"Dialogue dictionary for {lang.name} already includes key {newKey}. Aborting key change.");
+            }
+            else
+            {
+                foreach (var language in XMLEditorSettings.Instance.supportedLanguages)
+                {
+                    string oldText = language.GetDialogueValue(key);
+                    if (language.translation.DialogueDictionary.ContainsKey(key)) language.translation.DialogueDictionary.Remove(key);
+                    language.SetDialogueValue(newKey, oldText);
+                }
+                Debug.Log($"Renamed key {key} to {newKey}.");
+            }
+        }
+        lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
     }
 
     private static string CreateArrayItem(string itemLabel, string data, out bool shouldClear)
@@ -168,10 +190,7 @@ public class GUIBuilder
         EditorGUILayout.BeginHorizontal();
         data = EditorGUILayout.TextField(itemLabel, data);
         bool clear = GUILayout.Button("X", GUILayout.Width(20));
-        if (clear)
-        {
-            shouldClear = true;
-        }
+        shouldClear = clear;
         EditorGUILayout.EndHorizontal();
 
         return data;

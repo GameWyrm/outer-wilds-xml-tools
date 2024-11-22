@@ -105,6 +105,8 @@ public class DialogueTreeEditor : Editor
         // Name
         EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
 
+        GUIBuilder.CreateTranslatedArrayItem("Page Test", "HN2_Test", settings.supportedLanguages[settings.selectedLanguage], out _);
+
         // Entry Conditions
         List<string> entryList = new List<string>();
         entryList.Add("DEFAULT");

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class Language : ScriptableObject
 {
@@ -61,6 +62,7 @@ public class Language : ScriptableObject
         {
             translation.DialogueDictionary.Add(key, value);
         }
+        EditorUtility.SetDirty(this);
     }
 
     public string GetShipLogValue(string key)
@@ -86,6 +88,7 @@ public class Language : ScriptableObject
         {
             translation.ShipLogDictionary.Add(key, value);
         }
+        EditorUtility.SetDirty(this);
     }
 
     public static void SyncTranslations(Language targetLanguage, Language sourceLanguage)
@@ -122,5 +125,6 @@ public class Language : ScriptableObject
                 }
             }
         }
+        EditorUtility.SetDirty(targetLanguage);
     }
 }
