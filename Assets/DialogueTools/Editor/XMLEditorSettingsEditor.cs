@@ -14,7 +14,6 @@ public class XMLEditorSettingsEditor : Editor
     private static bool showPersistentConditions;
     //private static bool 
     private static string customLanguageName = "new_custom_lang";
-    private static string defaultLanguage;
 
     private void OnEnable()
     {
@@ -30,6 +29,9 @@ public class XMLEditorSettingsEditor : Editor
         showLanguages = EditorGUILayout.BeginFoldoutHeaderGroup(showLanguages, "Supported Languages");
         if (showLanguages)
         {
+            instance.supportedLanguages.RemoveAll(x => x == null);
+            
+            if (instance.supportedLanguages == null) instance.supportedLanguages = new List<Language>();
             List<string> languageNames = instance.supportedLanguages.Select(x => x.name).ToList();
             foreach (string languageName in languageNames)
             {
@@ -38,10 +40,10 @@ public class XMLEditorSettingsEditor : Editor
             if (languageNames.Count > 0)
             {
                 int index = 0;
-                if (languageNames.Contains(defaultLanguage)) index = languageNames.IndexOf(defaultLanguage);
-                else Debug.LogWarning($"Could not find language {defaultLanguage} in the supported languages list! Defaulting to {languageNames[0]}, but this may lead to unexpected behavior.");
-                index = EditorGUILayout.Popup(index, languageNames.ToArray());
-                defaultLanguage = languageNames[index];
+                if (languageNames.Contains(instance.defaultLanguage)) index = languageNames.IndexOf(instance.defaultLanguage);
+                else Debug.LogWarning($"Could not find language {instance.defaultLanguage} in the supported languages list! Defaulting to {languageNames[0]}, but this may lead to unexpected behavior.");
+                index = EditorGUILayout.Popup("Default Language: ", index, languageNames.ToArray());
+                instance.defaultLanguage = languageNames[index];
             }
             selectedLanguage = (LanguageType)EditorGUILayout.EnumPopup("Create new language", selectedLanguage);
             string newLanguageName = Language.GetLanguageFileName[selectedLanguage];

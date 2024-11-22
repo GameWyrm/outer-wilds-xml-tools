@@ -79,7 +79,7 @@ public class DialogueTreeEditor : Editor
             if (duplicateNodeError) errorText += $"\nYou have two nodes with the same name. {offendingNodes.ToString()}";
             EditorGUILayout.HelpBox(errorText, MessageType.Error);
         }
-
+        if (GUILayout.Button("Open Settings")) OpenSettings();
         if (activeNode == null)
         {
             // When no node is selected
@@ -93,9 +93,14 @@ public class DialogueTreeEditor : Editor
 
     private void DrawNodeData()
     {
-        string[] loopConditions = XMLEditorSettings.Instance.GetConditionList(false).ToArray();
-        string[] persistentConditions = XMLEditorSettings.Instance.GetConditionList(true).ToArray();
+        XMLEditorSettings settings = XMLEditorSettings.Instance;
+        string[] loopConditions = settings.GetConditionList(false).ToArray();
+        string[] persistentConditions = settings.GetConditionList(true).ToArray();
         bool rebuildNodeTree = false;
+
+        // Language Setting
+        settings.selectedLanguage = EditorGUILayout.Popup("Language: ", settings.selectedLanguage, settings.supportedLanguages.Select(x => x.name).ToArray());
+        EditorGUILayout.Space();
 
         // Name
         EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
@@ -326,5 +331,8 @@ public class DialogueTreeEditor : Editor
         }
     }
 
-
+    private void OpenSettings()
+    {
+        Selection.activeObject = XMLEditorSettings.Instance;
+    }
 }

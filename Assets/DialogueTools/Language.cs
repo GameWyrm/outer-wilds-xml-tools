@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class Language : ScriptableObject
 {
+    [HideInInspector]
     public Translation translation;
+    [HideInInspector]
     public LanguageType type;
 
     public static Dictionary<LanguageType, string> GetLanguageFileName = new Dictionary<LanguageType, string>
@@ -22,6 +24,19 @@ public class Language : ScriptableObject
         {LanguageType.Turkish, "turkish" },
         {LanguageType.Custom, "custom" }
     };
+
+    private void OnDestroy()
+    {
+        if ( XMLEditorSettings.Instance.supportedLanguages.Contains(this))
+        {
+            XMLEditorSettings.Instance.supportedLanguages.Remove(this);
+            Debug.Log($"Removed language {name}.");
+        }
+        else
+        {
+            Debug.LogError($"{name} was not correctly removed from the supported languages! Double-check that it's not still there.");
+        }
+    }
 
     public string GetDialogueValue(string key)
     {
