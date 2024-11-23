@@ -275,13 +275,13 @@ MonoBehaviour:
     position: {x: 519, y: 179}
     label: Hub
   - nodeName: Why
-    position: {x: 965, y: 32}
+    position: {x: 1000, y: 62}
     label: Why
   - nodeName: Door
     position: {x: 491, y: 476}
     label: Door
   - nodeName: DoorA
-    position: {x: 192, y: 311}
+    position: {x: 89, y: 272}
     label: DoorA
   - nodeName: DoorB
     position: {x: 972, y: 434}

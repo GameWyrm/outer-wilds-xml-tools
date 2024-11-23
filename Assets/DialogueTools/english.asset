@@ -22,6 +22,11 @@ MonoBehaviour:
   - $HN2EndMHubD
   - $HN2EndMHubE
   - $HN2EndMHubQuit
+  - $HN2EndMIntro2
+  - $HN2EndMIntro3
+  - 
+  - $HN2EndMIntro1A
+  - $HN2EndMIntro1B
   dialogueKeys:
   - HN2_Test
   - $HN2EndMHub1
@@ -30,8 +35,19 @@ MonoBehaviour:
   - $HN2EndMHubD
   - $HN2EndMHubE
   - $HN2EndMHubQuit
+  - $HN2EndMIntro2
+  - $HN2EndMIntro3
+  - 
+  - $HN2EndMIntro1A
+  - $HN2EndMIntro1B
   dialogueValues:
-  - This is a test.
+  - This is a test. Lots and lots of text oh my. Come on let's make this text very
+    long. Here we go, keep on typing. Wahoo.
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

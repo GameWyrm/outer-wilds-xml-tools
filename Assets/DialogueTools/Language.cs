@@ -4,22 +4,25 @@ using UnityEditor;
 
 public class Language : ScriptableObject
 {
-    //private Translation translation;
-    
+    [SerializeField, HideInInspector]
+    public bool hasParsedData;
+    [SerializeField, HideInInspector]
+    public string parsedData;
+    [SerializeField, HideInInspector]
+    public string parsedDialogue;
+    [SerializeField, HideInInspector]
+    public string parsedShipLogs;
+
     [HideInInspector]
     public LanguageType type;
 
     [HideInInspector]
     public List<string> tieredDialogueKeys;
 
-    [SerializeField, Header("DO NOT ADD OR REMOVE ELEMENTS DIRECTLY.")]
-    private List<string> dialogueKeys;
-    [SerializeField]
-    private List<string> dialogueValues;
-    [SerializeField]
-    private List<string> shipLogKeys;
-    [SerializeField]
-    private List<string> shipLogValues;
+    public List<string> dialogueKeys;
+    public List<string> dialogueValues;
+    public List<string> shipLogKeys;
+    public List<string> shipLogValues;
 
     public static Dictionary<LanguageType, string> GetLanguageFileName = new Dictionary<LanguageType, string>
     {
@@ -48,10 +51,10 @@ public class Language : ScriptableObject
         }
     }
 
-    public Translation GetTranslation()
+    public Translation GetTranslation(bool dialogue = true, bool shipLogs = true)
     {
         Translation translation = new Translation();
-        if (dialogueKeys != null && dialogueValues != null)
+        if (dialogue && dialogueKeys != null && dialogueValues != null)
         {
             translation.DialogueDictionary = new Dictionary<string, string>();
             for (int i = 0; i < dialogueKeys.Count; i++)
@@ -59,7 +62,7 @@ public class Language : ScriptableObject
                 translation.DialogueDictionary.Add(dialogueKeys[i], dialogueValues[i]);
             }
         }
-        if (shipLogKeys != null && shipLogValues != null)
+        if (shipLogs && shipLogKeys != null && shipLogValues != null)
         {
             translation.ShipLogDictionary = new Dictionary<string, string>();
             for (int i = 0; i < shipLogKeys.Count; i++)
@@ -81,6 +84,7 @@ public class Language : ScriptableObject
 
     public void SetDialogueValue(string key, string value)
     {
+        if (key == string.Empty) return;
         if (dialogueKeys == null)
         {
             dialogueKeys = new List<string>();
@@ -128,6 +132,7 @@ public class Language : ScriptableObject
 
     public void SetShipLogValue(string key, string value)
     {
+        if (key == string.Empty) return;
         if (shipLogKeys == null)
         {
             shipLogKeys = new List<string>();
@@ -205,5 +210,13 @@ public class Language : ScriptableObject
         }
         targetLanguage.BuildTieredDialogueKeys();
         EditorUtility.SetDirty(targetLanguage);
+    }
+
+    public static void UnflagParse()
+    {
+        foreach (Language lang in XMLEditorSettings.Instance.supportedLanguages)
+        {
+            lang.hasParsedData = false;
+        }
     }
 }

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Newtonsoft.Json;
+using System.Runtime.InteropServices.ComTypes;
 
 [CustomEditor(typeof(XMLEditorSettings))]
 public class XMLEditorSettingsEditor : Editor
@@ -40,6 +42,10 @@ public class XMLEditorSettingsEditor : Editor
                 if (GUILayout.Button("Sellect Asset"))
                 {
                     Selection.activeObject = supportedLanguage;
+                }
+                if (GUILayout.Button("Import And Append JSON..."))
+                {
+                    AppendLanguage(supportedLanguage);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -108,5 +114,58 @@ public class XMLEditorSettingsEditor : Editor
         if (string.IsNullOrEmpty(instance.defaultLanguage)) instance.defaultLanguage = languageName;
 
         Debug.Log("Created new language asset at path " + path);
+    }
+
+    private void AppendLanguage(Language lang)
+    {
+        string path = EditorUtility.OpenFilePanel("Select a New Horizons translation file", "", ".json");
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            Translation translation = JsonConvert.DeserializeObject<Translation>(path);
+            if (translation != null)
+            {
+                int added = 0;
+                bool hasConfirmedOverwrite = false;
+                bool overwrite = false;
+                if (translation.DialogueDictionary != null)
+                {
+                    foreach (var key in translation.DialogueDictionary.Keys)
+                    {
+                        bool exists = !string.IsNullOrEmpty(lang.GetDialogueValue(key));
+                        if (!hasConfirmedOverwrite && exists)
+                        {
+                            overwrite = EditorUtility.DisplayDialog("Confirm Overwriting", "This JSON file contains translation keys that already exist in this language. Overwrite them or skip them?", "Overwrite", "Skip");
+                            hasConfirmedOverwrite = true;
+                        }
+                        if ((exists && overwrite) || !exists)
+                        {
+                            lang.SetDialogueValue(key, translation.DialogueDictionary[key]);
+                            added++;
+                        }
+                    }
+                }
+                if (translation.ShipLogDictionary != null)
+                {
+                    foreach (var key in translation.ShipLogDictionary.Keys)
+                    {
+                        bool exists = !string.IsNullOrEmpty(lang.GetShipLogValue(key));
+                        if (!hasConfirmedOverwrite && exists)
+                        {
+                            overwrite = EditorUtility.DisplayDialog("Confirm Overwriting", "This JSON file contains translation keys that already exist in this language. Overwrite them or skip them?", "Overwrite", "Skip");
+                            hasConfirmedOverwrite = true;
+                        }
+                        if ((exists && overwrite) || !exists)
+                        {
+                            lang.SetShipLogValue(key, translation.ShipLogDictionary[key]);
+                            added++;
+                        }
+                    }
+                }
+                EditorUtility.DisplayDialog("Message", $"Successfully imported {added} entries into {lang.name}", "OK");
+            }
+            else Debug.LogError($"Could not parse {path} into a language file!");
+        }
+        else Debug.LogError($"Invalid path {path}!");
     }
 }
