@@ -29,7 +29,7 @@ public class ShipLogManager : ScriptableObject
                 {
                     entryPath = entry.curiosity + "/";
                 }
-                entryPath += entry.name + "/";
+                entryPath += entry.entryID + "/";
                 if (entry.exploreFacts != null)
                 {
                     foreach (var exploreFact in entry.exploreFacts)
@@ -50,21 +50,5 @@ public class ShipLogManager : ScriptableObject
                 }
             }
         }
-    }
-
-    // Utility functions
-    public static string GetCurioisity(string factPath)
-    {
-        return factPath.Split('/')[0];
-    }
-
-    public static string GetEntry(string factPath)
-    {
-        return factPath.Split('/')[1];
-    }
-
-    public static string GetFactID(string factPath)
-    {
-        return factPath.Split('/')[2];
     }
 }
