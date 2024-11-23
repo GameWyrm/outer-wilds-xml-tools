@@ -51,8 +51,7 @@ MonoBehaviour:
           conditionToCancel: 
         ReuseDialogueOptionsListFrom: 
     - nodeName: Intro2
-      entryConditions:
-      - 
+      entryConditions: []
       m_randomize: 
       randomize: 0
       dialogues:
@@ -143,16 +142,7 @@ MonoBehaviour:
       dialogueTargetShipLogConditions: []
       dialogueTarget: Hub
       dialogueOptionsList:
-        dialogueOptions:
-        - requiredLogConditions: []
-          requiredPersistentConditions: []
-          cancelledPersistentConditions: []
-          requiredCondition: 
-          cancelledCondition: 
-          text: 
-          dialogueTarget: 
-          conditionToSet: 
-          conditionToCancel: 
+        dialogueOptions: []
         ReuseDialogueOptionsListFrom: 
     - nodeName: Door
       entryConditions: []
@@ -266,26 +256,26 @@ MonoBehaviour:
     label: 
   nodes:
   - nodeName: Start
-    position: {x: 82, y: 73}
+    position: {x: 65, y: 55}
     label: Start
   - nodeName: Intro2
-    position: {x: 512, y: 33}
+    position: {x: 419, y: 53}
     label: Intro2
   - nodeName: Hub
-    position: {x: 519, y: 179}
+    position: {x: 479, y: 244}
     label: Hub
   - nodeName: Why
-    position: {x: 1000, y: 62}
+    position: {x: 724, y: 60}
     label: Why
   - nodeName: Door
-    position: {x: 491, y: 476}
+    position: {x: 446, y: 439}
     label: Door
   - nodeName: DoorA
-    position: {x: 89, y: 272}
+    position: {x: 77, y: 444}
     label: DoorA
   - nodeName: DoorB
-    position: {x: 972, y: 434}
+    position: {x: 819, y: 439}
     label: DoorB
   - nodeName: Find
-    position: {x: 1021, y: 235}
+    position: {x: 855, y: 263}
     label: Find

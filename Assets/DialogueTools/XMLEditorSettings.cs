@@ -33,7 +33,9 @@ public class XMLEditorSettings : ScriptableObject
 
     private static XMLEditorSettings instance;
 
+    [SerializeField]
     private List<string> loopConditions = new List<string>();
+    [SerializeField]
     private List<string> persistentConditions = new List<string>();
 
     // First string is the condition name, second string is the user name, int is number of times it is used

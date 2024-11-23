@@ -114,7 +114,23 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Space();
 
         // Name
-        EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
+        string newName = EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
+        if (newName != activeNode.nodeName)
+        {
+            if (selectedAsset.nodes.Find(x => x.nodeName == newName) != null)
+            {
+                Debug.LogError($"Node with name {newName} already exist in this Dialogue Tree. Cannot rename.");
+            }
+            else
+            {
+                var oldNode = selectedAsset.nodes.Find(x => x.nodeName == activeNode.nodeName);
+                oldNode.nodeName = newName;
+
+                activeNode.nodeName = newName;
+
+                rebuildNodeTree = true;
+            }
+        }
 
         // Entry Conditions
         List<string> entryList = new List<string>();
@@ -125,6 +141,7 @@ public class DialogueTreeEditor : Editor
         entryList.AddRange(persistentConditions);
 
         bool hasADefaultNode = false;
+        if (activeNode.entryConditions == null) activeNode.entryConditions = new string[0];
         foreach (var entry in activeNode.entryConditions)
         {
             if (entry == "DEFAULT")
@@ -156,6 +173,7 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Toggle("Randomize", activeNode.randomize);
 
         // Dialogues
+        if (activeNode.dialogues == null) activeNode.dialogues = new DialogueNode.Dialogue[0];
         for (int i = 0; i < activeNode.dialogues.Length; i++)
         {
             activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", language, activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName);
@@ -180,6 +198,7 @@ public class DialogueTreeEditor : Editor
         EditorGUILayout.Space();
 
         // Set Conditions
+        if (activeNode.setConditions == null) activeNode.setConditions = new string[0];
         activeNode.setConditions = GUIBuilder.CreateDropdownArray(ref showSetConditions, "Set Loop Conditions", "Condition", activeNode.setConditions, loopConditions);
         EditorGUILayout.Space();
 
@@ -223,9 +242,15 @@ public class DialogueTreeEditor : Editor
             else
             {
                 int i = activeNode.dialogueOptionsList.dialogueOptions.Length;
-                if (i > characters.Count) suffix = characters[Mathf.FloorToInt(i / characters.Count)];
+                if (i > characters.Count)
+                {
+                    suffix = characters[Mathf.FloorToInt(i / characters.Count)];
+                    i = i % characters.Count;
+                }
+                suffix += characters[i];
             }
             newKey += $"{selectedAsset.tree.nameField.ToUpper()}_{activeNode.nodeName.ToUpper()}_{suffix}";
+            if (!string.IsNullOrEmpty(language.GetDialogueValue(newKey))) newKey += "_1";
             addNew = true;
         }
         string newCustomTranslation = EditorGUILayout.DelayedTextField("New Entry", "");
@@ -246,7 +271,6 @@ public class DialogueTreeEditor : Editor
             }
         }
 
-        //bool addNew = GUILayout.Button("+ Add New Option");
         if (addNew)
         {
             if (activeNode.dialogueOptionsList == null) activeNode.dialogueOptionsList = new DialogueNode.DialogueOptionsList();
@@ -296,40 +320,22 @@ public class DialogueTreeEditor : Editor
                 //}
                 //EditorGUILayout.EndFoldoutHeaderGroup();
 
+                if (option.requiredPersistentConditions == null) option.requiredPersistentConditions = new string[0];
                 option.requiredPersistentConditions = GUIBuilder.CreateDropdownArray(ref showRequiredPersistentConditions[i], "Required Persistent Conditions", "Condition", option.requiredPersistentConditions, persistentConditions);
-                //showRequiredPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredPersistentConditions[i], "Required Persistent Conditions");
-                //if (showRequiredPersistentConditions[i] && option.requiredPersistentConditions != null)
-                //{
-                //    for (int j = 0; j < option.requiredLogConditions.Length; j++)
-                //    {
-                //        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredPersistentConditions[j]);
-                //    }
-                //}
-                //EditorGUILayout.EndFoldoutHeaderGroup();
-
+                if (option.cancelledPersistentConditions == null) option.cancelledPersistentConditions = new string[0];
                 option.cancelledPersistentConditions = GUIBuilder.CreateDropdownArray(ref showCancelledPersistentConditions[i], "Cancelled Persistent Conditions", "Condition", option.cancelledPersistentConditions, persistentConditions);
-                //showCancelledPersistentConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showCancelledPersistentConditions[i], "Cancelled Persistent Conditions");
-                //if (showCancelledPersistentConditions[i] && option.cancelledPersistentConditions != null)
-                //{
-                //    for (int j = 0; j < option.cancelledPersistentConditions.Length; j++)
-                //    {
-                //        EditorGUILayout.DelayedTextField($"Cancelled Condition {j}", option.requiredPersistentConditions[j]);
-                //    }
-                //}
-                //EditorGUILayout.EndFoldoutHeaderGroup();
 
                 option.requiredCondition = GUIBuilder.CreateDropdown("Required Loop Condition", option.requiredCondition, loopConditions);
-                //EditorGUILayout.DelayedTextField("Required Loop Condition", option.requiredCondition);
                 option.cancelledCondition = GUIBuilder.CreateDropdown("Cancelled Loop Condition", option.cancelledCondition, loopConditions);
-                //EditorGUILayout.DelayedTextField("Cancelled Loop Condition", option.cancelledCondition);
                 option.text = GUIBuilder.CreateTranslatedArrayItem("Text", option.text, settings.GetSelectedLanguage(), false, out _);
-                //EditorGUILayout.DelayedTextField("Text", option.text);
-                GUIBuilder.CreateDropdown("Dialogue Target", option.dialogueTarget, nodeNames.ToArray());
-                //EditorGUILayout.DelayedTextField("Dialogue Target", option.dialogueTarget);
+                string oldOptionTarget = option.dialogueTarget;
+                option.dialogueTarget = GUIBuilder.CreateDropdown("Dialogue Target", option.dialogueTarget, nodeNames.ToArray());
+                if (oldOptionTarget != option.dialogueTarget)
+                {
+                    rebuildNodeTree = true;
+                }
                 option.conditionToSet = GUIBuilder.CreateDropdown("Loop Condition To Set", option.conditionToSet, loopConditions);
                 option.conditionToCancel = GUIBuilder.CreateDropdown("Loop Condition To Cancel", option.conditionToCancel, loopConditions);
-                //EditorGUILayout.DelayedTextField("Loop Condition To Set", option.conditionToSet);
-                //EditorGUILayout.DelayedTextField("Loop Condition To Cancel", option.conditionToCancel);
                 EditorGUILayout.Space();
                 bool deleteOption = GUILayout.Button("Delete this option (No Undo)");
                 if (deleteOption) clearIndex = i;
@@ -341,8 +347,19 @@ public class DialogueTreeEditor : Editor
                 workingOptions.RemoveAt(clearIndex);
                 activeNode.dialogueOptionsList.dialogueOptions = workingOptions.ToArray();
                 EditorUtility.SetDirty(selectedAsset);
+                rebuildNodeTree = true;
             }
             
+        }
+
+        if (GUILayout.Button("DELETE NODE (NO UNDO)"))
+        {
+            List<DialogueNode> nodes = new List<DialogueNode>(selectedAsset.tree.dialogueNodes);
+            nodes.RemoveAll(x => x.nodeName == activeNode.nodeName);
+            selectedAsset.tree.dialogueNodes = nodes.ToArray();
+            selectedAsset.nodes.RemoveAll(x => x.nodeName == activeNode.nodeName);
+            rebuildNodeTree = true;
+            activeNode = null;
         }
 
         if (rebuildNodeTree)

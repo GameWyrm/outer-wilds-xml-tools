@@ -16,6 +16,13 @@ public class DialogueTreeAsset : ScriptableObject
     [Serializable]
     public class DialogueNodeInfo
     {
+        public DialogueNodeInfo(string nodeName, Vector2 position)
+        {
+            this.nodeName = nodeName;
+            this.position = position;
+            this.label = nodeName;
+        }
+
         public string nodeName;
         public Vector2 position;
         public string label;

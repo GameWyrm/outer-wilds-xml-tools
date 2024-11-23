@@ -1780,6 +1780,9 @@ MonoBehaviour:
   - $HN2Ernesto1
   - $HN2Ernesto1A
   - $HN2Ernesto2
+  - $HN2MAGISTERNAME/COOLNODENAME/
+  - $HN2MAGISTERNAME/COOLNODENAME/A
+  - $HN2MAGISTERNAME/COOLNODENAME/B
   dialogueKeys:
   - HN2_Test
   - $HN2EndMHub1
@@ -2132,6 +2135,9 @@ MonoBehaviour:
   - $HN2Ernesto1
   - $HN2Ernesto1A
   - $HN2Ernesto2
+  - $HN2MAGISTERNAME_COOLNODENAME_
+  - $HN2MAGISTERNAME_COOLNODENAME_A
+  - $HN2MAGISTERNAME_COOLNODENAME_B
   dialogueValues:
   - This is a test. Lots and lots of text oh my. Come on let's make this text very
     long. Here we go, keep on typing. Wahoo.
@@ -2847,6 +2853,9 @@ MonoBehaviour:
   - Yeah, yeah, yeah, Ernesto the Magic Talking Anglerfish. Don't you guys have any
     more creative Easter Eggs?
   - <![CDATA[<i>sad anglerfish noises</i>]]>
+  - 
+  - 
+  - 
   shipLogKeys:
   - $HN2LogNameIntro
   - $HN2LogIntroRumor

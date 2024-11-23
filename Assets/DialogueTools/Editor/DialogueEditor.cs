@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 
 public class DialogueEditor : EditorWindow
@@ -45,7 +46,6 @@ public class DialogueEditor : EditorWindow
 
     public void CreateGUI()
     {
-
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
 
@@ -217,10 +217,7 @@ public class DialogueEditor : EditorWindow
                 for(int i = 0; i < dialogueTreeAsset.tree.dialogueNodes.Length; i++)
                 {
                     var node = dialogueTreeAsset.tree.dialogueNodes[i];
-                    DialogueTreeAsset.DialogueNodeInfo newNode = new DialogueTreeAsset.DialogueNodeInfo();
-                    newNode.nodeName = node.nodeName;
-                    newNode.position = GetResetPosition(i);
-                    newNode.label = node.nodeName;
+                    DialogueTreeAsset.DialogueNodeInfo newNode = new DialogueTreeAsset.DialogueNodeInfo(node.nodeName, GetResetPosition(i));
                     dialogueTreeAsset.nodes.Add(newNode);
                 }
 
@@ -340,7 +337,18 @@ public class DialogueEditor : EditorWindow
 
     private void OnClickNewNode()
     {
-        Debug.Log("New Node button pressed!");
+        List<DialogueNode> nodes = new List<DialogueNode>(selection.tree.dialogueNodes);
+        DialogueNode newNode = new DialogueNode();
+        List<string> nodeNames = new List<string>(selection.tree.dialogueNodes.Select(x => x.nodeName));
+        newNode.nodeName = "New_Dialogue_Node";
+        // prevent duplicate names
+        while (nodeNames.Contains(newNode.nodeName)) newNode.nodeName += "_1";
+        nodes.Add(newNode);
+        selection.tree.dialogueNodes = nodes.ToArray();
+        selection.nodes.Add(new DialogueTreeAsset.DialogueNodeInfo(newNode.nodeName, new Vector2(100, 100)));
+        BuildNodeTree();
+
+        Debug.Log("New Node Created");
     }
 
     private void OnClickResetNodes()

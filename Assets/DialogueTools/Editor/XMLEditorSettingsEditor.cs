@@ -15,7 +15,6 @@ public class XMLEditorSettingsEditor : Editor
     private static bool showLanguages;
     private static bool showConditions;
     private static bool showPersistentConditions;
-    //private static bool 
     private static string customLanguageName = "new_custom_lang";
 
     private void OnEnable()
