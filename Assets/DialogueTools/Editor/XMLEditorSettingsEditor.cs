@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Runtime.InteropServices.ComTypes;
+using System.IO;
 
 [CustomEditor(typeof(XMLEditorSettings))]
 public class XMLEditorSettingsEditor : Editor
@@ -39,7 +40,7 @@ public class XMLEditorSettingsEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(supportedLanguage.name);
-                if (GUILayout.Button("Sellect Asset"))
+                if (GUILayout.Button("Select Asset"))
                 {
                     Selection.activeObject = supportedLanguage;
                 }
@@ -118,11 +119,11 @@ public class XMLEditorSettingsEditor : Editor
 
     private void AppendLanguage(Language lang)
     {
-        string path = EditorUtility.OpenFilePanel("Select a New Horizons translation file", "", ".json");
+        string path = EditorUtility.OpenFilePanel("Select a New Horizons translation file", "", "json");
 
         if (!string.IsNullOrEmpty(path))
         {
-            Translation translation = JsonConvert.DeserializeObject<Translation>(path);
+            Translation translation = JsonConvert.DeserializeObject<Translation>(File.ReadAllText(path));
             if (translation != null)
             {
                 int added = 0;
