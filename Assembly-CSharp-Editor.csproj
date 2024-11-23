@@ -58,11 +58,12 @@
   <ItemGroup>
     <Compile Include="Assets\DialogueTools\Code\Editor\ArrowManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditorSettings.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\DialogueTreeEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\EditorReferences.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\GUIBuilder.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\LanguageEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NodeManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NodeWindow.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\PannerManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettingsEditor.cs" />

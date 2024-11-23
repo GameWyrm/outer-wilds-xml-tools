@@ -50,9 +50,9 @@ public class DialogueEditor : EditorWindow
         VisualElement root = rootVisualElement;
 
         // Import UXML
-        var visualTree = DialogueEditorSettings.Instance.VisualTree;
-        VisualElement labelFromUXML = visualTree.CloneTree();
-        root.Add(labelFromUXML);
+        var visualTree = EditorReferences.Instance.DialogueVisualTree;
+        VisualElement UXMLdata = visualTree.CloneTree();
+        root.Add(UXMLdata);
 
         panRoot = new VisualElement();
         panRoot.name = "Pan Root";
@@ -113,7 +113,7 @@ public class DialogueEditor : EditorWindow
         {
             var node = selection.tree.dialogueNodes[i];
             var nodeInfo = selection.nodes[i];
-            VisualElement newNode = GUIBuilder.CreateDialogueNode(node.nodeName, nodeManipulators);
+            VisualElement newNode = GUIBuilder.CreateDialogueNode(node.nodeName, nodeManipulators, instance);
             newNode.transform.position = panRoot.LocalToWorld(nodeInfo.position);
 
             if (node.entryConditions != null && node.entryConditions.Contains("DEFAULT"))

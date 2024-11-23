@@ -9,13 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3f9474b5b126d843ad722fe1e6120b6, type: 3}
-  m_Name: EditorReferences
+  m_Script: {fileID: 11500000, guid: c6d4f5af61cdaf44ab0a49b111acd696, type: 3}
+  m_Name: Editor References
   m_EditorClassIdentifier: 
   UnselectedTexture: {fileID: 2800000, guid: 1afedb70f69f9464fb543e971e5db922, type: 3}
   SelectedTexture: {fileID: 2800000, guid: 080321036f4b40f4180779d4159ad388, type: 3}
   LineTexture: {fileID: 2800000, guid: 189f62f240d3a2d4c9472ac85a97ea11, type: 3}
   ArrowTexture: {fileID: 2800000, guid: 53dcee4fd58f7134b813a413b5daf820, type: 3}
-  Style: {fileID: 7433441132597879392, guid: 43dfde9cac121d2409a6385702748753, type: 3}
-  VisualTree: {fileID: 9197481963319205126, guid: b65e8ce1b9bd0d44ca6655b6d8c384e0,
+  DialogueStyle: {fileID: 7433441132597879392, guid: 43dfde9cac121d2409a6385702748753,
+    type: 3}
+  ShipLogStyle: {fileID: 7433441132597879392, guid: 4480e4a9049de264293765c81508bbe8,
+    type: 3}
+  DialogueVisualTree: {fileID: 9197481963319205126, guid: b65e8ce1b9bd0d44ca6655b6d8c384e0,
+    type: 3}
+  ShipLogVisualTree: {fileID: 9197481963319205126, guid: 8bb1fe4976407d84493cca9c41587801,
     type: 3}

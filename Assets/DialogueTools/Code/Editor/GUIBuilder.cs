@@ -11,21 +11,22 @@ public class GUIBuilder
 {
 
     #region nodeTree
-    public static VisualElement CreateDialogueNode(string nodeName, Dictionary<string, NodeManipulator> nodeManipulators)
+    public static VisualElement CreateDialogueNode(string nodeName, Dictionary<string, NodeManipulator> nodeManipulators, EditorWindow window)
     {
-        var settings = DialogueEditorSettings.Instance;
+        var settings = EditorReferences.Instance;
         VisualElement newNode = new VisualElement();
-        newNode.styleSheets.Add(settings.Style);
+        newNode.styleSheets.Add(settings.DialogueStyle);
         newNode.name = nodeName;
         newNode.EnableInClassList("node_bg", true);
         Label label = new Label(nodeName);
-        label.styleSheets.Add(settings.Style);
+        label.styleSheets.Add(settings.DialogueStyle);
         label.name = "node_label";
         label.EnableInClassList("node_label", true);
         newNode.Add(label);
 
         var nodeManipulator = new NodeManipulator(newNode);
         nodeManipulator.RegisterCallbacksOnTarget();
+        nodeManipulator.window = window;
         nodeManipulator.arrows = new List<ArrowManipulator>();
         nodeManipulators.Add(nodeName, nodeManipulator);
 
@@ -35,17 +36,17 @@ public class GUIBuilder
     public static VisualElement CreateArrow(VisualElement source, VisualElement target, string nodeName, string targetName, Dictionary<string, NodeManipulator> nodeManipulators, int arrowState)
     {
         VisualElement element = new VisualElement();
-        var settings = DialogueEditorSettings.Instance;
-        element.styleSheets.Add(settings.Style);
+        var settings = EditorReferences.Instance;
+        element.styleSheets.Add(settings.DialogueStyle);
         element.EnableInClassList("arrow_container", true);
         Image newLine = new Image();
         newLine.image = settings.LineTexture;
-        newLine.styleSheets.Add(settings.Style);
+        newLine.styleSheets.Add(settings.DialogueStyle);
         newLine.EnableInClassList("line", true);
         element.Add(newLine);
         Image newArrow = new Image();
         newArrow.image = settings.ArrowTexture;
-        newArrow.styleSheets.Add(settings.Style);
+        newArrow.styleSheets.Add(settings.DialogueStyle);
         newArrow.EnableInClassList("arrow", true);
         element.Add(newArrow);
 
@@ -268,7 +269,14 @@ public class GUIBuilder
         return items[shownItemIndex];
     }
 
-    
+
+    #endregion
+
+    #region visualElements
+    public static VisualElement Arrow()
+    {
+        return null;
+    }
     #endregion
 
     #region utilities

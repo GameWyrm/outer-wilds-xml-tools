@@ -1,5 +1,49 @@
-Label {
-    font-size: 20px;
-    -unity-font-style: bold;
-    color: rgb(68, 138, 255);
+.toolbar {
+    min-width: 600px;
+    width: auto;
+    height: 20px;
+    color: rgb(29, 45, 80);
+}
+
+.toolbar_button {
+    width: auto;
+    height: auto;
+    align-items: center;
+}
+
+.node {
+    width: 110px;
+    height: 151.3px;
+}
+
+.node_image {
+    width: 108.7px;
+    height: 108.7px;
+}
+
+.bg {
+    width: 10000px;
+    height: 10000px;
+    position: absolute;
+    margin-top: 20px;
+    background-color: rgb(1, 17, 28);
+    cursor: pan;
+}
+
+.arrow_container {
+    width: 0px;
+    height: 0px;
+    position: absolute;
+}
+
+.line {
+    width: 32px;
+    height: 1px;
+    position: absolute;
+}
+
+.arrow {
+    width: 32px;
+    height: 64px;
+    position: absolute;
 }

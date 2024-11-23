@@ -6,11 +6,19 @@ using UnityEditor.UIElements;
 
 public class ShipLogEditor : EditorWindow
 {
-    [MenuItem("Window/UIElements/ShipLogEditor")]
-    public static void ShowExample()
+    public static ShipLogEditor Instance;
+
+    private VisualElement scaleRoot;
+    private VisualElement panRoot;
+    private VisualElement arrowsRoot;
+    private VisualElement nodesRoot;
+    private VisualElement background;
+
+    [MenuItem("Tools/XML Editors/Ship Log Editor")]
+    public static void ShowWindow()
     {
-        ShipLogEditor wnd = GetWindow<ShipLogEditor>();
-        wnd.titleContent = new GUIContent("ShipLogEditor");
+        Instance = GetWindow<ShipLogEditor>();
+        Instance.titleContent = new GUIContent("ShipLogEditor");
     }
 
     public void CreateGUI()
@@ -18,20 +26,72 @@ public class ShipLogEditor : EditorWindow
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
 
-        // VisualElements objects can contain other VisualElement following a tree hierarchy.
-        VisualElement label = new Label("Hello World! From C#");
-        root.Add(label);
-
         // Import UXML
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/DialogueTools/Code/Editor/ShipLogEditor.uxml");
-        VisualElement labelFromUXML = visualTree.CloneTree();
-        root.Add(labelFromUXML);
+        var visualTree = EditorReferences.Instance.ShipLogVisualTree;
+        VisualElement UXMLdata = visualTree.CloneTree();
+        root.Add(UXMLdata);
 
-        // A stylesheet can be added to a VisualElement.
-        // The style will be applied to the VisualElement and all of its children.
-        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/DialogueTools/Code/Editor/ShipLogEditor.uss");
-        VisualElement labelWithStyle = new Label("Hello World! With Style");
-        labelWithStyle.styleSheets.Add(styleSheet);
-        root.Add(labelWithStyle);
+        scaleRoot = new VisualElement();
+        scaleRoot.name = "Scale Root";
+        panRoot = new VisualElement();
+        panRoot.name = "Pan Root";
+        arrowsRoot = new VisualElement();
+        arrowsRoot.name = "Arrows Root";
+        nodesRoot = new VisualElement();
+        nodesRoot.name = "Node Root";
+        panRoot.Add(arrowsRoot);
+        panRoot.Add(nodesRoot);
+        scaleRoot.Add(panRoot);
+
+        var importButton = root.Q<Button>("import");
+        importButton.clicked += OnClickImport;
+
+        var centerCameraButton = root.Q<Button>("centerCamera");
+        centerCameraButton.clicked += OnClickCenterCamera;
+
+        var zoomInButton = root.Q<Button>("addZoom");
+        zoomInButton.clicked += OnClickZoomIn;
+
+        var zoomOutButton = root.Q<Button>("subtractZoom");
+        zoomOutButton.clicked += OnClickZoomOut;
+
+        var toolbar = root.Q<Toolbar>("toolbar");
+        toolbar.parent.Add(scaleRoot);
+
+        background = root.Q<Box>("bg");
+    }
+
+    public void BuildNodeTree()
+    {
+        float oldScale = scaleRoot.transform.scale.x;
+        Vector2 oldPosition = panRoot.transform.position;
+
+        scaleRoot.transform.scale = Vector3.one;
+        panRoot.transform.position = Vector3.zero;
+
+
+    }
+
+    private void OnClickImport()
+    {
+        Debug.Log("Import Button Clicked");
+    }
+
+    private void OnClickCenterCamera()
+    {
+        Debug.Log("Center Camera Button Clicked");
+
+    }
+
+    private void OnClickZoomIn()
+    {
+        Debug.Log("Zoom In Button Clicked");
+
+    }
+
+    private void OnClickZoomOut()
+    {
+        Debug.Log("Zoom Out Button Clicked");
+
     }
 }

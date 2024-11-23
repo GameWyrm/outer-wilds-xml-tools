@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,7 @@ public class NodeManipulator
     }
 
     public List<ArrowManipulator> arrows;
+    public EditorWindow window;
 
     private VisualElement target;
     private VisualElement root;
