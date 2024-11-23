@@ -56,19 +56,16 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\DialogueTools\Editor\ArrowManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\DialogueEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\DialogueEditorSettings.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\DialogueTreeEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\GUIBuilder.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\LanguageEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\NodeManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\PannerManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\XMLEditorSettingsEditor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\DialogueTools\Editor\DialogueEditor.uss" />
-    <None Include="Assets\DialogueTools\Editor\DialogueEditor.uxml" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ArrowManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditorSettings.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueTreeEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\GUIBuilder.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\LanguageEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NodeManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\PannerManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

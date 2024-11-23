@@ -259,10 +259,10 @@ MonoBehaviour:
     position: {x: 65, y: 55}
     label: Start
   - nodeName: Intro2
-    position: {x: 419, y: 53}
+    position: {x: 440, y: 83}
     label: Intro2
   - nodeName: Hub
-    position: {x: 479, y: 244}
+    position: {x: 429, y: 234}
     label: Hub
   - nodeName: Why
     position: {x: 724, y: 60}
@@ -277,5 +277,5 @@ MonoBehaviour:
     position: {x: 819, y: 439}
     label: DoorB
   - nodeName: Find
-    position: {x: 855, y: 263}
+    position: {x: 904, y: 250}
     label: Find
