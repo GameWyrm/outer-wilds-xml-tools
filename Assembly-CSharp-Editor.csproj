@@ -64,7 +64,6 @@
     <Compile Include="Assets\DialogueTools\Editor\LanguageEditor.cs" />
     <Compile Include="Assets\DialogueTools\Editor\NodeManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Editor\PannerManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Editor\TextDisplay.cs" />
     <Compile Include="Assets\DialogueTools\Editor\XMLEditorSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -64,6 +64,7 @@
     <Compile Include="Assets\DialogueTools\LanguageType.cs" />
     <Compile Include="Assets\DialogueTools\NomaiText.cs" />
     <Compile Include="Assets\DialogueTools\ShipLogEntry.cs" />
+    <Compile Include="Assets\DialogueTools\ShipLogManager.cs" />
     <Compile Include="Assets\DialogueTools\Translation.cs" />
     <Compile Include="Assets\DialogueTools\XMLEditorSettings.cs" />
     <Compile Include="Assets\DialogueTools\XMLUserSettings.cs" />
