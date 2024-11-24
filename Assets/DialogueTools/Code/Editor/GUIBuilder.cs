@@ -33,7 +33,7 @@ public class GUIBuilder
         return newNode;
     }
 
-    public static VisualElement CreateArrow(VisualElement source, VisualElement target, string nodeName, string targetName, Dictionary<string, NodeManipulator> nodeManipulators, int arrowState)
+    public static VisualElement CreateArrow(VisualElement source, VisualElement target, int arrowState, out ArrowManipulator arrowManipulator)
     {
         VisualElement element = new VisualElement();
         var settings = EditorReferences.Instance;
@@ -50,14 +50,8 @@ public class GUIBuilder
         newArrow.EnableInClassList("arrow", true);
         element.Add(newArrow);
 
-        var arrowManipulator = new ArrowManipulator();
-        arrowManipulator.sourceNode = source;
-        arrowManipulator.targetNode = target;
-        arrowManipulator.line = newLine;
-        arrowManipulator.arrow = newArrow;
+        arrowManipulator = new ArrowManipulator(source, target, newLine, newArrow);
 
-        nodeManipulators[nodeName].arrows.Add(arrowManipulator);
-        nodeManipulators[targetName].arrows.Add(arrowManipulator);
         // TODO Fix
         arrowManipulator.OrientArrow(arrowState);
 
