@@ -33,29 +33,39 @@ public class GUIBuilder
         return newNode;
     }
 
-    public static VisualElement CreateArrow(VisualElement source, VisualElement target, int arrowState, out ArrowManipulator arrowManipulator)
+    public static VisualElement CreateArrow(VisualElement source, VisualElement target, out ArrowManipulator arrowManipulator)
     {
-        VisualElement element = new VisualElement();
+        VisualElement offsetElement = new VisualElement();
+        offsetElement.name = "Arrow Container";
+        offsetElement.transform.position = Vector3.zero;
+        offsetElement.transform.rotation = Quaternion.identity;
+        offsetElement.transform.scale = Vector3.one;
         var settings = EditorReferences.Instance;
-        element.styleSheets.Add(settings.DialogueStyle);
-        element.EnableInClassList("arrow_container", true);
+        offsetElement.styleSheets.Add(settings.DialogueStyle);
+        offsetElement.EnableInClassList("arrow_container", true);
+        VisualElement newLineContainer = new VisualElement();
+        newLineContainer.name = "Line Container";
         Image newLine = new Image();
         newLine.image = settings.LineTexture;
         newLine.styleSheets.Add(settings.DialogueStyle);
         newLine.EnableInClassList("line", true);
-        element.Add(newLine);
+        newLineContainer.Add(newLine);
+        newLine.transform.position = new Vector2(-16, -0.5f);
+        offsetElement.Add(newLineContainer);
+        newLineContainer.transform.position = Vector2.zero;
         Image newArrow = new Image();
         newArrow.image = settings.ArrowTexture;
         newArrow.styleSheets.Add(settings.DialogueStyle);
         newArrow.EnableInClassList("arrow", true);
-        element.Add(newArrow);
+        offsetElement.Add(newArrow);
+        newArrow.transform.position = new Vector2(-16, -32);
 
-        arrowManipulator = new ArrowManipulator(source, target, newLine, newArrow);
+        arrowManipulator = new ArrowManipulator(source, target, newArrow, newLineContainer);
 
         // TODO Fix
-        arrowManipulator.OrientArrow(arrowState);
+        arrowManipulator.OrientArrow();
 
-        return element;
+        return offsetElement;
     }
     #endregion
 
@@ -264,13 +274,6 @@ public class GUIBuilder
     }
 
 
-    #endregion
-
-    #region visualElements
-    public static VisualElement Arrow()
-    {
-        return null;
-    }
     #endregion
 
     #region utilities

@@ -58,7 +58,7 @@ public class NodeManipulator
 
             foreach (var arrow in arrows)
             {
-                arrow.OrientArrow(0);
+                arrow.OrientArrow();
             }
 
             DialogueEditor.instance.MoveNode(target, target.transform.position);

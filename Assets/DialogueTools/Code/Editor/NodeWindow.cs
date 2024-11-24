@@ -20,14 +20,11 @@ public abstract class NodeWindow : EditorWindow
     protected VisualElement selectedNode;
     protected VisualElement background;
     protected PannerManipulator panner;
-    protected int initializingState;
 
     private void CreateGUI()
     {
         ConstructGUI();
-        initializingState = 1;
         BuildNodeTree();
-        initializingState = 2;
         ConstructGUILate();
     }
 
@@ -80,6 +77,9 @@ public abstract class NodeWindow : EditorWindow
         nodeElements = new Dictionary<string, VisualElement>();
         panRoot.transform.position = Vector2.zero;
 
+        arrowsRoot.Clear();
+        nodesRoot.Clear();
+
         for (int i = 0; i < nodes.Count; i++)
         {
             VisualElement newNode = GUIBuilder.CreateDialogueNode(nodes[i].name, nodeManipulators, this);
@@ -99,7 +99,7 @@ public abstract class NodeWindow : EditorWindow
 
             foreach (var targetNode in targetNodes)
             {
-                arrowsRoot.Add(GUIBuilder.CreateArrow(sourceNode, targetNode, initializingState, out ArrowManipulator manipulator));
+                arrowsRoot.Add(GUIBuilder.CreateArrow(sourceNode, targetNode, out ArrowManipulator manipulator));
                 nodeManipulators[sourceNode.name].arrows.Add(manipulator);
                 nodeManipulators[targetNode.name].arrows.Add(manipulator);
             }
