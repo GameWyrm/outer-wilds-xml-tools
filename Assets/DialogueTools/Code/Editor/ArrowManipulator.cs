@@ -9,6 +9,14 @@ public class ArrowManipulator
     public Image arrow;
     public Image line;
 
+    public ArrowManipulator(VisualElement sourceNode, VisualElement targetNode, Image arrow, Image line)
+    {
+        this.sourceNode = sourceNode;
+        this.targetNode = targetNode;
+        this.arrow = arrow;
+        this.line = line;
+    }
+
     /// <summary>
     /// 0 - normal
     /// 1 - opening the GUI

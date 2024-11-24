@@ -60,6 +60,7 @@
     <Compile Include="Assets\DialogueTools\Code\DialogueEditor\Language.cs" />
     <Compile Include="Assets\DialogueTools\Code\Enums\Casing.cs" />
     <Compile Include="Assets\DialogueTools\Code\Enums\LanguageType.cs" />
+    <Compile Include="Assets\DialogueTools\Code\NodeData.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\DialogueTree.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\NomaiText.cs" />
