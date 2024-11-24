@@ -8,8 +8,8 @@ public abstract class NodeWindow : EditorWindow
 {
     public static bool isFocused;
 
-    protected Dictionary<string, VisualElement> nodesElements;
-    protected List<NodeData> nodes;
+    protected Dictionary<string, VisualElement> nodeElements;
+    protected List<NodeData> nodes = new List<NodeData>();
     protected VisualTreeAsset visualTree;
     protected VisualElement root;
     protected VisualElement scaleRoot;
@@ -35,16 +35,18 @@ public abstract class NodeWindow : EditorWindow
     {
         root = rootVisualElement;
 
-        var visualTree = EditorReferences.Instance.DialogueVisualTree;
         VisualElement UXMLdata = visualTree.CloneTree();
         root.Add(UXMLdata);
 
+        scaleRoot = new VisualElement();
+        scaleRoot.name = "Scale Root";
         panRoot = new VisualElement();
         panRoot.name = "Pan Root";
         arrowsRoot = new VisualElement();
         arrowsRoot.name = "Arrows Root";
         nodesRoot = new VisualElement();
         nodesRoot.name = "Node Root";
+        scaleRoot.Add(panRoot);
         panRoot.Add(arrowsRoot);
         panRoot.Add(nodesRoot);
     }
@@ -55,7 +57,7 @@ public abstract class NodeWindow : EditorWindow
         importButton.clicked += OnClickImport;
         
         var toolbar = root.Q<Toolbar>("toolbar");
-        toolbar.parent.Add(panRoot);
+        toolbar.parent.Add(scaleRoot);
 
         background = root.Q<Box>("bg");
         if (panner != null) panner.UnregisterCallbacks();
@@ -69,13 +71,13 @@ public abstract class NodeWindow : EditorWindow
         isFocused = true;
     }
 
-    protected virtual void BuildNodeTree()
+    public virtual void BuildNodeTree()
     {
         float oldScale = scaleRoot.transform.scale.x;
         Vector2 oldPosition = panRoot.transform.position;
 
         nodeManipulators = new Dictionary<string, NodeManipulator>();
-        nodesElements = new Dictionary<string, VisualElement>();
+        nodeElements = new Dictionary<string, VisualElement>();
         panRoot.transform.position = Vector2.zero;
 
         for (int i = 0; i < nodes.Count; i++)
@@ -85,15 +87,15 @@ public abstract class NodeWindow : EditorWindow
             OnCreateNode(newNode);
 
             nodesRoot.Add(newNode);
-            nodesElements.Add(nodes[i].name, newNode);
+            nodeElements.Add(nodes[i].name, newNode);
 
             
         }
         // We need to wait for all the nodes to be created before we can start making arrows
         for (int i = 0; i < nodes.Count; i++)
         {
-            VisualElement sourceNode = nodesElements[nodes[i].name];
-            List<VisualElement> targetNodes = GetTargetNodes();
+            VisualElement sourceNode = nodeElements[nodes[i].name];
+            List<VisualElement> targetNodes = GetTargetNodes(nodes[i].name);
 
             foreach (var targetNode in targetNodes)
             {
@@ -114,9 +116,9 @@ public abstract class NodeWindow : EditorWindow
     /// <param name="createdNode"></param>
     protected abstract void OnCreateNode(VisualElement createdNode);
 
-    protected abstract List<VisualElement> GetTargetNodes();
+    protected abstract List<VisualElement> GetTargetNodes(string nodeName);
 
-    protected abstract void SelectNode(VisualElement newSelection);
+    public abstract void SelectNode(VisualElement newSelection);
 
-    protected abstract void MoveNode(VisualElement node, Vector2 newPosition);
+    public abstract void MoveNode(VisualElement node, Vector2 newPosition);
 }

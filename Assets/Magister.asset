@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0254753c86a5f2049ac0f2d799615f99, type: 3}
-  m_Name: Magi
+  m_Name: Magister
   m_EditorClassIdentifier: 
   tree:
     dialogueNodes:
@@ -250,32 +250,20 @@ MonoBehaviour:
         dialogueOptions: []
         ReuseDialogueOptionsListFrom: 
     nameField: $HN2MagisterName
-  selectedNode:
-    nodeName: 
-    position: {x: 0, y: 0}
-    label: 
-  nodes:
-  - nodeName: Start
-    position: {x: 65, y: 55}
-    label: Start
-  - nodeName: Intro2
-    position: {x: 440, y: 83}
-    label: Intro2
-  - nodeName: Hub
-    position: {x: 429, y: 234}
-    label: Hub
-  - nodeName: Why
-    position: {x: 724, y: 60}
-    label: Why
-  - nodeName: Door
-    position: {x: 446, y: 439}
-    label: Door
-  - nodeName: DoorA
-    position: {x: 77, y: 444}
-    label: DoorA
-  - nodeName: DoorB
-    position: {x: 819, y: 439}
-    label: DoorB
-  - nodeName: Find
-    position: {x: 904, y: 250}
-    label: Find
+  nodeDatas:
+  - name: Start
+    position: {x: 83, y: 126}
+  - name: Intro2
+    position: {x: 414, y: 51}
+  - name: Hub
+    position: {x: 716, y: 170}
+  - name: Why
+    position: {x: 1100, y: 50}
+  - name: Door
+    position: {x: 84, y: 358}
+  - name: DoorA
+    position: {x: 509, y: 332}
+  - name: DoorB
+    position: {x: 860, y: 327}
+  - name: Find
+    position: {x: 1121, y: 291}

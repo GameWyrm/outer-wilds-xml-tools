@@ -9,13 +9,13 @@ public class DialogueTreeAsset : ScriptableObject
 {
     [HideInInspector]
     public DialogueTree tree;
-    [HideInInspector]
-    public DialogueNodeInfo selectedNode;
-    [HideInInspector]
-    public List<DialogueNodeInfo> nodes;
+    //[HideInInspector]
+    //public DialogueNodeInfo selectedNode;
+    //[HideInInspector]
+    //public List<DialogueNodeInfo> nodes;
 
     [HideInInspector]
-    public List<NodeData> NodesData
+    public List<NodeData> NodeDatas
     {
         get
         {
@@ -68,7 +68,7 @@ public class DialogueTreeAsset : ScriptableObject
 
     public void SetNodePosition(string nodeName, Vector2 position)
     {
-        var node = nodes.First(x => x.nodeName == nodeName);
+        var node = NodeDatas.First(x => x.name == nodeName);
         node.position = position;
     }
 }

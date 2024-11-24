@@ -117,14 +117,14 @@ public class DialogueTreeEditor : Editor
         string newName = EditorGUILayout.DelayedTextField("Name", activeNode.nodeName);
         if (newName != activeNode.nodeName)
         {
-            if (selectedAsset.nodes.Find(x => x.nodeName == newName) != null)
+            if (selectedAsset.NodeDatas.Find(x => x.name == newName) != null)
             {
                 Debug.LogError($"Node with name {newName} already exist in this Dialogue Tree. Cannot rename.");
             }
             else
             {
-                var oldNode = selectedAsset.nodes.Find(x => x.nodeName == activeNode.nodeName);
-                oldNode.nodeName = newName;
+                var oldNode = selectedAsset.NodeDatas.Find(x => x.name == activeNode.nodeName);
+                oldNode.name = newName;
 
                 activeNode.nodeName = newName;
 
@@ -357,7 +357,7 @@ public class DialogueTreeEditor : Editor
             List<DialogueNode> nodes = new List<DialogueNode>(selectedAsset.tree.dialogueNodes);
             nodes.RemoveAll(x => x.nodeName == activeNode.nodeName);
             selectedAsset.tree.dialogueNodes = nodes.ToArray();
-            selectedAsset.nodes.RemoveAll(x => x.nodeName == activeNode.nodeName);
+            selectedAsset.NodeDatas.RemoveAll(x => x.name == activeNode.nodeName);
             rebuildNodeTree = true;
             activeNode = null;
         }

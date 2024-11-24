@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class NodeData
 {
     public NodeData(string name, Vector2 position)
