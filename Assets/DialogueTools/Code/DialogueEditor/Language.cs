@@ -41,7 +41,7 @@ public class Language : ScriptableObject
         {LanguageType.Custom, "custom" }
     };
 
-    private void BuildTieredDialogueKeys()
+    public void BuildTieredDialogueKeys()
     {
         tieredDialogueKeys = new List<string>();
         tieredDialogueKeys.Add("Select...");

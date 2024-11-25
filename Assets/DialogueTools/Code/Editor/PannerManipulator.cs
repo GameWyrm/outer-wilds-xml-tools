@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
 public class PannerManipulator
 {
     public VisualElement background;
     public VisualElement panRoot;
+    public NodeWindow window;
 
     private bool enabled;
     private Vector2 panRootStartPosition;
@@ -30,7 +30,7 @@ public class PannerManipulator
 
     private void OnPointerDown(PointerDownEvent e)
     {
-        if (!DialogueEditor.isFocused) return;
+        if (!window.isFocused) return;
         panRootStartPosition = panRoot.transform.position;
         pointerStartPosition = e.position;
         background.CapturePointer(e.pointerId);

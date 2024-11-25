@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
-[CreateAssetMenu(fileName = "XML Editor Settings", menuName = "Tools/XML Editor Settings")]
+[CreateAssetMenu(fileName = "XML Editor Settings", menuName = "Tools/XML Editor Settings"), Serializable]
 public class XMLEditorSettings : ScriptableObject
 {
     public static XMLEditorSettings Instance
@@ -18,8 +19,11 @@ public class XMLEditorSettings : ScriptableObject
         }
     }
 
-    public string defaultLanguage;
-    public List<Language> supportedLanguages;
+    [SerializeField]
+    public string defaultLanguage = "";
+    [SerializeField]
+    public List<Language> supportedLanguages = new List<Language>();
+    [SerializeField]
     public int selectedLanguage = 0;
 
     [Tooltip("The prefix that will be automatically added to all your conditions and ship log entries.")]
@@ -38,17 +42,6 @@ public class XMLEditorSettings : ScriptableObject
     [SerializeField]
     private List<string> persistentConditions = new List<string>();
 
-    // First string is the condition name, second string is the user name, int is number of times it is used
-    private Dictionary<string, Dictionary<string, int>> loopConditionUsers;
-    private Dictionary<string, Dictionary<string, int>> persistentConditionUsers;
-
-
-    private void Awake()
-    {
-        loopConditions = new List<string>();
-        persistentConditions = new List<string>();
-    }
-
     public Language GetSelectedLanguage()
     {
         return supportedLanguages[selectedLanguage];
@@ -56,6 +49,10 @@ public class XMLEditorSettings : ScriptableObject
 
     public void RegisterCondition(string conditionName, bool isPersistent)
     {
+        if (string.IsNullOrEmpty(conditionName))
+        {
+            return;
+        }
         if (isPersistent)
         {
             if (!persistentConditions.Contains(conditionName))
@@ -70,6 +67,7 @@ public class XMLEditorSettings : ScriptableObject
                 loopConditions.Add(conditionName);
             }
         }
+        EditorUtility.SetDirty(this);
     }
 
     public void RemoveCondition(string conditionName, bool isPersistent)
@@ -79,7 +77,6 @@ public class XMLEditorSettings : ScriptableObject
             if (persistentConditions.Contains(conditionName))
             {
                 persistentConditions.Remove(conditionName);
-                persistentConditionUsers?.Remove(conditionName);
             }
         }
         else
@@ -87,9 +84,9 @@ public class XMLEditorSettings : ScriptableObject
             if (loopConditions.Contains(conditionName))
             {
                 loopConditions.Remove(conditionName);
-                loopConditionUsers?.Remove(conditionName);
             }
         }
+        EditorUtility.SetDirty(this);
     }
 
     public List<string> GetConditionList(bool isPersistent)
@@ -121,5 +118,6 @@ public class XMLEditorSettings : ScriptableObject
         {
             loopConditions = conditions;
         }
+        EditorUtility.SetDirty(this);
     }
 }

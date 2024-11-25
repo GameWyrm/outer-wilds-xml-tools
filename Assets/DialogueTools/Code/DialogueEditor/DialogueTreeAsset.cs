@@ -9,10 +9,6 @@ public class DialogueTreeAsset : ScriptableObject
 {
     [HideInInspector]
     public DialogueTree tree;
-    //[HideInInspector]
-    //public DialogueNodeInfo selectedNode;
-    //[HideInInspector]
-    //public List<DialogueNodeInfo> nodes;
 
     [HideInInspector]
     public List<NodeData> NodeDatas
@@ -48,21 +44,6 @@ public class DialogueTreeAsset : ScriptableObject
 
     [SerializeField]
     private List<NodeData> nodeDatas;
-
-    [Serializable]
-    public class DialogueNodeInfo
-    {
-        public DialogueNodeInfo(string nodeName, Vector2 position)
-        {
-            this.nodeName = nodeName;
-            this.position = position;
-            this.label = nodeName;
-        }
-
-        public string nodeName;
-        public Vector2 position;
-        public string label;
-    }
 
 
 

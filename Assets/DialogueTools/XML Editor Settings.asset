@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244fb92da6e55b74baada99026b1ac5d, type: 3}
   m_Name: XML Editor Settings
   m_EditorClassIdentifier: 
+  defaultLanguage: english
+  supportedLanguages:
+  - {fileID: 11400000, guid: f7dd5336d9e62a74ea8fd2f23418742e, type: 2}
+  selectedLanguage: 0
   modPrefix: 
   conditionCase: 2
   shipLogCase: 2
   translationCase: 0
+  loopConditions:
+  - HN2_REDUCEDFRIGHT
+  - HN2_ENDMAGISTER
+  persistentConditions:
+  - DEFAULT
+  - HN2_P_HORRORDOOR

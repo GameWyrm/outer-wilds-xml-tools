@@ -11,26 +11,33 @@ public class GUIBuilder
 {
 
     #region nodeTree
-    public static VisualElement CreateDialogueNode(string nodeName, Dictionary<string, NodeManipulator> nodeManipulators, EditorWindow window)
+    public static VisualElement CreateDialogueNode(string nodeName, Dictionary<string, NodeManipulator> nodeManipulators, NodeWindow window)
     {
         var settings = EditorReferences.Instance;
+        VisualElement nodeParent = new VisualElement();
+        nodeParent.name = nodeName;
         VisualElement newNode = new VisualElement();
         newNode.styleSheets.Add(settings.DialogueStyle);
-        newNode.name = nodeName;
+        newNode.name = nodeName + " Node";
         newNode.EnableInClassList("node_bg", true);
         Label label = new Label(nodeName);
         label.styleSheets.Add(settings.DialogueStyle);
         label.name = "node_label";
         label.EnableInClassList("node_label", true);
         newNode.Add(label);
+        nodeParent.Add(newNode);
+        nodeParent.transform.position = Vector3.zero;
+        nodeParent.transform.rotation = Quaternion.identity;
+        nodeParent.transform.scale = Vector3.one;
+        newNode.transform.position = new Vector3(-100, -25);
 
-        var nodeManipulator = new NodeManipulator(newNode);
+        var nodeManipulator = new NodeManipulator(nodeParent);
         nodeManipulator.RegisterCallbacksOnTarget();
         nodeManipulator.window = window;
         nodeManipulator.arrows = new List<ArrowManipulator>();
         nodeManipulators.Add(nodeName, nodeManipulator);
 
-        return newNode;
+        return nodeParent;
     }
 
     public static VisualElement CreateArrow(VisualElement source, VisualElement target, out ArrowManipulator arrowManipulator)

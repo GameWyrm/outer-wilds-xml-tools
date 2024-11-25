@@ -13,7 +13,7 @@ public class NodeManipulator
     }
 
     public List<ArrowManipulator> arrows;
-    public EditorWindow window;
+    public NodeWindow window;
 
     private VisualElement target;
     private VisualElement root;
@@ -40,11 +40,11 @@ public class NodeManipulator
 
     private void OnPointerDown(PointerDownEvent e)
     {
-        if (!DialogueEditor.isFocused) return;
+        if (!window.isFocused) return;
         targetStartPosition = target.transform.position;
         pointerStartPosition = e.position;
         target.CapturePointer(e.pointerId);
-        DialogueEditor.instance.SelectNode(target);
+        window.SelectNode(target);
         enabled = true;
     }
 
@@ -61,7 +61,7 @@ public class NodeManipulator
                 arrow.OrientArrow();
             }
 
-            DialogueEditor.instance.MoveNode(target, target.transform.position);
+            window.MoveNode(target, target.transform.position);
         }
     }
 

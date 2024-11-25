@@ -262,12 +262,20 @@ public class DialogueTreeEditor : Editor
         }
         if (language.tieredDialogueKeys != null)
         {
-            int reuseIndex = EditorGUILayout.Popup("Reuse entry", 0, language.tieredDialogueKeys.ToArray());
-            string reusedTranslation = language.tieredDialogueKeys[reuseIndex];
-            if (reuseIndex > 0)
+            if (language.tieredDialogueKeys.Count == 0) language.BuildTieredDialogueKeys();
+            if (language.tieredDialogueKeys.Count == 0)
             {
-                newKey = reusedTranslation;
-                addNew = true;
+                Debug.LogWarning($"Language {language.name} could not tier its dialogue keys, unable to retrieve translation keys.");
+            }
+            else
+            {
+                int reuseIndex = EditorGUILayout.Popup("Reuse entry", 0, language.tieredDialogueKeys.ToArray());
+                string reusedTranslation = language.tieredDialogueKeys[reuseIndex];
+                if (reuseIndex > 0)
+                {
+                    newKey = reusedTranslation;
+                    addNew = true;
+                }
             }
         }
 

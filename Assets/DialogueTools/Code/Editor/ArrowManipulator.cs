@@ -39,8 +39,8 @@ public class ArrowManipulator
         container.transform.rotation = Quaternion.Euler(0, 0, angle + 180);
 
         // set position
-        Vector2 sourceCenter = new Vector2(sourcePosition.x + 100, sourcePosition.y + 25);
-        Vector2 targetCenter = new Vector2(targetPosition.x + 100, targetPosition.y + 25);
+        Vector2 sourceCenter = new Vector2(sourcePosition.x, sourcePosition.y);
+        Vector2 targetCenter = new Vector2(targetPosition.x, targetPosition.y);
         Vector2 centerPoint = Vector2.Lerp(sourceCenter, targetCenter, 0.5f);
 
         container.transform.position = centerPoint;

@@ -113,6 +113,8 @@ public class XMLEditorSettingsEditor : Editor
         instance.supportedLanguages.Add(lang);
         if (string.IsNullOrEmpty(instance.defaultLanguage)) instance.defaultLanguage = languageName;
 
+        EditorUtility.SetDirty(instance);
+
         Debug.Log("Created new language asset at path " + path);
     }
 

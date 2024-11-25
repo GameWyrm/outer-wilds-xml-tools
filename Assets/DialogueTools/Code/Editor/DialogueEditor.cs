@@ -40,8 +40,10 @@ public class DialogueEditor : NodeWindow
 
     public override void BuildNodeTree()
     {
+        if (selection == null) return;
         nodes = selection.NodeDatas;
         dialogueTree = selection.tree;
+        exitNodes = new List<VisualElement>();
         base.BuildNodeTree();
     }
 
@@ -251,7 +253,7 @@ public class DialogueEditor : NodeWindow
 
     private Vector2 GetResetPosition(int index)
     {
-        float x = 50;
+        float x = 150;
         float y = 50;
         if (index != 0)
         {
@@ -302,18 +304,18 @@ public class DialogueEditor : NodeWindow
     }
     protected override void OnCreateNode(VisualElement createdNode)
     {
+        VisualElement child = createdNode.ElementAt(0);
         NodeData data = selection.NodeDatas.Find(x => x.name == createdNode.name);
 
         createdNode.transform.position = panRoot.LocalToWorld(data.position);
 
         DialogueNode node = selection.tree.dialogueNodes.First(x => x.nodeName == createdNode.name);
-        exitNodes = new List<VisualElement>();
 
         if (node.entryConditions != null && node.entryConditions.Contains("DEFAULT"))
         {
             defaultNode = createdNode;
-            createdNode.EnableInClassList("node_bg", false);
-            createdNode.EnableInClassList("node_default", true);
+            child.EnableInClassList("node_bg", false);
+            child.EnableInClassList("node_default", true);
         }
         else
         {
@@ -335,8 +337,8 @@ public class DialogueEditor : NodeWindow
             if (hasExit)
             {
                 exitNodes.Add(createdNode);
-                createdNode.EnableInClassList("node_bg", false);
-                createdNode.EnableInClassList("node_exit", true);
+                child.EnableInClassList("node_bg", false);
+                child.EnableInClassList("node_exit", true);
             }
         }
     }
@@ -368,23 +370,24 @@ public class DialogueEditor : NodeWindow
     {
         if (selectedNode != null)
         {
-            selectedNode.EnableInClassList("node_selected", false);
+            VisualElement oldChild = selectedNode.ElementAt(0);
+            oldChild.EnableInClassList("node_selected", false);
             if (selectedNode == defaultNode)
             {
-                selectedNode.EnableInClassList("node_default", true);
+                oldChild.EnableInClassList("node_default", true);
             }
             else if (exitNodes.Contains(selectedNode))
             {
-                selectedNode.EnableInClassList("node_exit", true);
+                oldChild.EnableInClassList("node_exit", true);
             }
-            else selectedNode.EnableInClassList("node_bg", true);
+            else oldChild.EnableInClassList("node_bg", true);
         }
 
-
-        newSelection.EnableInClassList("node_bg", false);
-        newSelection.EnableInClassList("node_default", false);
-        newSelection.EnableInClassList("node_exit", false);
-        newSelection.EnableInClassList("node_selected", true);
+        VisualElement newChild = newSelection.ElementAt(0);
+        newChild.EnableInClassList("node_bg", false);
+        newChild.EnableInClassList("node_default", false);
+        newChild.EnableInClassList("node_exit", false);
+        newChild.EnableInClassList("node_selected", true);
         selectedNode = newSelection;
 
         DialogueTreeEditor.SelectionUpdate(GetNode(selectedNode.name));

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public abstract class NodeWindow : EditorWindow
 {
-    public static bool isFocused;
+    public bool isFocused;
 
     protected Dictionary<string, VisualElement> nodeElements;
     protected List<NodeData> nodes = new List<NodeData>();
@@ -61,6 +61,7 @@ public abstract class NodeWindow : EditorWindow
         panner = new PannerManipulator();
         panner.background = background;
         panner.panRoot = panRoot;
+        panner.window = this;
         panner.RegisterCallbacks();
 
         toolbar.BringToFront();
