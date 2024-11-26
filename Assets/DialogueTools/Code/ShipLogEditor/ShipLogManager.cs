@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "Ship Log Data", menuName = "Tools/Ship Log Data")]
+[CreateAssetMenu(fileName = "Ship Log Manager", menuName = "Tools/Ship Log Manager")]
 public class ShipLogManager : ScriptableObject
 {
     [SerializeField]

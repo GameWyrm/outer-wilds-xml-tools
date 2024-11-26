@@ -103,7 +103,7 @@ public class ShipLogEditor : NodeWindow
 
     protected override void OnClickImport()
     {
-        string xmlPath = EditorUtility.OpenFilePanel("Select Dialogue XML File", "", "xml");
+        string xmlPath = EditorUtility.OpenFilePanel("Select Planet Ship Log XML File", "", "xml");
 
         if (string.IsNullOrEmpty(xmlPath)) return;
 
@@ -127,14 +127,14 @@ public class ShipLogEditor : NodeWindow
         StarSystem systemInfo = JsonConvert.DeserializeObject<StarSystem>(jsonFile);
         if (systemInfo == null) return;
 
-        string savePath = EditorUtility.SaveFilePanelInProject("Save Entry Data as...", "New Entry Data", "asset", "Select a location to save your Entry Data to.");
+        EntryData data = ShipLogManager.Instance.CreateEntryData(entry, systemInfo);
+
+        string savePath = EditorUtility.SaveFilePanelInProject("Save Entry Data as...", data.entry.planetID, "asset", "Select a location to save your Entry Data to.");
         if (string.IsNullOrEmpty(savePath))
         {
             Debug.LogError("Save path is invalid!");
             return;
         }
-
-        EntryData data = ShipLogManager.Instance.CreateEntryData(entry, systemInfo);
 
         AssetDatabase.CreateAsset(data, savePath);
         AssetDatabase.SaveAssets();

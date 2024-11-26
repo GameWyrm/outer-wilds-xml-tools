@@ -1,5 +1,6 @@
 using System;
 using System.Xml.Serialization;
+using UnityEngine;
 
 /// <summary>
 /// Dummy script to parse Ship Log XMLs to
@@ -26,17 +27,17 @@ public class ShipLogEntry
         public string curiosity;
 
         /// <summary> Do not use unless serializing, use isCuriosity instead</summary>
-        [XmlElement("IsCuriosity")]
+        [XmlElement("IsCuriosity"), HideInInspector]
         public string m_isCuriosity;
         public bool isCuriosity;
 
         /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
-        [XmlElement("IgnoreMoreToExplore")]
+        [XmlElement("IgnoreMoreToExplore"), HideInInspector]
         public string m_ignoreMoreToExplore;
         public bool ignoreMoreToExplore;
 
         /// <summary> Do not use unless serializing, use parentIgnoreNotRevealed instead</summary>
-        [XmlElement("ParentIgnoreNotRevealed")]
+        [XmlElement("ParentIgnoreNotRevealed"), HideInInspector]
         public string m_parentIgnoreNotRevealed;
         public bool parentIgnoreNotRevealed;
 
@@ -72,7 +73,7 @@ public class ShipLogEntry
         public string rumorNamePriority;
 
         /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
-        [XmlElement("IgnoreMoreToExplore")]
+        [XmlElement("IgnoreMoreToExplore"), HideInInspector]
         public string m_ignoreMoreToExplore;
         public bool ignoreMoreToExplore;
     }
@@ -84,7 +85,7 @@ public class ShipLogEntry
         public string exploreID;
 
         /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
-        [XmlElement("IgnoreMoreToExplore")]
+        [XmlElement("IgnoreMoreToExplore"), HideInInspector]
         public string m_ignoreMoreToExplore;
         public bool ignoreMoreToExplore;
     }
