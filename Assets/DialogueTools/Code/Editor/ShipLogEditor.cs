@@ -1,18 +1,16 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+using System.IO;
 
 
-public class ShipLogEditor : EditorWindow
+public class ShipLogEditor : NodeWindow
 {
     public static ShipLogEditor Instance;
-
-    private VisualElement scaleRoot;
-    private VisualElement panRoot;
-    private VisualElement arrowsRoot;
-    private VisualElement nodesRoot;
-    private VisualElement background;
 
     [MenuItem("Tools/XML Editors/Ship Log Editor")]
     public static void ShowWindow()
@@ -21,31 +19,71 @@ public class ShipLogEditor : EditorWindow
         Instance.titleContent = new GUIContent("ShipLogEditor");
     }
 
-    public void CreateGUI()
+    protected override void ConstructGUI()
     {
-        // Each editor window contains a root VisualElement object
-        VisualElement root = rootVisualElement;
+        visualTree = EditorReferences.Instance.ShipLogVisualTree;
+        base.ConstructGUI();
+    }
 
-        // Import UXML
-        var visualTree = EditorReferences.Instance.ShipLogVisualTree;
-        VisualElement UXMLdata = visualTree.CloneTree();
-        root.Add(UXMLdata);
+    public override void BuildNodeTree()
+    {
+        float oldScale = scaleRoot.transform.scale.x;
+        Vector2 oldPosition = panRoot.transform.position;
 
-        scaleRoot = new VisualElement();
-        scaleRoot.name = "Scale Root";
-        panRoot = new VisualElement();
-        panRoot.name = "Pan Root";
-        arrowsRoot = new VisualElement();
-        arrowsRoot.name = "Arrows Root";
-        nodesRoot = new VisualElement();
-        nodesRoot.name = "Node Root";
-        panRoot.Add(arrowsRoot);
-        panRoot.Add(nodesRoot);
-        scaleRoot.Add(panRoot);
+        nodeManipulators = new Dictionary<string, NodeManipulator>();
+        nodeElements = new Dictionary<string, VisualElement>();
+        scaleRoot.transform.scale = Vector3.one;
+        panRoot.transform.position = Vector2.zero;
 
-        var importButton = root.Q<Button>("import");
-        importButton.clicked += OnClickImport;
+        arrowsRoot.Clear();
+        nodesRoot.Clear();
+        ShipLogManager manager = ShipLogManager.Instance;
+        if (manager == null) return;
+        if (manager.datas == null || manager.datas.Count == 0) return;
+        nodes = new List<NodeData>();
+        foreach (var data in manager.datas)
+        {
+            nodes.AddRange(data.nodes);
+        }
+        nodes = nodes.OrderBy(x => x.position.y).ToList();
 
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            ShipLogEntry.Entry entry = manager.GetEntry(nodes[i].name, out EntryData data);
+
+            EntryType entryType = EntryType.Normal;
+            if (entry.isCuriosity) entryType = EntryType.Curiosity;
+            else if (data.entriesWhoAreChildren.Contains(entry.entryID)) entryType = EntryType.Child;
+
+            VisualElement newNode;
+            newNode = GUIBuilder.CreateShipLogNode(entry.entryID, entry.name, nodeManipulators, this, entryType);
+            newNode.transform.position = panRoot.LocalToWorld(nodes[i].position);
+            OnCreateNode(newNode);
+
+            nodesRoot.Add(newNode);
+            nodeElements.Add(nodes[i].name, newNode);
+
+
+        }
+        // We need to wait for all the nodes to be created before we can start making arrows
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            VisualElement sourceNode = nodeElements[nodes[i].name];
+            List<VisualElement> targetNodes = GetTargetNodes(nodes[i].name);
+
+            foreach (var targetNode in targetNodes)
+            {
+                arrowsRoot.Add(GUIBuilder.CreateArrow(targetNode, sourceNode, out ArrowManipulator manipulator));
+                nodeManipulators[sourceNode.name].arrows.Add(manipulator);
+                nodeManipulators[targetNode.name].arrows.Add(manipulator);
+            }
+        }
+        scaleRoot.transform.scale = Vector3.one * oldScale;
+        panRoot.transform.position = oldPosition;
+    }
+
+    protected override void ConstructGUILate()
+    {
         var centerCameraButton = root.Q<Button>("centerCamera");
         centerCameraButton.clicked += OnClickCenterCamera;
 
@@ -55,26 +93,55 @@ public class ShipLogEditor : EditorWindow
         var zoomOutButton = root.Q<Button>("subtractZoom");
         zoomOutButton.clicked += OnClickZoomOut;
 
-        var toolbar = root.Q<Toolbar>("toolbar");
-        toolbar.parent.Add(scaleRoot);
-
-        background = root.Q<Box>("bg");
+        base.ConstructGUILate();
     }
 
-    public void BuildNodeTree()
+    protected override void OnCreateNode(VisualElement createdNode)
     {
-        float oldScale = scaleRoot.transform.scale.x;
-        Vector2 oldPosition = panRoot.transform.position;
-
-        scaleRoot.transform.scale = Vector3.one;
-        panRoot.transform.position = Vector3.zero;
-
-
+        throw new System.NotImplementedException();
     }
 
-    private void OnClickImport()
+    protected override void OnClickImport()
     {
-        Debug.Log("Import Button Clicked");
+        string xmlPath = EditorUtility.OpenFilePanel("Select Dialogue XML File", "", "xml");
+
+        if (string.IsNullOrEmpty(xmlPath)) return;
+
+        XmlSerializer serializer = new XmlSerializer(typeof(ShipLogEntry));
+        ShipLogEntry entry;
+
+        using (FileStream fileStream = new FileStream(xmlPath, FileMode.Open))
+        {
+            entry = (ShipLogEntry)serializer.Deserialize(fileStream);
+        }
+
+        if (entry == null)
+        {
+            Debug.LogError("Unable to parse selected file. Are you sure it is ship log xml file?");
+            return;
+        }
+
+        string jsonPath = EditorUtility.OpenFilePanel("Select Star System JSON file", "", "json");
+        if (string.IsNullOrEmpty(jsonPath)) return;
+        string jsonFile = File.ReadAllText(jsonPath);
+        StarSystem systemInfo = JsonConvert.DeserializeObject<StarSystem>(jsonFile);
+        if (systemInfo == null) return;
+
+        string savePath = EditorUtility.SaveFilePanelInProject("Save Entry Data as...", "New Entry Data", "asset", "Select a location to save your Entry Data to.");
+        if (string.IsNullOrEmpty(savePath))
+        {
+            Debug.LogError("Save path is invalid!");
+            return;
+        }
+
+        EntryData data = ShipLogManager.Instance.CreateEntryData(entry, systemInfo);
+
+        AssetDatabase.CreateAsset(data, savePath);
+        AssetDatabase.SaveAssets();
+
+        BuildNodeTree();
+
+        Debug.Log($"Created new planet data at {savePath}.");
     }
 
     private void OnClickCenterCamera()
@@ -93,5 +160,33 @@ public class ShipLogEditor : EditorWindow
     {
         Debug.Log("Zoom Out Button Clicked");
 
+    }
+
+    protected override List<VisualElement> GetTargetNodes(string nodeName)
+    {
+        ShipLogEntry.Entry entry = ShipLogManager.Instance.GetEntry(nodeName);
+        if (entry == null) return null;
+        List<VisualElement> targetNodes = new List<VisualElement>();
+
+        if (entry.rumorFacts == null) return targetNodes;
+
+        foreach (var rumor in entry.rumorFacts)
+        {
+            if (nodeElements.ContainsKey(rumor.sourceID))
+            {
+                targetNodes.Add(nodeElements[rumor.sourceID]);
+            }
+        }
+        return targetNodes;
+    }
+
+    public override void SelectNode(VisualElement newSelection)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void MoveNode(VisualElement node, Vector2 newPosition)
+    {
+        throw new System.NotImplementedException();
     }
 }

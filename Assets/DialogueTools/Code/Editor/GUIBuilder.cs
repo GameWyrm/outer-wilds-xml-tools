@@ -40,6 +40,51 @@ public class GUIBuilder
         return nodeParent;
     }
 
+    public static VisualElement CreateShipLogNode(string nodeName, string labelText, Dictionary<string, NodeManipulator> nodeManipulators, NodeWindow window, EntryType entryType)
+    {
+        var settings = EditorReferences.Instance;
+        VisualElement nodeParent = new VisualElement();
+        nodeParent.name = nodeName;
+        VisualElement bg = new VisualElement();
+        bg.styleSheets.Add(settings.ShipLogStyle);
+        bg.name = nodeName + " Node";
+        bg.EnableInClassList("node", true);
+        Label label = new Label(labelText);
+        label.styleSheets.Add(settings.ShipLogStyle);
+        label.name = nodeName + " Label";
+        label.EnableInClassList("node_label", true);
+        bg.Add(label);
+        label.transform.position = new Vector2(1, 1);
+        Image image = new Image();
+        image.styleSheets.Add(settings.ShipLogStyle);
+        image.name = nodeName + " Icon";
+        image.EnableInClassList("node_image", true);
+        image.image = settings.NoPhotoTexture;
+        bg.Add(image);
+        image.transform.position = new Vector2(1, 43f);
+        nodeParent.Add(bg);
+        nodeParent.transform.position = Vector3.zero;
+        nodeParent.transform.rotation = Quaternion.identity;
+        nodeParent.transform.scale = Vector3.one;
+        bg.transform.position = new Vector3(-55, -76);
+        if (entryType == EntryType.Curiosity)
+        {
+            bg.transform.scale = Vector3.one * 2;
+        }
+        else if (entryType == EntryType.Child)
+        {
+            bg.transform.scale = Vector3.one * 0.6f;
+        }
+
+        var manipulator = new NodeManipulator(nodeParent);
+        manipulator.RegisterCallbacksOnTarget();
+        manipulator.window = window;
+        manipulator.arrows = new List<ArrowManipulator>();
+        nodeManipulators.Add(nodeName, manipulator);
+
+        return nodeParent;
+    }
+
     public static VisualElement CreateArrow(VisualElement source, VisualElement target, out ArrowManipulator arrowManipulator)
     {
         VisualElement offsetElement = new VisualElement();

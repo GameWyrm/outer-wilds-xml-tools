@@ -59,12 +59,14 @@
     <Compile Include="Assets\DialogueTools\Code\DialogueEditor\DialogueTreeAsset.cs" />
     <Compile Include="Assets\DialogueTools\Code\DialogueEditor\Language.cs" />
     <Compile Include="Assets\DialogueTools\Code\Enums\Casing.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Enums\EntryType.cs" />
     <Compile Include="Assets\DialogueTools\Code\Enums\LanguageType.cs" />
     <Compile Include="Assets\DialogueTools\Code\NodeData.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\DialogueTree.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\NomaiText.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\ShipLogEntry.cs" />
+    <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\StarSystem.cs" />
     <Compile Include="Assets\DialogueTools\Code\ScriptsToSerialize\Translation.cs" />
     <Compile Include="Assets\DialogueTools\Code\ShipLogEditor\EntryData.cs" />
     <Compile Include="Assets\DialogueTools\Code\ShipLogEditor\ShipLogManager.cs" />
@@ -76,6 +78,7 @@
     <None Include="Assets\Newtonsoft.Json.dll" />
     <None Include="Assets\DialogueTools\Code\DialogueEditor\DialogueEditor.uss" />
     <None Include="Assets\DialogueTools\Code\ShipLogEditor\ShipLogEditor.uss" />
+    <None Include="Assets\TextAssets\Imports\MagisterShip.xml" />
     <None Include="Assets\DialogueTools\Code\DialogueEditor\DialogueEditor.uxml" />
     <None Include="Assets\TextAssets\Imports\EndingMagister.xml" />
     <None Include="Assets\DialogueTools\Code\ShipLogEditor\ShipLogEditor.uxml" />

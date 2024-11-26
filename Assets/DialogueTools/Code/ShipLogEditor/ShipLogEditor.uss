@@ -13,12 +13,23 @@
 
 .node {
     width: 110px;
-    height: 151.3px;
+    height: 152px;
+    color: gray;
+    position: absolute;
 }
 
 .node_image {
-    width: 108.7px;
-    height: 108.7px;
+    width: 108px;
+    height: 108px;
+    position: absolute;
+}
+
+.node_label {
+    width: 108px;
+    height: 42px;
+    color: black;
+    position: absolute;
+    -unity-text-align: middle-center;
 }
 
 .bg {

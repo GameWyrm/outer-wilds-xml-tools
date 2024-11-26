@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class EntryData : ScriptableObject
@@ -7,17 +8,21 @@ public class EntryData : ScriptableObject
     [SerializeField]
     public ShipLogEntry entry;
 
+    [SerializeField, HideInInspector]
+    public List<string> entryPaths;
+    [SerializeField, HideInInspector]
+    public List<string> entryIDs;
+    [SerializeField, HideInInspector]
+    public List<string> entriesWhoAreChildren;
+
     // These should always stay in sync. They are effectively a Dictionary<string, string>.
     [SerializeField, HideInInspector]
-    private List<string> factIDs;
+    public List<string> factIDs;
     [SerializeField, HideInInspector]
-    private List<string> factPaths;
+    public List<string> factPaths;
 
-    public class NodeData
-    {
-        public string entryName;
-        public Vector2 position;
-    }
+    [SerializeField, HideInInspector]
+    public List<NodeData> nodes;
 
     public void AddFact(string factPath, bool asRumor, bool logWarnings = true)
     {
@@ -366,6 +371,52 @@ public class EntryData : ScriptableObject
         }
 
         return returnedEntry;
+    }
+
+    public void BuildEntryDataPaths()
+    {
+        entryPaths = new List<string>();
+        entryIDs = new List<string>();
+        entriesWhoAreChildren = new List<string>();
+        factPaths = new List<string>();
+        factIDs = new List<string>();
+        foreach (var entry in entry.entries)
+        {
+            AddToEntryList(entry, "");
+        }
+        EditorUtility.SetDirty(this);
+    }
+
+    private void AddToEntryList(ShipLogEntry.Entry entry, string pathSoFar)
+    {
+        pathSoFar += entry.entryID;
+        entryPaths.Add(pathSoFar);
+        entryIDs.Add(entry.entryID);
+        if (entry.exploreFacts != null)
+        {
+            foreach (var fact in entry.exploreFacts)
+            {
+                factPaths.Add(pathSoFar + fact.exploreID);
+                factIDs.Add(fact.exploreID);
+            }
+        }
+        if (entry.rumorFacts != null)
+        {
+            foreach (var fact in entry.rumorFacts)
+            {
+                factPaths.Add(pathSoFar + fact.rumorID);
+                factIDs.Add(fact.rumorID);
+            }
+        }
+
+        if (entry.childEntries != null && entry.childEntries.Count() > 0)
+        {
+            foreach (var childEntry in entry.childEntries)
+            {
+                entriesWhoAreChildren.Add(childEntry.entryID);
+                AddToEntryList(childEntry, pathSoFar + "/");
+            }
+        }
     }
 
     public static string GetCuriosityName(string factPath)

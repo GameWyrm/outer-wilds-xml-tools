@@ -24,6 +24,7 @@ public class EditorReferences : ScriptableObject
     public Texture SelectedTexture;
     public Texture LineTexture;
     public Texture ArrowTexture;
+    public Texture NoPhotoTexture;
     public StyleSheet DialogueStyle;
     public StyleSheet ShipLogStyle;
     public VisualTreeAsset DialogueVisualTree;

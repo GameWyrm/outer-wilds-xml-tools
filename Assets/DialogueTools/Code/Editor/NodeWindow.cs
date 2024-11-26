@@ -48,27 +48,6 @@ public abstract class NodeWindow : EditorWindow
         panRoot.Add(nodesRoot);
     }
 
-    protected virtual void ConstructGUILate()
-    {
-        var importButton = root.Q<Button>("import");
-        importButton.clicked += OnClickImport;
-        
-        var toolbar = root.Q<Toolbar>("toolbar");
-        toolbar.parent.Add(scaleRoot);
-
-        background = root.Q<Box>("bg");
-        if (panner != null) panner.UnregisterCallbacks();
-        panner = new PannerManipulator();
-        panner.background = background;
-        panner.panRoot = panRoot;
-        panner.window = this;
-        panner.RegisterCallbacks();
-
-        toolbar.BringToFront();
-
-        isFocused = true;
-    }
-
     public virtual void BuildNodeTree()
     {
         float oldScale = scaleRoot.transform.scale.x;
@@ -76,6 +55,7 @@ public abstract class NodeWindow : EditorWindow
 
         nodeManipulators = new Dictionary<string, NodeManipulator>();
         nodeElements = new Dictionary<string, VisualElement>();
+        scaleRoot.transform.scale = Vector3.one;
         panRoot.transform.position = Vector2.zero;
 
         arrowsRoot.Clear();
@@ -83,7 +63,8 @@ public abstract class NodeWindow : EditorWindow
 
         for (int i = 0; i < nodes.Count; i++)
         {
-            VisualElement newNode = GUIBuilder.CreateDialogueNode(nodes[i].name, nodeManipulators, this);
+            VisualElement newNode;
+            newNode = GUIBuilder.CreateDialogueNode(nodes[i].name, nodeManipulators, this);
             newNode.transform.position = panRoot.LocalToWorld(nodes[i].position);
             OnCreateNode(newNode);
 
@@ -109,6 +90,30 @@ public abstract class NodeWindow : EditorWindow
         panRoot.transform.position = oldPosition;
     }
 
+    protected virtual void ConstructGUILate()
+    {
+        var importButton = root.Q<Button>("import");
+        importButton.clicked += OnClickImport;
+        
+        var toolbar = root.Q<Toolbar>("toolbar");
+        toolbar.parent.Add(scaleRoot);
+
+        background = root.Q<Box>("bg");
+        if (panner != null) panner.UnregisterCallbacks();
+        panner = new PannerManipulator();
+        panner.background = background;
+        panner.panRoot = panRoot;
+        panner.window = this;
+        panner.RegisterCallbacks();
+
+        toolbar.BringToFront();
+
+        isFocused = true;
+    }
+
+    /// <summary>
+    /// Runs when you click the "Import" button on the toolbar
+    /// </summary>
     protected abstract void OnClickImport();
 
     /// <summary>
@@ -117,9 +122,23 @@ public abstract class NodeWindow : EditorWindow
     /// <param name="createdNode"></param>
     protected abstract void OnCreateNode(VisualElement createdNode);
 
+    /// <summary>
+    /// Returns the nodes that should be the target of connected arrows
+    /// </summary>
+    /// <param name="nodeName"></param>
+    /// <returns></returns>
     protected abstract List<VisualElement> GetTargetNodes(string nodeName);
 
+    /// <summary>
+    /// Runs when a node is selected, and determines how it should act when selected
+    /// </summary>
+    /// <param name="newSelection"></param>
     public abstract void SelectNode(VisualElement newSelection);
 
+    /// <summary>
+    /// How a node should act when moved
+    /// </summary>
+    /// <param name="node"></param>
+    /// <param name="newPosition"></param>
     public abstract void MoveNode(VisualElement node, Vector2 newPosition);
 }

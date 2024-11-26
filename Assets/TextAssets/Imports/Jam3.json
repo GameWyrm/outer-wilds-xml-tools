@@ -1,0 +1,81 @@
+{
+    "$schema": "https://raw.githubusercontent.com/xen-42/outer-wilds-new-horizons/main/NewHorizons/Schemas/star_system_schema.json",
+    "curiosities": [
+        {
+            "id": "HN2_DEVICE",
+            "color": {
+                "r": 148,
+                "g": 48,
+                "b": 255,
+                "a": 255
+            },
+            "highlightColor": {
+                "r": 191,
+                "g": 135,
+                "b": 255,
+                "a": 255
+            }
+        }
+    ],
+    "entryPositions": [
+        {
+            "id": "HN2_DEVICE",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "id": "HN2_HN",
+            "position": {
+                "x": 28,
+                "y": -690
+            }
+        },
+        {
+            "id": "HN2_Intro",
+            "position": {
+                "x": -240,
+                "y": -618
+            }
+        },
+        {
+            "id": "HN2_GC",
+            "position": {
+                "x": -5,
+                "y": -343
+            }
+        },
+        {
+            "id": "HN2_LB",
+            "position": {
+                "x": 127,
+                "y": 515
+            }
+        },
+        {
+            "id": "HN2_EG",
+            "position": {
+                "x": -450,
+                "y": -197
+            }
+        },
+        {
+            "id": "HN2_DM",
+            "position": {
+                "x": 391,
+                "y": -400
+            }
+        },
+        {
+            "id": "HN2_MG",
+            "position": {
+                "x": 309,
+                "y": -342
+            }
+        }
+    ],
+    "initialReveal": [
+        "HN2_IntroRumor"
+    ]
+}
