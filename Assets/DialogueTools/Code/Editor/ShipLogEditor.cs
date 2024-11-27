@@ -12,16 +12,18 @@ public class ShipLogEditor : NodeWindow
 {
     public static ShipLogEditor Instance;
 
+    private Label zoomText;
+
     [MenuItem("Tools/XML Editors/Ship Log Editor")]
     public static void ShowWindow()
     {
         Instance = GetWindow<ShipLogEditor>();
         Instance.titleContent = new GUIContent("ShipLogEditor");
-        //Instance.BuildNodeTree();
     }
 
     protected override void ConstructGUI()
     {
+        zoom = 1;
         visualTree = EditorReferences.Instance.ShipLogVisualTree;
         base.ConstructGUI();
     }
@@ -50,9 +52,7 @@ public class ShipLogEditor : NodeWindow
 
         for (int i = 0; i < nodes.Count; i++)
         {
-            Debug.Log("Node name:" + nodes[i].name);
             ShipLogEntry.Entry entry = manager.GetEntry(nodes[i].name, out EntryData data);
-
 
             EntryType entryType = EntryType.Normal;
             if (entry.isCuriosity) entryType = EntryType.Curiosity;
@@ -60,7 +60,7 @@ public class ShipLogEditor : NodeWindow
 
             VisualElement newNode;
             newNode = GUIBuilder.CreateShipLogNode(entry.entryID, entry.name, nodeManipulators, this, entryType);
-            newNode.transform.position = panRoot.LocalToWorld(nodes[i].position);
+            newNode.transform.position = panRoot.LocalToWorld(new Vector2(nodes[i].position.x, nodes[i].position.y * -1));
             OnCreateNode(newNode);
 
             nodesRoot.Add(newNode);
@@ -96,7 +96,20 @@ public class ShipLogEditor : NodeWindow
         var zoomOutButton = root.Q<Button>("subtractZoom");
         zoomOutButton.clicked += OnClickZoomOut;
 
+        zoomText = root.Q<Label>("zoomText");
+
         base.ConstructGUILate();
+    }
+
+    private void OnGUI()
+    {
+        Event currentEvent = Event.current;
+
+        if (currentEvent.type == EventType.ScrollWheel)
+        {
+            if (currentEvent.delta.y < 0) OnClickZoomIn();
+            else if (currentEvent.delta.y > 0) OnClickZoomOut();
+        }
     }
 
     protected override void OnCreateNode(VisualElement createdNode)
@@ -105,14 +118,13 @@ public class ShipLogEditor : NodeWindow
         ShipLogManager manager = ShipLogManager.Instance;
         ShipLogEntry.Entry entry = manager.GetEntry(id);
         if (entry == null) return;
-
         VisualElement bg = createdNode.Q<VisualElement>("bg");
-        bg.style.backgroundColor = manager.GetCuriosityColor(id);
+        bg.style.backgroundColor = manager.GetCuriosityColor(entry.curiosity);
 
         Language lang = XMLEditorSettings.Instance.GetSelectedLanguage();
 
         Label label = bg.Q<Label>("label");
-        string logName = lang.GetShipLogValue(id);
+        string logName = lang.GetShipLogValue(entry.name);
         if (!string.IsNullOrEmpty(logName)) label.text = logName;
 
         // TODO set image
@@ -172,14 +184,22 @@ public class ShipLogEditor : NodeWindow
 
     private void OnClickZoomIn()
     {
-        Debug.Log("Zoom In Button Clicked");
-
+        zoom += 0.25f;
+        if (zoom > 2f) zoom = 2f;
+        UpdateZoom();
     }
 
     private void OnClickZoomOut()
     {
-        Debug.Log("Zoom Out Button Clicked");
+        zoom -= 0.25f;
+        if (zoom < 0.25f) zoom = 0.25f;
+        UpdateZoom();
+    }
 
+    private void UpdateZoom()
+    {
+        scaleRoot.transform.scale = Vector3.one * zoom;
+        zoomText.text = Mathf.RoundToInt(100 * zoom) + "%";
     }
 
     protected override List<VisualElement> GetTargetNodes(string nodeName)

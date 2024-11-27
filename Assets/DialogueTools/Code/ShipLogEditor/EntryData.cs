@@ -350,10 +350,6 @@ public class EntryData : ScriptableObject
         else
         {
             if (parentEntry.childEntries == null) return null;
-            foreach (ShipLogEntry.Entry entry in parentEntry.childEntries)
-            {
-                Debug.Log("Child " + entry.entryID);
-            }
 
             entries = parentEntry.childEntries;
         }
@@ -364,7 +360,6 @@ public class EntryData : ScriptableObject
         ShipLogEntry.Entry returnedEntry = null;
         try
         {
-            Debug.Log($"Looking for {pathElements[0]}");
             rootEntry = entries.First(x => x.entryID == pathElements[0]);
         }
         catch (System.Exception)

@@ -23,11 +23,11 @@ public class ShipLogManager : ScriptableObject
     public List<string> allExploreFactsList;
     public List<string> allRumorFactsList;
 
-    [SerializeField, HideInInspector]
+    [SerializeField]
     private List<string> curiosities;
-    [SerializeField, HideInInspector]
+    [SerializeField]
     private List<Color> curiosityColors;
-    [SerializeField, HideInInspector]
+    [SerializeField]
     private List<Color> curiosityHighlightColors;
 
 

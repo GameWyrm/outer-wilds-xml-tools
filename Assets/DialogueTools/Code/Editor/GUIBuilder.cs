@@ -69,11 +69,11 @@ public class GUIBuilder
         bg.transform.position = new Vector3(-55, -76);
         if (entryType == EntryType.Curiosity)
         {
-            bg.transform.scale = Vector3.one * 2;
+            nodeParent.transform.scale = Vector3.one * 2;
         }
         else if (entryType == EntryType.Child)
         {
-            bg.transform.scale = Vector3.one * 0.6f;
+            nodeParent.transform.scale = Vector3.one * 0.6f;
         }
 
         var manipulator = new NodeManipulator(nodeParent);
@@ -114,7 +114,6 @@ public class GUIBuilder
 
         arrowManipulator = new ArrowManipulator(source, target, newArrow, newLineContainer);
 
-        // TODO Fix
         arrowManipulator.OrientArrow();
 
         return offsetElement;

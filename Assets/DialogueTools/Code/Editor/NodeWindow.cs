@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public abstract class NodeWindow : EditorWindow
 {
     public bool isFocused;
+    public float zoom;
 
     protected Dictionary<string, VisualElement> nodeElements;
     protected List<NodeData> nodes = new List<NodeData>();

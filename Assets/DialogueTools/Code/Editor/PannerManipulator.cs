@@ -43,7 +43,7 @@ public class PannerManipulator
         {
             Vector3 pointerDelta = e.position - pointerStartPosition;
 
-            panRoot.transform.position = panRootStartPosition + (Vector2)pointerDelta;
+            panRoot.transform.position = panRootStartPosition + ((Vector2)pointerDelta * (1 / window.zoom));
         }
     }
 

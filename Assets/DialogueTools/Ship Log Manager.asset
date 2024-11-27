@@ -15,3 +15,6 @@ MonoBehaviour:
   datas: []
   allExploreFactsList: []
   allRumorFactsList: []
+  curiosities: []
+  curiosityColors: []
+  curiosityHighlightColors: []

@@ -19,9 +19,13 @@ public class Language : ScriptableObject
     [HideInInspector]
     public List<string> tieredDialogueKeys;
 
+    [SerializeField]
     public List<string> dialogueKeys;
+    [SerializeField]
     public List<string> dialogueValues;
+    [SerializeField]
     public List<string> shipLogKeys;
+    [SerializeField]
     public List<string> shipLogValues;
 
     public static Dictionary<LanguageType, string> GetLanguageFileName = new Dictionary<LanguageType, string>

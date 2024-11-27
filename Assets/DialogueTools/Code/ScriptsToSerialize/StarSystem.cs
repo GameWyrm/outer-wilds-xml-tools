@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Newtonsoft.Json;
 
 [Serializable]
 public class StarSystem
@@ -35,6 +36,8 @@ public class StarSystem
             this.a = a;
         }
 
+        // I can't see a situation where you'd ever want Alpha to *not* be 1 when importing
+        [JsonConstructor]
         public MColor(int r, int g, int b)
         {
             this.r = r;
