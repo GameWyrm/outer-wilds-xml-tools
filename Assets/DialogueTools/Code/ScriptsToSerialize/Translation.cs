@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-public class Translation
+namespace XmlTools
 {
-    public Dictionary<string, string> DialogueDictionary;
-    public Dictionary<string, string> ShipLogDictionary;
-    public Dictionary<string, string> UIDictionary;
-    public Dictionary<string, string> OtherDictionary;
-    public Dictionary<string, string> AchievementTranslations;
+    public class Translation
+    {
+        public Dictionary<string, string> DialogueDictionary;
+        public Dictionary<string, string> ShipLogDictionary;
+        public Dictionary<string, string> UIDictionary;
+        public Dictionary<string, string> OtherDictionary;
+        public Dictionary<string, string> AchievementTranslations;
+    }
 }

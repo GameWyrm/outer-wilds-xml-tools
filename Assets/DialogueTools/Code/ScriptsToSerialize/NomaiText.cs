@@ -1,65 +1,68 @@
 using System;
 using System.Xml.Serialization;
 
-/// <summary>
-/// Dummy script to parse Nomai Text XMLs to
-/// </summary>
-[XmlRoot("NomaiObject"), Serializable]
-public class NomaiText
+namespace XmlTools
 {
-    [XmlElement("TextBlock")]
-    public TextBlock[] textBlocks;
-
-    [XmlElement("ShipLogConditions")]
-    public ShipLogCondition[] shipLogConditions;
-
-    [Serializable]
-    public class TextBlock
+    /// <summary>
+    /// Dummy script to parse Nomai Text XMLs to
+    /// </summary>
+    [XmlRoot("NomaiObject"), Serializable]
+    public class NomaiText
     {
-        [XmlElement("ID")]
-        public int textID;
+        [XmlElement("TextBlock")]
+        public TextBlock[] textBlocks;
 
-        [XmlElement("ParentID")]
-        public int parentID;
+        [XmlElement("ShipLogConditions")]
+        public ShipLogCondition[] shipLogConditions;
 
-        /// <summary> Do not use unless serializing, use isLocationA instead</summary>
-        [XmlElement("LocationA")] 
-        public string m_isLocationA;
-        public bool isLocationA;
+        [Serializable]
+        public class TextBlock
+        {
+            [XmlElement("ID")]
+            public int textID;
 
-        /// <summary> Do not use unless serializing, use isLocationB instead</summary>
-        [XmlElement("LocationB")]
-        public string m_isLocationB;
-        public bool isLocationB;
+            [XmlElement("ParentID")]
+            public int parentID;
 
-        [XmlElement("Text")]
-        public string text;
-    }
+            /// <summary> Do not use unless serializing, use isLocationA instead</summary>
+            [XmlElement("LocationA")]
+            public string m_isLocationA;
+            public bool isLocationA;
 
-    [Serializable]
-    public class ShipLogCondition
-    {
-        /// <summary> Do not use unless serializing, use isLocationA instead</summary>
-        [XmlElement("LocationA")]
-        public string m_isLocationA;
-        public bool isLocationA;
+            /// <summary> Do not use unless serializing, use isLocationB instead</summary>
+            [XmlElement("LocationB")]
+            public string m_isLocationB;
+            public bool isLocationB;
 
-        /// <summary> Do not use unless serializing, use isLocationB instead</summary>
-        [XmlElement("LocationB")]
-        public string m_isLocationB;
-        public bool isLocationB;
+            [XmlElement("Text")]
+            public string text;
+        }
 
-        [XmlElement("RevealFact")]
-        public RevealFact[] revealFacts;
-    }
+        [Serializable]
+        public class ShipLogCondition
+        {
+            /// <summary> Do not use unless serializing, use isLocationA instead</summary>
+            [XmlElement("LocationA")]
+            public string m_isLocationA;
+            public bool isLocationA;
 
-    [Serializable]
-    public class RevealFact
-    {
-        [XmlElement("FactID")]
-        public string factID;
+            /// <summary> Do not use unless serializing, use isLocationB instead</summary>
+            [XmlElement("LocationB")]
+            public string m_isLocationB;
+            public bool isLocationB;
 
-        [XmlElement("Condition")]
-        public string condition;
+            [XmlElement("RevealFact")]
+            public RevealFact[] revealFacts;
+        }
+
+        [Serializable]
+        public class RevealFact
+        {
+            [XmlElement("FactID")]
+            public string factID;
+
+            [XmlElement("Condition")]
+            public string condition;
+        }
     }
 }

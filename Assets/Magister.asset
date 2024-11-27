@@ -252,18 +252,18 @@ MonoBehaviour:
     nameField: $HN2MagisterName
   nodeDatas:
   - name: Start
-    position: {x: 126, y: -43}
+    position: {x: 150, y: 68}
   - name: Intro2
-    position: {x: 487, y: -73}
+    position: {x: 499, y: 69}
   - name: Hub
-    position: {x: 500, y: 67}
+    position: {x: 502, y: 235}
   - name: Why
-    position: {x: 806, y: -81}
+    position: {x: 875, y: 97}
   - name: Door
-    position: {x: 492, y: 246}
+    position: {x: 530, y: 396}
   - name: DoorA
-    position: {x: 170, y: 258}
+    position: {x: 155, y: 410}
   - name: DoorB
-    position: {x: 786, y: 83}
+    position: {x: 859, y: 418}
   - name: Find
-    position: {x: 892, y: -108}
+    position: {x: 942, y: 269}

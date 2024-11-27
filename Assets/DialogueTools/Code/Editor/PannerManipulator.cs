@@ -1,65 +1,68 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PannerManipulator
+namespace XmlTools
 {
-    public VisualElement background;
-    public VisualElement panRoot;
-    public NodeWindow window;
-
-    private bool enabled;
-    private Vector2 panRootStartPosition;
-    private Vector3 pointerStartPosition;
-
-    // I don't have the luxery of inheriting from PointerManipulator so I have to call these manually.
-    public void RegisterCallbacks()
+    public class PannerManipulator
     {
-        background.RegisterCallback<PointerDownEvent>(OnPointerDown);
-        background.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        background.RegisterCallback<PointerUpEvent>(OnPointerUp);
-        background.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
-    }
+        public VisualElement background;
+        public VisualElement panRoot;
+        public NodeWindow window;
 
-    public void UnregisterCallbacks()
-    {
-        background.UnregisterCallback<PointerDownEvent>(OnPointerDown);
-        background.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
-        background.UnregisterCallback<PointerUpEvent>(OnPointerUp);
-        background.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
-    }
+        private bool enabled;
+        private Vector2 panRootStartPosition;
+        private Vector3 pointerStartPosition;
 
-    private void OnPointerDown(PointerDownEvent e)
-    {
-        if (!window.isFocused) return;
-        panRootStartPosition = panRoot.transform.position;
-        pointerStartPosition = e.position;
-        background.CapturePointer(e.pointerId);
-        enabled = true;
-    }
-
-    private void OnPointerMove(PointerMoveEvent e)
-    {
-        if (enabled && background.HasPointerCapture(e.pointerId))
+        // I don't have the luxery of inheriting from PointerManipulator so I have to call these manually.
+        public void RegisterCallbacks()
         {
-            Vector3 pointerDelta = e.position - pointerStartPosition;
-
-            panRoot.transform.position = panRootStartPosition + ((Vector2)pointerDelta * (1 / window.zoom));
+            background.RegisterCallback<PointerDownEvent>(OnPointerDown);
+            background.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+            background.RegisterCallback<PointerUpEvent>(OnPointerUp);
+            background.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
         }
-    }
 
-    private void OnPointerUp(PointerUpEvent e)
-    {
-        if (enabled && background.HasPointerCapture(e.pointerId))
+        public void UnregisterCallbacks()
         {
-            background.ReleasePointer(e.pointerId);
+            background.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+            background.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+            background.UnregisterCallback<PointerUpEvent>(OnPointerUp);
+            background.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
         }
-    }
 
-    private void OnPointerCaptureOut(PointerCaptureOutEvent e)
-    {
-        if (enabled)
+        private void OnPointerDown(PointerDownEvent e)
         {
-            enabled = false;
+            if (!window.isFocused) return;
+            panRootStartPosition = panRoot.transform.position;
+            pointerStartPosition = e.position;
+            background.CapturePointer(e.pointerId);
+            enabled = true;
+        }
+
+        private void OnPointerMove(PointerMoveEvent e)
+        {
+            if (enabled && background.HasPointerCapture(e.pointerId))
+            {
+                Vector3 pointerDelta = e.position - pointerStartPosition;
+
+                panRoot.transform.position = panRootStartPosition + ((Vector2)pointerDelta / window.zoom);
+            }
+        }
+
+        private void OnPointerUp(PointerUpEvent e)
+        {
+            if (enabled && background.HasPointerCapture(e.pointerId))
+            {
+                background.ReleasePointer(e.pointerId);
+            }
+        }
+
+        private void OnPointerCaptureOut(PointerCaptureOutEvent e)
+        {
+            if (enabled)
+            {
+                enabled = false;
+            }
         }
     }
 }

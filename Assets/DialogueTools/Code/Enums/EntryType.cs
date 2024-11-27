@@ -1,6 +1,9 @@
-public enum EntryType
+namespace XmlTools
 {
-    Normal,
-    Curiosity,
-    Child
+    public enum EntryType
+    {
+        Normal,
+        Curiosity,
+        Child
+    }
 }

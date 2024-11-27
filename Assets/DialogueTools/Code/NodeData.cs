@@ -1,15 +1,18 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class NodeData
+namespace XmlTools
 {
-    public NodeData(string name, Vector2 position)
+    [Serializable]
+    public class NodeData
     {
-        this.name = name;
-        this.position = position;
-    }
+        public NodeData(string name, Vector2 position)
+        {
+            this.name = name;
+            this.position = position;
+        }
 
-    public string name;
-    public Vector2 position;
+        public string name;
+        public Vector2 position;
+    }
 }
