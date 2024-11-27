@@ -22,8 +22,7 @@ namespace XmlTools
 
         private static EditorReferences instance;
 
-        public Texture UnselectedTexture;
-        public Texture SelectedTexture;
+        public Texture BrowseTexture;
         public Texture LineTexture;
         public Texture ArrowTexture;
         public Texture NoPhotoTexture;

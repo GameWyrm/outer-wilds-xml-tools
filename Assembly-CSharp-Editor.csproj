@@ -67,6 +67,7 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\PannerManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettingsEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\XMLUserSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

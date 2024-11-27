@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace XmlTools
 {
@@ -56,7 +57,7 @@ namespace XmlTools
             label.transform.position = new Vector2(1, 1);
             Image image = new Image();
             image.styleSheets.Add(settings.ShipLogStyle);
-            image.name = "Icon";
+            image.name = "icon";
             image.EnableInClassList("node_image", true);
             image.image = settings.NoPhotoTexture;
             bg.Add(image);
@@ -323,6 +324,29 @@ namespace XmlTools
             return items[shownItemIndex];
         }
 
+        public static string CreatePathSetter(string label, string path, out bool setDirty, string startingPath = "")
+        {
+            setDirty = false;
+            EditorGUILayout.LabelField(label);
+            EditorGUILayout.BeginHorizontal();
+            string newPath = EditorGUILayout.DelayedTextField(path);
+            if (Directory.Exists(newPath))
+            {
+                path = newPath;
+                setDirty = true;
+            }
+            if (GUILayout.Button(EditorReferences.Instance.BrowseTexture, GUILayout.Width(20)))
+            {
+                newPath = EditorUtility.OpenFolderPanel("Select new path...", startingPath, "");
+                if (!string.IsNullOrEmpty(newPath))
+                {
+                    path = newPath;
+                    setDirty = true;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            return path;
+        }
 
         #endregion
 

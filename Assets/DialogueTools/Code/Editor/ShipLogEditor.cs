@@ -127,7 +127,20 @@ namespace XmlTools
             string logName = lang.GetShipLogValue(entry.name);
             if (!string.IsNullOrEmpty(logName)) label.text = logName;
 
-            // TODO set image
+            XMLUserSettings settings = XMLUserSettings.Instance;
+            if (settings != null && string.IsNullOrEmpty(settings.modIconsPath) && Directory.Exists(settings.modIconsPath))
+            {
+                string iconPath = settings.modIconsPath + '/' + id + ".png";
+                if (File.Exists(iconPath))
+                {
+                    Texture2D icon = null;
+                    if (ImageConversion.LoadImage(icon, File.ReadAllBytes(iconPath), false))
+                    {
+                        Image iconElement = bg.Q<Image>("icon");
+                        iconElement.image = icon;
+                    }
+                }
+            }
         }
 
         protected override void OnClickImport()
