@@ -12,9 +12,9 @@
     <engine:Label name="zoomLabel" text="Zoom"/>
     <editor:ToolbarButton name="subtractZoom" text="-"/>
     <engine:Label name="zoomText" text="100%"/>
-    <editor:ToolbarButton name="addZoom" text="+"/>
-    <engine:Box name="bg" class="bg">
+    <editor:ToolbarButton name="addZoom" text="+"/>  
+  </editor:Toolbar>
+  <engine:Box name="bg" class="bg">
       <Style src ="ShipLogEditor.uss"/>
     </engine:Box>
-  </editor:Toolbar>
 </engine:UXML>

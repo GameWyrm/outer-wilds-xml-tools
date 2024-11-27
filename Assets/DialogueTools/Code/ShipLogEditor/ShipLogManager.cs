@@ -77,7 +77,6 @@ public class ShipLogManager : ScriptableObject
 
     public ShipLogEntry.Entry GetEntry(string entryName, out EntryData data)
     {
-
         foreach (var file in datas)
         {
             if (file.entryPaths == null || file.entryPaths.Count == 0) file.BuildEntryDataPaths();
@@ -108,7 +107,7 @@ public class ShipLogManager : ScriptableObject
         {
             foreach (var node in systemData.entryPositions)
             {
-                if (!string.IsNullOrEmpty(node.id) && node.position != null && data.factIDs.Contains(node.id))
+                if (!string.IsNullOrEmpty(node.id) && node.position != null && data.entryIDs.Contains(node.id))
                 {
                     NodeData newNode = new NodeData(node.id, new Vector2(node.position.x, node.position.y));
                     data.nodes.Add(newNode);

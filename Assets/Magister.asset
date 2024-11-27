@@ -264,6 +264,6 @@ MonoBehaviour:
   - name: DoorA
     position: {x: 170, y: 258}
   - name: DoorB
-    position: {x: 889, y: 179}
+    position: {x: 786, y: 83}
   - name: Find
-    position: {x: 964, y: 150}
+    position: {x: 892, y: -108}

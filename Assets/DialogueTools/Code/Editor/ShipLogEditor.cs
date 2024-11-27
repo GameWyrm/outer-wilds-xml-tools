@@ -17,6 +17,7 @@ public class ShipLogEditor : NodeWindow
     {
         Instance = GetWindow<ShipLogEditor>();
         Instance.titleContent = new GUIContent("ShipLogEditor");
+        //Instance.BuildNodeTree();
     }
 
     protected override void ConstructGUI()
@@ -45,11 +46,12 @@ public class ShipLogEditor : NodeWindow
         {
             nodes.AddRange(data.nodes);
         }
-        nodes = nodes.OrderBy(x => x.position.y).ToList();
 
         for (int i = 0; i < nodes.Count; i++)
         {
+            Debug.Log("Node name:" + nodes[i].name);
             ShipLogEntry.Entry entry = manager.GetEntry(nodes[i].name, out EntryData data);
+
 
             EntryType entryType = EntryType.Normal;
             if (entry.isCuriosity) entryType = EntryType.Curiosity;
@@ -98,7 +100,7 @@ public class ShipLogEditor : NodeWindow
 
     protected override void OnCreateNode(VisualElement createdNode)
     {
-        throw new System.NotImplementedException();
+        //Debug.Log($"Creating node {createdNode.name}");
     }
 
     protected override void OnClickImport()
@@ -139,6 +141,8 @@ public class ShipLogEditor : NodeWindow
         AssetDatabase.CreateAsset(data, savePath);
         AssetDatabase.SaveAssets();
 
+        ShipLogManager.Instance.datas.Add(data);
+
         BuildNodeTree();
 
         Debug.Log($"Created new planet data at {savePath}.");
@@ -146,6 +150,7 @@ public class ShipLogEditor : NodeWindow
 
     private void OnClickCenterCamera()
     {
+        BuildNodeTree();
         Debug.Log("Center Camera Button Clicked");
 
     }
@@ -182,11 +187,11 @@ public class ShipLogEditor : NodeWindow
 
     public override void SelectNode(VisualElement newSelection)
     {
-        throw new System.NotImplementedException();
+        Debug.LogWarning("Can't select nodes yet");
     }
 
     public override void MoveNode(VisualElement node, Vector2 newPosition)
     {
-        throw new System.NotImplementedException();
+        Debug.LogWarning("Can't move nodes yet");
     }
 }

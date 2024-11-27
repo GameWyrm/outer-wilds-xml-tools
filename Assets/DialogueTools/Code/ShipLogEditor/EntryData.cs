@@ -331,6 +331,16 @@ public class EntryData : ScriptableObject
 
     public ShipLogEntry.Entry GetEntry(string entryID, ShipLogEntry.Entry parentEntry = null)
     {
+        if (string.IsNullOrEmpty(entryID)) return null;
+        if (parentEntry == null && !entryPaths.Contains(entryID))
+        {
+            if (entryIDs.Contains(entryID))
+            {
+                int index = entryIDs.IndexOf(entryID);
+                entryID = entryPaths[index];
+            }
+            else return null;
+        }
         if (entry == null || entry.entries == null) return null;
         ShipLogEntry.Entry[] entries;
         if (parentEntry == null)
@@ -340,6 +350,11 @@ public class EntryData : ScriptableObject
         else
         {
             if (parentEntry.childEntries == null) return null;
+            foreach (ShipLogEntry.Entry entry in parentEntry.childEntries)
+            {
+                Debug.Log("Child " + entry.entryID);
+            }
+
             entries = parentEntry.childEntries;
         }
 
@@ -347,31 +362,36 @@ public class EntryData : ScriptableObject
 
         ShipLogEntry.Entry rootEntry;
         ShipLogEntry.Entry returnedEntry = null;
-
         try
         {
+            Debug.Log($"Looking for {pathElements[0]}");
             rootEntry = entries.First(x => x.entryID == pathElements[0]);
         }
         catch (System.Exception)
         {
-            //string message = e.Message + "\nReturning null.";
-            rootEntry = null;
+            return null;
         }
-        if (rootEntry == null)
+
+        if (pathElements.Length == 1)
         {
-            if (pathElements.Length > 1)
+            return rootEntry;
+        }
+        else
+        {
+            string newPath = "";
+            for (int i = 1; i < pathElements.Length; i++)
             {
-                foreach (var childEntry in parentEntry.childEntries)
-                {
-                    returnedEntry = GetEntry(entryID.Replace(pathElements[0] + '/', ""), childEntry);
-                    if (returnedEntry != null) break;
-                }
+                newPath += pathElements[i] + '/';
             }
-            else returnedEntry = rootEntry;
+            newPath = newPath.TrimEnd('/');
+
+            returnedEntry = GetEntry(newPath, rootEntry);
         }
 
         return returnedEntry;
     }
+
+
 
     public void BuildEntryDataPaths()
     {
