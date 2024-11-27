@@ -236,7 +236,24 @@ namespace XmlTools
 
         public override void SelectNode(VisualElement newSelection)
         {
-            Debug.LogWarning("Can't select nodes yet");
+            string id = newSelection.name;
+            ShipLogManager manager = ShipLogManager.Instance;
+            if (selectedNode != null)
+            {
+                string oldID = selectedNode.name;
+                ShipLogEntry.Entry oldEntry = manager.GetEntry(oldID);
+                if (oldEntry != null)
+                {
+                    VisualElement oldBG = selectedNode.Q<VisualElement>("bg");
+                    oldBG.style.backgroundColor = manager.GetCuriosityColor(oldEntry.curiosity);
+                }
+            }
+            ShipLogEntry.Entry entry = manager.GetEntry(id);
+            if (entry == null) return;
+            VisualElement bg = newSelection.Q<VisualElement>("bg");
+            bg.style.backgroundColor = manager.GetCuriosityHighlightColor(entry.curiosity);
+            selectedNode = newSelection;
+            EditorUtility.SetDirty(manager);
         }
 
         public override void MoveNode(VisualElement node, Vector2 newPosition)
