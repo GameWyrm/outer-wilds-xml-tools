@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21272c404528bae488ad8c68c914a0e4, type: 3}
   m_Name: Ship Log Manager
   m_EditorClassIdentifier: 
-  datas: []
+  datas:
+  - {fileID: 11400000, guid: 14028d16309fffc4896045dd0d1af550, type: 2}
   allExploreFactsList: []
   allRumorFactsList: []
-  curiosities: []
-  curiosityColors: []
-  curiosityHighlightColors: []
+  curiosities:
+  - HN2_DEVICE
+  curiosityColors:
+  - {r: 1, g: 0.18823528, b: 0.36737147, a: 1}
+  curiosityHighlightColors:
+  - {r: 0.5294118, g: 1, b: 0.6238049, a: 1}

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: XML User Settings
   m_EditorClassIdentifier: 
   modPath: C:/Users/daron/source/repos/HearthsNeighbor2
-  modIcons: C:/Users/daron/source/repos/HearthsNeighbor2/HearthsNeighbor2/shiplogs
+  modIconsPath: C:/Users/daron/source/repos/HearthsNeighbor2/HearthsNeighbor2/shiplogs
   vanillaIconsPath: G:/My Files/Documents/UnityProjects/Outer Wilds Rip/OuterWildsFullRip/Assets/Texture2D
+  shipLogFont: {fileID: 12800000, guid: 596dfcb0333418746bbd0c82dea4d77b, type: 3}
