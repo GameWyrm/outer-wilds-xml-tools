@@ -22,11 +22,14 @@ namespace XmlTools
             }
         }
 
+        [SerializeField]
         public List<string> allExploreFactsList;
+        [SerializeField]
         public List<string> allRumorFactsList;
 
         [SerializeField]
-        private List<string> curiosities;
+        public List<string> curiosities;
+
         [SerializeField]
         private List<Color> curiosityColors;
         [SerializeField]

@@ -120,7 +120,7 @@ namespace XmlTools
         }
         #endregion
 
-        #region editorElements
+        #region DialogueEditorElements
         public static List<string> CreateArray(ref bool isShowing, List<string> data, string label, string itemLabel, Casing casing, bool useTranslation = false)
         {
             int clearValue = -1;
@@ -348,6 +348,22 @@ namespace XmlTools
             return path;
         }
 
+        #endregion
+
+        #region ShipLogEditorElements
+        public static void CreateColorSetter(string label, Color curiosityColor, Color highlightColor, out Color newCuriosityColor, out Color newHighlightColor)
+        {
+            EditorGUILayout.LabelField(label);
+            newCuriosityColor = CreateColorItem("Normal Color", curiosityColor);
+            newHighlightColor = CreateColorItem("Highlight Color", highlightColor);
+            EditorGUILayout.Space();
+        }
+
+        private static Color CreateColorItem(string label, Color color)
+        {
+            color = EditorGUILayout.ColorField(label, color);
+            return color;
+        }
         #endregion
 
         #region utilities

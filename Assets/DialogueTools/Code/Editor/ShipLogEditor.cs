@@ -14,6 +14,7 @@ namespace XmlTools
         public static ShipLogEditor Instance;
 
         private Label zoomText;
+        private string selectedNodeName;
 
         [MenuItem("Tools/XML Editors/Ship Log Editor")]
         public static void ShowWindow()
@@ -119,7 +120,14 @@ namespace XmlTools
             ShipLogEntry.Entry entry = manager.GetEntry(id);
             if (entry == null) return;
             VisualElement bg = createdNode.Q<VisualElement>("bg");
-            bg.style.backgroundColor = manager.GetCuriosityColor(entry.curiosity);
+            if (createdNode.name == selectedNodeName)
+            {
+                bg.style.backgroundColor = manager.GetCuriosityHighlightColor(entry.curiosity);
+            }
+            else
+            {
+                bg.style.backgroundColor = manager.GetCuriosityColor(entry.curiosity);
+            }
 
             XMLUserSettings settings = XMLUserSettings.Instance;
             Language lang = XMLEditorSettings.Instance.GetSelectedLanguage();
@@ -253,6 +261,7 @@ namespace XmlTools
             VisualElement bg = newSelection.Q<VisualElement>("bg");
             bg.style.backgroundColor = manager.GetCuriosityHighlightColor(entry.curiosity);
             selectedNode = newSelection;
+            selectedNodeName = newSelection.name;
             EditorUtility.SetDirty(manager);
         }
 
