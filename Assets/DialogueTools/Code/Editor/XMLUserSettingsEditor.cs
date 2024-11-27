@@ -23,6 +23,8 @@ namespace XmlTools
             instance.modIconsPath = GUIBuilder.CreatePathSetter("Icons Path", instance.modIconsPath, out setDirty, instance.modPath);
             instance.vanillaIconsPath = GUIBuilder.CreatePathSetter("Vanilla Icons Path", instance.vanillaIconsPath, out setDirty, Application.dataPath);
             if (setDirty) EditorUtility.SetDirty(instance);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("shipLogFont"));
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

@@ -12,6 +12,8 @@ namespace XmlTools
         public string modIconsPath;
         [SerializeField]
         public string vanillaIconsPath;
+        [SerializeField]
+        public Font shipLogFont;
 
         public static XMLUserSettings Instance
         {

@@ -121,13 +121,14 @@ namespace XmlTools
             VisualElement bg = createdNode.Q<VisualElement>("bg");
             bg.style.backgroundColor = manager.GetCuriosityColor(entry.curiosity);
 
+            XMLUserSettings settings = XMLUserSettings.Instance;
             Language lang = XMLEditorSettings.Instance.GetSelectedLanguage();
 
             Label label = bg.Q<Label>("label");
             string logName = lang.GetShipLogValue(entry.name);
             if (!string.IsNullOrEmpty(logName)) label.text = logName;
+            if (settings.shipLogFont != null) label.style.unityFont = settings.shipLogFont;
 
-            XMLUserSettings settings = XMLUserSettings.Instance;
             if (settings != null && !string.IsNullOrEmpty(settings.modIconsPath) && Directory.Exists(settings.modIconsPath))
             {
                 string iconPath = settings.modIconsPath + '/' + id + ".png";
