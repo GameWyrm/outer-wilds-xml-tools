@@ -128,12 +128,12 @@ namespace XmlTools
             if (!string.IsNullOrEmpty(logName)) label.text = logName;
 
             XMLUserSettings settings = XMLUserSettings.Instance;
-            if (settings != null && string.IsNullOrEmpty(settings.modIconsPath) && Directory.Exists(settings.modIconsPath))
+            if (settings != null && !string.IsNullOrEmpty(settings.modIconsPath) && Directory.Exists(settings.modIconsPath))
             {
                 string iconPath = settings.modIconsPath + '/' + id + ".png";
                 if (File.Exists(iconPath))
                 {
-                    Texture2D icon = null;
+                    Texture2D icon = new Texture2D(2, 2);
                     if (ImageConversion.LoadImage(icon, File.ReadAllBytes(iconPath), false))
                     {
                         Image iconElement = bg.Q<Image>("icon");
