@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ShipLogManager : ScriptableObject
 {
     [SerializeField]
-    public List<EntryData> datas = new List<EntryData>();
+    public List<EntryData> datas;
 
     public static ShipLogManager Instance
     {
@@ -23,6 +23,13 @@ public class ShipLogManager : ScriptableObject
     public List<string> allExploreFactsList;
     public List<string> allRumorFactsList;
 
+    [SerializeField, HideInInspector]
+    private List<string> curiosities;
+    [SerializeField, HideInInspector]
+    private List<Color> curiosityColors;
+    [SerializeField, HideInInspector]
+    private List<Color> curiosityHighlightColors;
+
 
     private static ShipLogManager instance;
 
@@ -30,7 +37,7 @@ public class ShipLogManager : ScriptableObject
     {
         allExploreFactsList = new List<string>();
         allRumorFactsList = new List<string>();
-
+        ValidateData();
         if (datas.Count == 0) return;
 
         foreach (var entryFile in datas)
@@ -77,6 +84,7 @@ public class ShipLogManager : ScriptableObject
 
     public ShipLogEntry.Entry GetEntry(string entryName, out EntryData data)
     {
+        ValidateData();
         foreach (var file in datas)
         {
             if (file.entryPaths == null || file.entryPaths.Count == 0) file.BuildEntryDataPaths();
@@ -94,6 +102,7 @@ public class ShipLogManager : ScriptableObject
 
     public EntryData CreateEntryData(ShipLogEntry newEntryFile, StarSystem systemData)
     {
+        ValidateData();
         if (newEntryFile.entries == null || newEntryFile.entries.Length <= 0) return null;
         EntryData data = ScriptableObject.CreateInstance<EntryData>();
         foreach (var entry in newEntryFile.entries)
@@ -114,8 +123,80 @@ public class ShipLogManager : ScriptableObject
                 }
             }
         }
+        if (systemData.curiosities != null)
+        {
+            foreach (var curiosity in systemData.curiosities)
+            {
+                SetCuriosityColor(curiosity.id, curiosity.color);
+                SetCuriosityHighlightColor(curiosity.id, curiosity.highlightColor);
+            }
+        }
 
         return data;
+    }
+
+    public Color GetCuriosityColor(string curiosity)
+    {
+        if (curiosities == null || curiosityColors == null) return Color.grey;
+        if (string.IsNullOrEmpty(curiosity)) return Color.grey;
+        if (curiosities.Contains(curiosity))
+        {
+            int index = curiosities.IndexOf(curiosity);
+            return curiosityColors[index];
+        }
+        else return Color.grey;
+    }
+
+    public void SetCuriosityColor(string curiosity, Color color)
+    {
+        if (curiosities == null) curiosities = new List<string>();
+        if (curiosityColors == null) curiosityColors = new List<Color>();
+        if (curiosityHighlightColors == null) curiosityHighlightColors = new List<Color>();
+
+        if (string.IsNullOrEmpty(curiosity) || color == null) return;
+        if (curiosities.Contains(curiosity))
+        {
+            int index = curiosities.IndexOf(curiosity);
+            curiosityColors[index] = color;
+        }
+        else
+        {
+            curiosities.Add(curiosity);
+            curiosityColors.Add(color);
+            curiosityHighlightColors.Add(Color.Lerp(color, Color.white, 0.5f));
+        }
+    }
+
+    public Color GetCuriosityHighlightColor(string curiosity)
+    {
+        if (curiosities == null || curiosityHighlightColors == null) return Color.grey;
+        if (string.IsNullOrEmpty(curiosity)) return Color.grey;
+        if (curiosities.Contains(curiosity))
+        {
+            int index = curiosities.IndexOf(curiosity);
+            return curiosityHighlightColors[index];
+        }
+        else return Color.grey;
+    }
+
+    public void SetCuriosityHighlightColor(string curiosity, Color color)
+    {
+        if (curiosities == null) curiosities = new List<string>();
+        if (curiosityColors == null) curiosityColors = new List<Color>();
+        if (curiosityHighlightColors == null) curiosityHighlightColors = new List<Color>();
+
+        if (string.IsNullOrEmpty(curiosity) || color == null) return;
+        if (curiosities.Contains(curiosity))
+        {
+            int index = curiosities.IndexOf(curiosity);
+            curiosityHighlightColors[index] = color;
+        }
+        else
+        {
+            curiosities.Add(curiosity);
+            curiosityColors.Add(Color.Lerp(color, Color.black, 0.5f));
+            curiosityHighlightColors.Add(color);
+        }
     }
 
     private void FixEntryData(ShipLogEntry.Entry entry)
@@ -145,5 +226,22 @@ public class ShipLogManager : ScriptableObject
                 FixEntryData(childEntry);
             }
         }
+    }
+
+    /// <summary>
+    /// Cleanup data in case of deletions
+    /// </summary>
+    public void ValidateData()
+    {
+        if (datas == null)
+        {
+            datas = new List<EntryData>();
+            EditorUtility.SetDirty(this);
+            return;
+        }
+
+        int dataLength = datas.Count;
+        datas.RemoveAll(x => x == null);
+        if (dataLength < datas.Count) EditorUtility.SetDirty(this);
     }
 }

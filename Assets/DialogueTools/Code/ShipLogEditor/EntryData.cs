@@ -412,6 +412,7 @@ public class EntryData : ScriptableObject
         pathSoFar += entry.entryID;
         entryPaths.Add(pathSoFar);
         entryIDs.Add(entry.entryID);
+
         if (entry.exploreFacts != null)
         {
             foreach (var fact in entry.exploreFacts)

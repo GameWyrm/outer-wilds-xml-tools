@@ -39,6 +39,7 @@ public class ShipLogEditor : NodeWindow
         arrowsRoot.Clear();
         nodesRoot.Clear();
         ShipLogManager manager = ShipLogManager.Instance;
+        manager.ValidateData();
         if (manager == null) return;
         if (manager.datas == null || manager.datas.Count == 0) return;
         nodes = new List<NodeData>();
@@ -100,7 +101,21 @@ public class ShipLogEditor : NodeWindow
 
     protected override void OnCreateNode(VisualElement createdNode)
     {
-        //Debug.Log($"Creating node {createdNode.name}");
+        string id = createdNode.name;
+        ShipLogManager manager = ShipLogManager.Instance;
+        ShipLogEntry.Entry entry = manager.GetEntry(id);
+        if (entry == null) return;
+
+        VisualElement bg = createdNode.Q<VisualElement>("bg");
+        bg.style.backgroundColor = manager.GetCuriosityColor(id);
+
+        Language lang = XMLEditorSettings.Instance.GetSelectedLanguage();
+
+        Label label = bg.Q<Label>("label");
+        string logName = lang.GetShipLogValue(id);
+        if (!string.IsNullOrEmpty(logName)) label.text = logName;
+
+        // TODO set image
     }
 
     protected override void OnClickImport()

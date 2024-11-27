@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 public class StarSystem
@@ -25,6 +26,42 @@ public class StarSystem
         public int g;
         public int b;
         public int a;
+
+        public MColor(int r, int g, int b, int a)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+        }
+
+        public MColor(int r, int g, int b)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = 1;
+        }
+
+        public static implicit operator Color(MColor mColor)
+        {
+            return new Color(
+                mColor.r / 255f,
+                mColor.g / 255f,
+                mColor.b / 255f,
+                mColor.a / 255f
+                );
+        }
+
+        public static implicit operator MColor(Color color)
+        {
+            return new MColor(
+                Mathf.RoundToInt(color.r * 255),
+                Mathf.RoundToInt(color.g * 255),
+                Mathf.RoundToInt(color.b * 255),
+                Mathf.RoundToInt(color.a * 255)
+                );
+        }
     }
 
     [Serializable]
