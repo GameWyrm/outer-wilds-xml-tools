@@ -194,7 +194,7 @@ namespace XmlTools
             return data.ToArray();
         }
 
-        public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName)
+        public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName, bool dialogue)
         {
             int clearValue = -1;
             List<string> data = new List<string>(dialogueKeys);
@@ -203,7 +203,7 @@ namespace XmlTools
             {
                 for (int i = 0; i < dialogueKeys.Length; i++)
                 {
-                    CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, true, out bool shouldClear);
+                    CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, true, dialogue, out bool shouldClear);
                     if (shouldClear) clearValue = i;
                 }
                 if (clearValue >= 0) data.RemoveAt(clearValue);
@@ -235,26 +235,26 @@ namespace XmlTools
             return data.ToArray();
         }
 
-        public static string CreateDropdown(string label, string selectedCondition, string[] items)
+        public static string CreateDropdown(string label, string selectedItem, string[] items)
         {
             int index = -1;
-            List<string> conditionList = new List<string>();
-            conditionList.Add("(None)");
-            conditionList.AddRange(items);
-            if (conditionList.Contains(selectedCondition)) index = conditionList.IndexOf(selectedCondition);
+            List<string> itemList = new List<string>();
+            itemList.Add("(None)");
+            itemList.AddRange(items);
+            if (itemList.Contains(selectedItem)) index = itemList.IndexOf(selectedItem);
             {
-                conditionList.Add(selectedCondition);
-                index = conditionList.Count - 1;
+                itemList.Add(selectedItem);
+                index = itemList.Count - 1;
             }
 
-            selectedCondition = CreateDropdownItem(label, conditionList, index);
+            selectedItem = CreateDropdownItem(label, itemList, index);
 
-            if (selectedCondition == "(None)") selectedCondition = "";
+            if (selectedItem == "(None)") selectedItem = "";
 
-            return selectedCondition;
+            return selectedItem;
         }
 
-        public static string CreateTranslatedArrayItem(string label, string key, Language lang, bool clearable, out bool shouldClear)
+        public static string CreateTranslatedArrayItem(string label, string key, Language lang, bool clearable, bool dialogue, out bool shouldClear)
         {
             EditorGUILayout.BeginHorizontal();
             string newKey = EditorGUILayout.DelayedTextField(label, key);
@@ -267,7 +267,9 @@ namespace XmlTools
             EditorGUILayout.EndHorizontal();
             if (newKey != key)
             {
-                bool success = lang.TryRenameDialogueKey(key, newKey);
+                bool success;
+                if (dialogue) success = lang.TryRenameDialogueKey(key, newKey);
+                else success = lang.TryRenameShipLogKey(key, newKey);
                 if (!success)
                 {
                     Debug.LogError($"Dialogue dictionary for {lang.name} already includes key {newKey}. Aborting key change.");
@@ -278,12 +280,14 @@ namespace XmlTools
                     foreach (var language in XMLEditorSettings.Instance.supportedLanguages)
                     {
                         if (language == lang) continue;
-                        language.TryRenameDialogueKey(key, newKey);
+                        if (dialogue) language.TryRenameDialogueKey(key, newKey);
+                        else language.TryRenameShipLogKey(key, newKey);
                     }
                     Debug.Log($"Renamed key {key} to {newKey}.");
                 }
             }
-            lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
+            if (dialogue) lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
+            else lang.SetShipLogValue(newKey, EditorGUILayout.TextArea(lang.GetShipLogValue(newKey)));
             return newKey;
         }
 

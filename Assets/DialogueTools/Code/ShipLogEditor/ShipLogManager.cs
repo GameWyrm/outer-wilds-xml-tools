@@ -140,6 +140,25 @@ namespace XmlTools
             return data;
         }
 
+        public void CreateCuriosity(string id)
+        {
+            curiosities.Add(id);
+            Color newColor = Random.ColorHSV(0, 1, 0.5f, 1, 0.8f, 1, 1, 1);
+            SetCuriosityColor(id, newColor);
+            SetCuriosityHighlightColor(id, Color.Lerp(newColor, Color.white, 0.5f));
+        }
+
+        public void DeleteCuriosity(string id)
+        {
+            if (curiosities.Contains(id))
+            {
+                int index = curiosities.IndexOf(id);
+                curiosities.RemoveAt(index);
+                curiosityColors.RemoveAt(index);
+                curiosityHighlightColors.RemoveAt(index);
+            }
+        }
+
         public Color GetCuriosityColor(string curiosity)
         {
             if (curiosities == null || curiosityColors == null) return Color.grey;

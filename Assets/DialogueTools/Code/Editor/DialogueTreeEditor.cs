@@ -177,7 +177,7 @@ namespace XmlTools
             if (activeNode.dialogues == null) activeNode.dialogues = new DialogueNode.Dialogue[0];
             for (int i = 0; i < activeNode.dialogues.Length; i++)
             {
-                activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", language, activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName);
+                activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", language, activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName, true);
             }
             EditorGUILayout.Space();
 
@@ -336,7 +336,7 @@ namespace XmlTools
 
                     option.requiredCondition = GUIBuilder.CreateDropdown("Required Loop Condition", option.requiredCondition, loopConditions);
                     option.cancelledCondition = GUIBuilder.CreateDropdown("Cancelled Loop Condition", option.cancelledCondition, loopConditions);
-                    option.text = GUIBuilder.CreateTranslatedArrayItem("Text", option.text, settings.GetSelectedLanguage(), false, out _);
+                    option.text = GUIBuilder.CreateTranslatedArrayItem("Text", option.text, settings.GetSelectedLanguage(), false, true, out _);
                     string oldOptionTarget = option.dialogueTarget;
                     option.dialogueTarget = GUIBuilder.CreateDropdown("Dialogue Target", option.dialogueTarget, nodeNames.ToArray());
                     if (oldOptionTarget != option.dialogueTarget)

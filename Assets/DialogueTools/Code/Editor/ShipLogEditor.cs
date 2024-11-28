@@ -262,6 +262,8 @@ namespace XmlTools
             bg.style.backgroundColor = manager.GetCuriosityHighlightColor(entry.curiosity);
             selectedNode = newSelection;
             selectedNodeName = newSelection.name;
+            ShipLogManagerEditor.selectedEntry = entry;
+            Selection.activeObject = manager;
             EditorUtility.SetDirty(manager);
         }
 
