@@ -260,7 +260,7 @@ namespace XmlTools
                 oldChildren.Add(targetEntry);
                 entry.entries = oldChildren.ToArray();
             }
-            BuildEntryDataPaths();
+            BuildEntryDataPaths(false);
             BuildInfo();
         }
 
@@ -389,7 +389,10 @@ namespace XmlTools
                     int index = entryIDs.IndexOf(entryID);
                     entryID = entryPaths[index];
                 }
-                else return null; 
+                else
+                {
+                    return null;
+                }
             }
             if (entry == null || entry.entries == null) return null;
             ShipLogEntry.Entry[] entries;
@@ -438,7 +441,7 @@ namespace XmlTools
 
 
 
-        public void BuildEntryDataPaths()
+        public void BuildEntryDataPaths(bool refreshInfo)
         {
             entryPaths = new List<string>();
             entryIDs = new List<string>();
@@ -451,7 +454,7 @@ namespace XmlTools
                 rootEntries.Add(entry.entryID);
                 AddToEntryList(entry, "");
             }
-            BuildInfo();
+            if (refreshInfo) BuildInfo();
             EditorUtility.SetDirty(this);
         }
 

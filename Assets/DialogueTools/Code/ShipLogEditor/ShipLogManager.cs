@@ -107,6 +107,10 @@ namespace XmlTools
         /// </summary>
         public void BuildInfo()
         {
+            foreach (var item in datas)
+            {
+                item.BuildEntryDataPaths(false);
+            }
             GenerateFactsLists();
             GeneratePaths();
         }
@@ -132,7 +136,7 @@ namespace XmlTools
             parent = null;
             foreach (var file in datas)
             {
-                if (file.entryPaths == null || file.entryPaths.Count == 0) file.BuildEntryDataPaths();
+                if (file.entryPaths == null || file.entryPaths.Count == 0) file.BuildEntryDataPaths(true);
 
                 ShipLogEntry.Entry entry = file.GetEntry(entryName, out parent);
                 if (entry != null)
@@ -155,7 +159,7 @@ namespace XmlTools
                 FixEntryData(entry);
             }
             data.entry = newEntryFile;
-            data.BuildEntryDataPaths();
+            data.BuildEntryDataPaths(true);
             data.nodes = new List<NodeData>();
             if (systemData.entryPositions != null)
             {

@@ -21,11 +21,11 @@ namespace XmlTools
         {
             Instance = GetWindow<ShipLogEditor>();
             Instance.titleContent = new GUIContent("ShipLogEditor");
-            ShipLogManager.Instance.BuildInfo();
         }
 
         protected override void ConstructGUI()
         {
+            ShipLogManager.Instance.BuildInfo();
             visualTree = EditorReferences.Instance.ShipLogVisualTree;
             base.ConstructGUI();
         }
@@ -55,6 +55,7 @@ namespace XmlTools
             for (int i = 0; i < nodes.Count; i++)
             {
                 ShipLogEntry.Entry entry = manager.GetEntry(nodes[i].name, out EntryData data);
+                if (entry == null) Debug.Log("NULL");
 
                 EntryType entryType = EntryType.Normal;
                 if (entry.isCuriosity) entryType = EntryType.Curiosity;
