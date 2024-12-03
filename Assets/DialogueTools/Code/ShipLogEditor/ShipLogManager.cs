@@ -23,6 +23,11 @@ namespace XmlTools
         }
 
         [SerializeField]
+        public List<string> allEntryPaths;
+        [SerializeField]
+        public List<string> allParentEntriesPaths;
+
+        [SerializeField]
         public List<string> allExploreFactsList;
         [SerializeField]
         public List<string> allRumorFactsList;
@@ -82,19 +87,54 @@ namespace XmlTools
             }
         }
 
+        private void GeneratePaths()
+        {
+            allEntryPaths = new List<string>();
+            allParentEntriesPaths = new List<string>();
+
+            foreach (var data in datas)
+            {
+                foreach (var entry in data.entryPaths)
+                {
+                    allEntryPaths.Add(entry);
+                    if (!entry.Contains("/")) allParentEntriesPaths.Add(entry);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Maintenance step, call this whenever editing the amount of entries or facts
+        /// </summary>
+        public void BuildInfo()
+        {
+            GenerateFactsLists();
+            GeneratePaths();
+        }
+
         public ShipLogEntry.Entry GetEntry(string entryName)
         {
-            return GetEntry(entryName, out _);
+            return GetEntry(entryName, out _, out _);
         }
 
         public ShipLogEntry.Entry GetEntry(string entryName, out EntryData data)
         {
+            return GetEntry(entryName, out data, out _);
+        }
+
+        public ShipLogEntry.Entry GetEntry(string entryName, out ShipLogEntry.Entry parent)
+        {
+            return GetEntry(entryName, out _, out parent);
+        }
+
+        public ShipLogEntry.Entry GetEntry(string entryName, out EntryData data, out ShipLogEntry.Entry parent)
+        {
             ValidateData();
+            parent = null;
             foreach (var file in datas)
             {
                 if (file.entryPaths == null || file.entryPaths.Count == 0) file.BuildEntryDataPaths();
 
-                ShipLogEntry.Entry entry = file.GetEntry(entryName);
+                ShipLogEntry.Entry entry = file.GetEntry(entryName, out parent);
                 if (entry != null)
                 {
                     data = file;

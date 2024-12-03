@@ -363,6 +363,26 @@ namespace XmlTools
             EditorGUILayout.Space();
         }
 
+        public static bool CreateEntryButton(string label, string targetEntry, bool haveRemoveButton = false)
+        {
+            bool shouldRemove = false;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label);
+            if (GUILayout.Button("Select Entry"))
+            {
+                ShipLogEditor.Instance.SelectNode(targetEntry);
+            }
+            if (haveRemoveButton)
+            {
+                if (GUILayout.Button("X", GUILayout.Width(20)))
+                {
+                    shouldRemove = true;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            return shouldRemove;
+        }
+
         private static Color CreateColorItem(string label, Color color)
         {
             color = EditorGUILayout.ColorField(label, color);

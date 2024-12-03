@@ -10,6 +10,8 @@ namespace XmlTools
     {
         public static ShipLogManager instance;
         public static ShipLogEntry.Entry selectedEntry;
+        public static ShipLogEntry.Entry parentEntry;
+        public static EntryData selectedData;
 
         private static bool showCuriosities;
         private static bool showExploreFacts;
@@ -54,6 +56,17 @@ namespace XmlTools
 
             if (selectedEntry != null)
             {
+                EditorGUILayout.Space(20);
+
+                if (parentEntry != null)
+                {
+                    GUIBuilder.CreateEntryButton("Parent entry: " + parentEntry.entryID, parentEntry.entryID);
+                }
+                else
+                {
+                    EditorGUILayout.LabelField("No parent found for this node.");
+                }
+
                 EditorGUILayout.Space(20);
 
                 XMLEditorSettings settings = XMLEditorSettings.Instance;
@@ -147,13 +160,36 @@ namespace XmlTools
                 showChildEntries = EditorGUILayout.BeginFoldoutHeaderGroup(showChildEntries, "Child Entries");
                 if (showChildEntries)
                 {
-                    if (selectedEntry.childEntries != null)
+                    if (selectedEntry.childEntries != null && selectedEntry.childEntries.Length > 0)
                     {
                         foreach (var child in selectedEntry.childEntries)
                         {
-                            EditorGUILayout.LabelField(child.entryID);
+                            if (GUIBuilder.CreateEntryButton(child.entryID, child.entryID, true))
+                            {
+                                selectedData.MoveEntry(child);
+                                setRedraw = true;
+                            }
                         }
                     }
+                    else
+                    {
+                        EditorGUILayout.LabelField("No children for this entry.");
+                    }
+
+                    List<string> eligibleEntries = new List<string>();
+                    eligibleEntries.Add("(None)");
+                    eligibleEntries.AddRange(selectedData.rootEntries);
+                    string newChild = GUIBuilder.CreateDropdown("Add Child Entry", "", eligibleEntries.ToArray());
+                    if (newChild != "" && newChild != "(None)")
+                    {
+                        if (EditorUtility.DisplayDialog("Confirm", $"Are you sure you want to make {newChild} a child of {selectedEntry.entryID}?", "Yes", "No"))
+                        {
+                            var newChildEntry = selectedData.GetEntry(newChild);
+                            selectedData.MoveEntry(newChildEntry, selectedEntry);
+                            setRedraw = true;
+                        }
+                    }
+
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }

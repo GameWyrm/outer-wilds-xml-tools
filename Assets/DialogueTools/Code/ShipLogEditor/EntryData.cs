@@ -16,6 +16,8 @@ namespace XmlTools
         public List<string> entryIDs;
         [SerializeField, HideInInspector]
         public List<string> entriesWhoAreChildren;
+        [SerializeField, HideInInspector]
+        public List<string> rootEntries;
 
         // These should always stay in sync. They are effectively a Dictionary<string, string>.
         [SerializeField, HideInInspector]
@@ -25,6 +27,8 @@ namespace XmlTools
 
         [SerializeField, HideInInspector]
         public List<NodeData> nodes;
+
+        public void BuildInfo() => ShipLogManager.Instance.BuildInfo();
 
         public void AddFact(string factPath, bool asRumor, bool logWarnings = true)
         {
@@ -69,6 +73,7 @@ namespace XmlTools
                 }
                 factIDs.Add(factName);
                 factPaths.Add(factPath);
+                BuildInfo();
             }
         }
 
@@ -122,6 +127,7 @@ namespace XmlTools
             int index = factPaths.IndexOf(factPath);
             factPaths.RemoveAt(index);
             factIDs.RemoveAt(index);
+            BuildInfo();
         }
 
         public void RenameFact(string factPath, string newName)
@@ -143,6 +149,7 @@ namespace XmlTools
             newPath += newName;
             factPaths[index] = newPath;
             factIDs[index] = newPath;
+            BuildInfo();
         }
 
         public ShipLogEntry.ExploreFact GetExploreFact(string factPath)
@@ -222,7 +229,39 @@ namespace XmlTools
                 List<ShipLogEntry.Entry> oldEntries = new List<ShipLogEntry.Entry>(entry.entries);
                 oldEntries.Add(newEntry);
                 entry.entries = oldEntries.ToArray();
+                BuildInfo();
             }
+        }
+
+        /// <summary>
+        /// Moves the selected entry to the provided parent. If no parent is provided, makes it a root entry instead.
+        /// </summary>
+        /// <param name="targetEntry"></param>
+        /// <param name="newParent"></param>
+        public void MoveEntry(ShipLogEntry.Entry targetEntry, ShipLogEntry.Entry newParent = null)
+        {
+            if (!entryIDs.Contains(targetEntry.entryID))
+            {
+                Debug.LogError($"Looks like {targetEntry.entryID} is not a member of {name}.");
+            }
+            if (newParent != null)
+            {
+                if (!entryIDs.Contains(newParent.entryID))
+                {
+                    Debug.LogError($"Looks like {newParent.entryID} is not a member of {name}.");
+                }
+                List<ShipLogEntry.Entry> oldChildren = new List<ShipLogEntry.Entry>(newParent.childEntries);
+                oldChildren.Add(targetEntry);
+                newParent.childEntries = oldChildren.ToArray();
+            }
+            else
+            {
+                List<ShipLogEntry.Entry> oldChildren = new List<ShipLogEntry.Entry>(entry.entries);
+                oldChildren.Add(targetEntry);
+                entry.entries = oldChildren.ToArray();
+            }
+            BuildEntryDataPaths();
+            BuildInfo();
         }
 
         public void RemoveEntry(string entryID)
@@ -296,6 +335,7 @@ namespace XmlTools
             {
                 parentEntry.childEntries = parentEntries.ToArray();
             }
+            BuildInfo();
         }
 
         /// <summary>
@@ -329,10 +369,18 @@ namespace XmlTools
                     factPaths[i].Replace(entryPath, newNamePath);
                 }
             }
+            BuildInfo();
         }
 
-        public ShipLogEntry.Entry GetEntry(string entryID, ShipLogEntry.Entry parentEntry = null)
+        public ShipLogEntry.Entry GetEntry(string entryPath, ShipLogEntry.Entry parentEntry = null)
         {
+            return GetEntry(entryPath, out _, parentEntry);
+        }
+
+
+        public ShipLogEntry.Entry GetEntry(string entryID, out ShipLogEntry.Entry parent, ShipLogEntry.Entry parentEntry = null)
+        {
+            parent = null;
             if (string.IsNullOrEmpty(entryID)) return null;
             if (parentEntry == null && !entryPaths.Contains(entryID))
             {
@@ -341,7 +389,7 @@ namespace XmlTools
                     int index = entryIDs.IndexOf(entryID);
                     entryID = entryPaths[index];
                 }
-                else return null;
+                else return null; 
             }
             if (entry == null || entry.entries == null) return null;
             ShipLogEntry.Entry[] entries;
@@ -371,6 +419,7 @@ namespace XmlTools
 
             if (pathElements.Length == 1)
             {
+                parent = parentEntry;
                 return rootEntry;
             }
             else
@@ -382,9 +431,8 @@ namespace XmlTools
                 }
                 newPath = newPath.TrimEnd('/');
 
-                returnedEntry = GetEntry(newPath, rootEntry);
+                returnedEntry = GetEntry(newPath, out parent, rootEntry);
             }
-
             return returnedEntry;
         }
 
@@ -395,12 +443,15 @@ namespace XmlTools
             entryPaths = new List<string>();
             entryIDs = new List<string>();
             entriesWhoAreChildren = new List<string>();
+            rootEntries = new List<string>();
             factPaths = new List<string>();
             factIDs = new List<string>();
             foreach (var entry in entry.entries)
             {
+                rootEntries.Add(entry.entryID);
                 AddToEntryList(entry, "");
             }
+            BuildInfo();
             EditorUtility.SetDirty(this);
         }
 

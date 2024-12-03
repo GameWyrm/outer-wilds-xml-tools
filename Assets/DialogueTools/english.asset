@@ -368,6 +368,14 @@ MonoBehaviour:
   - $HN2Ernesto1
   - $HN2Ernesto1A
   - $HN2Ernesto2
+  - $HN2LogDormsName
+  - $HN2LogEndName
+  - $HN2LogGrandChamberName
+  - $HN2LogHNName
+  - $HN2LogNameIntro
+  - $HN2LogEngineName
+  - $HN2LogLibraryName
+  - $HN2LogMagiName
   dialogueKeys:
   - $HN2MemoryCubeName
   - $HN2Entrance1
@@ -718,6 +726,14 @@ MonoBehaviour:
   - $HN2Ernesto1
   - $HN2Ernesto1A
   - $HN2Ernesto2
+  - $HN2LogDormsName
+  - $HN2LogEndName
+  - $HN2LogGrandChamberName
+  - $HN2LogHNName
+  - $HN2LogNameIntro
+  - $HN2LogEngineName
+  - $HN2LogLibraryName
+  - $HN2LogMagiName
   dialogueValues:
   - Memory Cube
   - 'TARGET RACE: "Hearthian"
@@ -1430,6 +1446,14 @@ MonoBehaviour:
   - Yeah, yeah, yeah, Ernesto the Magic Talking Anglerfish. Don't you guys have any
     more creative Easter Eggs?
   - <![CDATA[<i>sad anglerfish noises</i>]]>
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   shipLogKeys:
   - $HN2LogNameIntro
   - $HN2LogIntroRumor
@@ -1555,7 +1579,7 @@ MonoBehaviour:
   - The Magister discovered some kind of vortex that told him about the end of the
     universe. He did not believe that the universe had to end, and called this the
     "Lie of the Universe".
-  - Hearth's Neighbor
+  - Cool Neighbor
   - '[You should only be seeing this entry if you beat Hearth''s Neighbor, to which
     this mod is a sequel. Having this entry enables certain dialogue that contains
     minor spoilers but is completely unneeded to progress in Magistarium.]'

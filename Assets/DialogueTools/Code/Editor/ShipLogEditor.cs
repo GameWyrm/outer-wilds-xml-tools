@@ -21,6 +21,7 @@ namespace XmlTools
         {
             Instance = GetWindow<ShipLogEditor>();
             Instance.titleContent = new GUIContent("ShipLogEditor");
+            ShipLogManager.Instance.BuildInfo();
         }
 
         protected override void ConstructGUI()
@@ -256,15 +257,30 @@ namespace XmlTools
                     oldBG.style.backgroundColor = manager.GetCuriosityColor(oldEntry.curiosity);
                 }
             }
-            ShipLogEntry.Entry entry = manager.GetEntry(id);
+            ShipLogEntry.Entry entry = manager.GetEntry(id, out EntryData data, out ShipLogEntry.Entry parent);
             if (entry == null) return;
             VisualElement bg = newSelection.Q<VisualElement>("bg");
             bg.style.backgroundColor = manager.GetCuriosityHighlightColor(entry.curiosity);
             selectedNode = newSelection;
             selectedNodeName = newSelection.name;
             ShipLogManagerEditor.selectedEntry = entry;
+            ShipLogManagerEditor.parentEntry = parent;
+            ShipLogManagerEditor.selectedData = data;
             Selection.activeObject = manager;
             EditorUtility.SetDirty(manager);
+        }
+
+        public void SelectNode(string nodeName)
+        {
+            VisualElement element = nodeElements[nodeName];
+            if (element != null)
+            {
+                SelectNode(nodeElements[nodeName]);
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Error!", $"No suitable node {nodeName} found!", "OK");
+            }
         }
 
         public override void MoveNode(VisualElement node, Vector2 newPosition)
