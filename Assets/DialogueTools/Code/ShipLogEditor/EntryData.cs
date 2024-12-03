@@ -266,19 +266,21 @@ namespace XmlTools
                 {
                     oldParentChildren.AddRange(oldParent.childEntries);
                     oldParentChildren.Remove(targetEntry);
-                    oldParent.childEntries = oldChildren.ToArray();
+                    oldParent.childEntries = oldParentChildren.ToArray();
                 }
                 
             }
             else
             {
+                oldParentChildren.AddRange(oldParent.childEntries);
+                oldParentChildren.Remove(targetEntry);
+                oldParent.childEntries = oldParentChildren.ToArray();
+
                 List<ShipLogEntry.Entry> oldChildren = new List<ShipLogEntry.Entry>(entry.entries);
                 oldChildren.Add(targetEntry);
                 entry.entries = oldChildren.ToArray();
 
-                oldParentChildren.AddRange(oldParent.childEntries);
-                oldParentChildren.Remove(targetEntry);
-                oldParent.childEntries = oldChildren.ToArray();
+                
             }
 
             BuildEntryDataPaths(false);

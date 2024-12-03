@@ -166,7 +166,7 @@ namespace XmlTools
                         {
                             if (GUIBuilder.CreateEntryButton(child.entryID, child.entryID, true))
                             {
-                                selectedData.MoveEntry(child);
+                                selectedData.MoveEntry(child, null, selectedEntry);
                                 setRedraw = true;
                             }
                         }
@@ -185,7 +185,7 @@ namespace XmlTools
                         if (EditorUtility.DisplayDialog("Confirm", $"Are you sure you want to make {newChild} a child of {selectedEntry.entryID}?", "Yes", "No"))
                         {
                             var newChildEntry = selectedData.GetEntry(newChild);
-                            selectedData.MoveEntry(newChildEntry, selectedEntry);
+                            selectedData.MoveEntry(newChildEntry, selectedEntry, parentEntry);
                             setRedraw = true;
                         }
                     }
