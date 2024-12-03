@@ -291,6 +291,14 @@ MonoBehaviour:
   - HN2_MG
   entriesWhoAreChildren:
   - HN2_MG
+  rootEntries:
+  - HN2_DEVICE
+  - HN2_HN
+  - HN2_Intro
+  - HN2_GC
+  - HN2_LB
+  - HN2_EG
+  - HN2_DM
   factIDs:
   - HN2_Device1
   - HN2_Device2

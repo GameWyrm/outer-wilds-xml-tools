@@ -238,8 +238,10 @@ namespace XmlTools
         /// </summary>
         /// <param name="targetEntry"></param>
         /// <param name="newParent"></param>
-        public void MoveEntry(ShipLogEntry.Entry targetEntry, ShipLogEntry.Entry newParent = null)
+        public void MoveEntry(ShipLogEntry.Entry targetEntry, ShipLogEntry.Entry newParent = null, ShipLogEntry.Entry oldParent = null)
         {
+            List<ShipLogEntry.Entry> oldParentChildren = new List<ShipLogEntry.Entry>();
+          
             if (!entryIDs.Contains(targetEntry.entryID))
             {
                 Debug.LogError($"Looks like {targetEntry.entryID} is not a member of {name}.");
@@ -253,13 +255,32 @@ namespace XmlTools
                 List<ShipLogEntry.Entry> oldChildren = new List<ShipLogEntry.Entry>(newParent.childEntries);
                 oldChildren.Add(targetEntry);
                 newParent.childEntries = oldChildren.ToArray();
+
+                if (oldParent == null)
+                {
+                    oldParentChildren.AddRange(entry.entries);
+                    oldParentChildren.Remove(targetEntry);
+                    entry.entries = oldParentChildren.ToArray();
+                }
+                else
+                {
+                    oldParentChildren.AddRange(oldParent.childEntries);
+                    oldParentChildren.Remove(targetEntry);
+                    oldParent.childEntries = oldChildren.ToArray();
+                }
+                
             }
             else
             {
                 List<ShipLogEntry.Entry> oldChildren = new List<ShipLogEntry.Entry>(entry.entries);
                 oldChildren.Add(targetEntry);
                 entry.entries = oldChildren.ToArray();
+
+                oldParentChildren.AddRange(oldParent.childEntries);
+                oldParentChildren.Remove(targetEntry);
+                oldParent.childEntries = oldChildren.ToArray();
             }
+
             BuildEntryDataPaths(false);
             BuildInfo();
         }
