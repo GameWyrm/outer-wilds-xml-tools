@@ -153,7 +153,11 @@ namespace XmlTools
                 showExploreFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showExploreFacts, "Explore Facts");
                 if (showExploreFacts)
                 {
-                    // TODO display facts
+                    foreach (var fact in selectedEntry.exploreFacts)
+                    {
+                        if (GUIBuilder.CreateExploreFactItem(fact)) setDirty = true;
+                        EditorGUILayout.Space(20);
+                    }
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
 

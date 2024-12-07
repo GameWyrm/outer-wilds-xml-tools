@@ -383,6 +383,24 @@ namespace XmlTools
             return shouldRemove;
         }
 
+        /// <summary>
+        /// Creates an Explore Fact entry item. Returns true if the fact was edited this OnInspectorGui step.
+        /// </summary>
+        /// <param name="inputFact"></param>
+        /// <returns></returns>
+        public static bool CreateExploreFactItem(ShipLogEntry.ExploreFact inputFact)
+        {
+            EditorGUILayout.LabelField(inputFact.exploreID, EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+            bool newIgnoreMoreToExplore = EditorGUILayout.ToggleLeft("Ignore More To Explore", inputFact.ignoreMoreToExplore);
+            string newText = CreateTranslatedArrayItem("Text", inputFact.text, XMLEditorSettings.Instance.GetSelectedLanguage(), false, false, out _);
+            bool dirty = newIgnoreMoreToExplore != inputFact.ignoreMoreToExplore || newText != inputFact.text;
+            inputFact.ignoreMoreToExplore = newIgnoreMoreToExplore;
+            inputFact.text = newText;
+
+            return dirty;
+        }
+
         private static Color CreateColorItem(string label, Color color)
         {
             color = EditorGUILayout.ColorField(label, color);

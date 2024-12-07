@@ -256,14 +256,14 @@ MonoBehaviour:
   - name: Intro2
     position: {x: 499, y: 69}
   - name: Hub
-    position: {x: 502, y: 235}
+    position: {x: 501, y: 219}
   - name: Why
     position: {x: 875, y: 97}
   - name: Door
-    position: {x: 530, y: 396}
+    position: {x: 499, y: 409}
   - name: DoorA
     position: {x: 155, y: 410}
   - name: DoorB
     position: {x: 859, y: 418}
   - name: Find
-    position: {x: 942, y: 269}
+    position: {x: 942, y: 217}

@@ -82,41 +82,6 @@ MonoBehaviour:
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 1
       childEntries: []
-    - entryID: HN2_Intro
-      name: $HN2LogNameIntro
-      curiosity: HN2_DEVICE
-      m_isCuriosity: 
-      isCuriosity: 0
-      m_ignoreMoreToExplore: 
-      ignoreMoreToExplore: 0
-      m_parentIgnoreNotRevealed: 
-      parentIgnoreNotRevealed: 0
-      ignoreMoreToExploreCondition: 
-      altPhotoCondition: 
-      rumorFacts:
-      - rumorID: HN2_IntroRumor
-        sourceID: HN2_HN
-        rumorName: 
-        rumorNamePriority: 
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-      exploreFacts:
-      - exploreID: HN2_Intro1
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-      - exploreID: HN2_Intro2
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-      - exploreID: HN2_Intro3
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-      - exploreID: HN2_Intro4
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-      - exploreID: HN2_Intro5
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-      childEntries: []
     - entryID: HN2_GC
       name: $HN2LogGrandChamberName
       curiosity: HN2_DEVICE
@@ -271,34 +236,69 @@ MonoBehaviour:
           m_ignoreMoreToExplore: 
           ignoreMoreToExplore: 0
         childEntries: []
+    - entryID: HN2_Intro
+      name: $HN2LogNameIntro
+      curiosity: HN2_DEVICE
+      m_isCuriosity: 
+      isCuriosity: 0
+      m_ignoreMoreToExplore: 
+      ignoreMoreToExplore: 0
+      m_parentIgnoreNotRevealed: 
+      parentIgnoreNotRevealed: 0
+      ignoreMoreToExploreCondition: 
+      altPhotoCondition: 
+      rumorFacts:
+      - rumorID: HN2_IntroRumor
+        sourceID: HN2_HN
+        rumorName: 
+        rumorNamePriority: 
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+      exploreFacts:
+      - exploreID: HN2_Intro1
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+      - exploreID: HN2_Intro2
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+      - exploreID: HN2_Intro3
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+      - exploreID: HN2_Intro4
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+      - exploreID: HN2_Intro5
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+      childEntries: []
   entryPaths:
   - HN2_DEVICE
   - HN2_HN
-  - HN2_Intro
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
   - HN2_DM/HN2_MG
+  - HN2_Intro
   entryIDs:
   - HN2_DEVICE
   - HN2_HN
-  - HN2_Intro
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
   - HN2_MG
+  - HN2_Intro
   entriesWhoAreChildren:
   - HN2_MG
   rootEntries:
   - HN2_DEVICE
   - HN2_HN
-  - HN2_Intro
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
+  - HN2_Intro
   factIDs:
   - HN2_Device1
   - HN2_Device2
@@ -309,12 +309,6 @@ MonoBehaviour:
   - HN2_Device_RumorMagi
   - HN2_HN1
   - HN2_HN2
-  - HN2_Intro1
-  - HN2_Intro2
-  - HN2_Intro3
-  - HN2_Intro4
-  - HN2_Intro5
-  - HN2_IntroRumor
   - HN2_GC1
   - HN2_GC2
   - HN2_GC_Rumor
@@ -340,6 +334,12 @@ MonoBehaviour:
   - HN2_MG2
   - HN2_MG3
   - HN2_MG_Rumor
+  - HN2_Intro1
+  - HN2_Intro2
+  - HN2_Intro3
+  - HN2_Intro4
+  - HN2_Intro5
+  - HN2_IntroRumor
   factPaths:
   - HN2_DEVICEHN2_Device1
   - HN2_DEVICEHN2_Device2
@@ -350,12 +350,6 @@ MonoBehaviour:
   - HN2_DEVICEHN2_Device_RumorMagi
   - HN2_HNHN2_HN1
   - HN2_HNHN2_HN2
-  - HN2_IntroHN2_Intro1
-  - HN2_IntroHN2_Intro2
-  - HN2_IntroHN2_Intro3
-  - HN2_IntroHN2_Intro4
-  - HN2_IntroHN2_Intro5
-  - HN2_IntroHN2_IntroRumor
   - HN2_GCHN2_GC1
   - HN2_GCHN2_GC2
   - HN2_GCHN2_GC_Rumor
@@ -381,6 +375,12 @@ MonoBehaviour:
   - HN2_DM/HN2_MGHN2_MG2
   - HN2_DM/HN2_MGHN2_MG3
   - HN2_DM/HN2_MGHN2_MG_Rumor
+  - HN2_IntroHN2_Intro1
+  - HN2_IntroHN2_Intro2
+  - HN2_IntroHN2_Intro3
+  - HN2_IntroHN2_Intro4
+  - HN2_IntroHN2_Intro5
+  - HN2_IntroHN2_IntroRumor
   nodes:
   - name: HN2_DEVICE
     position: {x: 0, y: 0}

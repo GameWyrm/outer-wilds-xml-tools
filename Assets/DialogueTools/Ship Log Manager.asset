@@ -17,33 +17,26 @@ MonoBehaviour:
   allEntryPaths:
   - HN2_DEVICE
   - HN2_HN
-  - HN2_Intro
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
   - HN2_DM/HN2_MG
-  - HN2_MG
+  - HN2_Intro
   allParentEntriesPaths:
   - HN2_DEVICE
   - HN2_HN
-  - HN2_Intro
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
-  - HN2_MG
+  - HN2_Intro
   allExploreFactsList:
   - HN2_DEVICE/HN2_DEVICE/HN2_Device1
   - HN2_DEVICE/HN2_DEVICE/HN2_Device2
   - HN2_DEVICE/HN2_DEVICE/HN2_Device3
   - HN2_DEVICE/HN2_HN/HN2_HN1
   - HN2_DEVICE/HN2_HN/HN2_HN2
-  - HN2_DEVICE/HN2_Intro/HN2_Intro1
-  - HN2_DEVICE/HN2_Intro/HN2_Intro2
-  - HN2_DEVICE/HN2_Intro/HN2_Intro3
-  - HN2_DEVICE/HN2_Intro/HN2_Intro4
-  - HN2_DEVICE/HN2_Intro/HN2_Intro5
   - HN2_DEVICE/HN2_GC/HN2_GC1
   - HN2_DEVICE/HN2_GC/HN2_GC2
   - HN2_DEVICE/HN2_LB/HN2_LB1
@@ -63,18 +56,19 @@ MonoBehaviour:
   - HN2_DEVICE/HN2_DM/HN2_DM7
   - HN2_DEVICE/HN2_DM/HN2_DM8
   - HN2_DEVICE/HN2_DM/HN2_DM9
-  - HN2_DEVICE/HN2_MG/HN2_MG1
-  - HN2_DEVICE/HN2_MG/HN2_MG2
-  - HN2_DEVICE/HN2_MG/HN2_MG3
+  - HN2_DEVICE/HN2_Intro/HN2_Intro1
+  - HN2_DEVICE/HN2_Intro/HN2_Intro2
+  - HN2_DEVICE/HN2_Intro/HN2_Intro3
+  - HN2_DEVICE/HN2_Intro/HN2_Intro4
+  - HN2_DEVICE/HN2_Intro/HN2_Intro5
   allRumorFactsList:
   - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorChamber
   - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorLibrary
   - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorEngine
   - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorMagi
-  - HN2_DEVICE/HN2_Intro/HN2_IntroRumor
   - HN2_DEVICE/HN2_GC/HN2_GC_Rumor
   - HN2_DEVICE/HN2_EG/HN2_EG_Rumor
-  - HN2_DEVICE/HN2_MG/HN2_MG_Rumor
+  - HN2_DEVICE/HN2_Intro/HN2_IntroRumor
   curiosities:
   - HN2_DEVICE
   curiosityColors:

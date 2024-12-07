@@ -78,6 +78,9 @@ namespace XmlTools
             [XmlElement("IgnoreMoreToExplore"), HideInInspector]
             public string m_ignoreMoreToExplore;
             public bool ignoreMoreToExplore;
+
+            [XmlElement("Text")]
+            public string text;
         }
 
         [Serializable]
@@ -90,6 +93,9 @@ namespace XmlTools
             [XmlElement("IgnoreMoreToExplore"), HideInInspector]
             public string m_ignoreMoreToExplore;
             public bool ignoreMoreToExplore;
+
+            [XmlElement("Text")]
+            public string text;
         }
     }
 }
