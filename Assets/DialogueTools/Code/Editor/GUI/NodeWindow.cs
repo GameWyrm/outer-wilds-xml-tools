@@ -23,13 +23,16 @@ namespace XmlTools
         protected VisualElement selectedNode;
         protected VisualElement background;
         protected PannerManipulator panner;
+        protected bool init;
 
         private void CreateGUI()
         {
+            init = true;
             zoom = 1;
             ConstructGUI();
             BuildNodeTree();
             ConstructGUILate();
+            init = false;
         }
 
         protected virtual void ConstructGUI()

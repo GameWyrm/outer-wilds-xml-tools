@@ -107,6 +107,11 @@ namespace XmlTools
             zoomText = root.Q<Label>("zoomText");
 
             base.ConstructGUILate();
+
+            if (init)
+            {
+                OnClickCenterCamera();
+            }
         }
 
         private void OnGUI()
@@ -207,8 +212,14 @@ namespace XmlTools
         private void OnClickCenterCamera()
         {
             BuildNodeTree();
-            Debug.Log("Center Camera Button Clicked");
 
+            NodeData highestNode = nodes.OrderByDescending(x => x.position.y).FirstOrDefault();
+
+            Vector2 defaultPosition = new Vector2(highestNode.position.x - 500, -highestNode.position.y - 150);
+
+            zoom = 1;
+            UpdateZoom();
+            panRoot.transform.position = -defaultPosition;
         }
 
         private void OnClickNewEntry()
