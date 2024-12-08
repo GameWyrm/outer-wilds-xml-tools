@@ -2925,6 +2925,7 @@ MonoBehaviour:
   - NEW_TEST_RUMOR
   - HN2_TEST_RUMOR
   - Brand new entry
+  - Test_Planet
   shipLogValues:
   - The Magistarium
   - My ship has received the coordinates of a mysterious vessel above the Solar System
@@ -3015,4 +3016,5 @@ MonoBehaviour:
   - 
   - I found some information about this entry.
   - Whoa a rumor name
+  - 
   - 

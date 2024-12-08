@@ -13,6 +13,7 @@ namespace XmlTools
         /// <summary>Do no use this unless serializing. Use randomize instead.</summary>
         [XmlElement("Randomize")]
         public string m_randomize;
+        [XmlIgnore]
         public bool randomize;
         [XmlElement("Dialogue")]
         public Dialogue[] dialogues;

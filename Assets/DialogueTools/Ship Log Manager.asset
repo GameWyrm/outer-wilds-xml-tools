@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   datas:
   - {fileID: 11400000, guid: 14028d16309fffc4896045dd0d1af550, type: 2}
+  - {fileID: 11400000, guid: 1970038c78a2104419c7aa2ccf49323f, type: 2}
   allEntryPaths:
   - HN2_DEVICE
   - HN2_HN
@@ -25,6 +26,7 @@ MonoBehaviour:
   - HN2_DM
   - HN2_DM/HN2_MG
   - HN2_DM/HN2_DM_Child
+  - HN2_TEST_PLANET
   allParentEntriesPaths:
   - HN2_DEVICE
   - HN2_HN
@@ -33,6 +35,7 @@ MonoBehaviour:
   - HN2_LB
   - HN2_EG
   - HN2_DM
+  - HN2_TEST_PLANET
   allEntries:
   - HN2_DEVICE
   - HN2_HN
@@ -44,6 +47,7 @@ MonoBehaviour:
   - HN2_DM
   - HN2_MG
   - HN2_DM_Child
+  - HN2_TEST_PLANET
   allExploreFactsList:
   - HN2_DEVICE/HN2_DEVICE/HN2_Device1
   - HN2_DEVICE/HN2_DEVICE/HN2_Device2

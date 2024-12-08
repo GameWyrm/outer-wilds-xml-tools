@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Web;
 
 namespace XmlTools
 {
@@ -322,7 +323,7 @@ namespace XmlTools
         private static string CreateDropdownItem(string label, List<string> items, int shownItemIndex)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label);
+            if (!string.IsNullOrEmpty(label)) EditorGUILayout.LabelField(label);
             shownItemIndex = EditorGUILayout.Popup(shownItemIndex, items.ToArray());
             EditorGUILayout.EndHorizontal();
             return items[shownItemIndex];
@@ -350,6 +351,36 @@ namespace XmlTools
             }
             EditorGUILayout.EndHorizontal();
             return path;
+        }
+
+        public static string CreateLogSelector(string label, string existingFact, bool clearable, out bool setDirty, out bool shouldClear)
+        {
+            setDirty = false;
+            shouldClear = false;
+            List<string> allFacts = new List<string>();
+            allFacts.Add("(None)");
+            allFacts.Add("");
+            allFacts.AddRange(ShipLogManager.Instance.allRumorFactsList);
+            allFacts.Add("");
+            allFacts.AddRange(ShipLogManager.Instance.allExploreFactsList);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label);
+            if (clearable)
+            {
+                if (GUILayout.Button("X", GUILayout.Width(20)))
+                {
+                    shouldClear = true;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            string result = CreateDropdown("", existingFact, allFacts.ToArray());
+            if (!clearable) EditorGUILayout.EndHorizontal();
+            string[] elements = result.Split('/');
+            result = elements[elements.Length - 1];
+
+            if (result != existingFact) setDirty = true;
+            return result;
         }
 
         #endregion

@@ -29,12 +29,15 @@ MonoBehaviour:
       rumorFacts: []
       exploreFacts: []
       childEntries: []
-  entryPaths: []
-  entryIDs: []
+  entryPaths:
+  - HN2_TEST_PLANET
+  entryIDs:
+  - HN2_TEST_PLANET
   entriesWhoAreChildren: []
-  rootEntries: []
+  rootEntries:
+  - HN2_TEST_PLANET
   factIDs: []
   factPaths: []
   nodes:
   - name: HN2_TEST_PLANET
-    position: {x: 0, y: 0}
+    position: {x: 352, y: -57}

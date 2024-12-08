@@ -104,10 +104,13 @@ namespace XmlTools
 
         private void DrawNodeData()
         {
+
             XMLEditorSettings settings = XMLEditorSettings.Instance;
             Language language = settings.GetSelectedLanguage();
             string[] loopConditions = settings.GetConditionList(false).ToArray();
             string[] persistentConditions = settings.GetConditionList(true).ToArray();
+
+            bool setDirty = false;
             bool rebuildNodeTree = false;
 
             // Language Setting
@@ -185,10 +188,38 @@ namespace XmlTools
             showRevealFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showRevealFacts, "Reveal Facts");
             if (activeNode.revealFacts != null && activeNode.revealFacts.factIDs != null && showRevealFacts)
             {
-                var facts = activeNode.revealFacts.factIDs;
+                bool factsHaveBeenChanged = false;
+                int clearIndex = -1;
+                string[] facts = activeNode.revealFacts.factIDs;
                 for (int i = 0; i < facts.Length; i++)
                 {
-                    EditorGUILayout.DelayedTextField($"FactID {i}", facts[i]);
+                    string newFactName = GUIBuilder.CreateLogSelector($"Reveal Fact {i}", facts[i], true, out factsHaveBeenChanged, out bool shouldClear);
+                    if (factsHaveBeenChanged)
+                    {
+                        facts[i] = newFactName;
+                        setDirty = true;
+                    }
+                    if (shouldClear)
+                    {
+                        clearIndex = i;
+                    }
+                }
+
+                if (clearIndex > -1)
+                {
+                    List<string> factsList = new List<string>(facts);
+                    factsList.RemoveAt(clearIndex);
+                    activeNode.revealFacts.factIDs = factsList.ToArray();
+                    setDirty = true;
+                }
+
+                string newFact = GUIBuilder.CreateLogSelector("Add New Fact", "", false, out bool factSet, out _);
+                if (factSet)
+                {
+                    List<string> factsList = new List<string>(facts);
+                    factsList.Add(newFact);
+                    activeNode.revealFacts.factIDs = factsList.ToArray();
+                    setDirty = true;
                 }
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -377,6 +408,10 @@ namespace XmlTools
                 {
                     DialogueEditor.instance.BuildNodeTree();
                 }
+            }
+            else if (setDirty)
+            {
+                EditorUtility.SetDirty(selectedAsset);
             }
         }
 
