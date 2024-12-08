@@ -7,12 +7,13 @@
 >
   <editor:Toolbar name="toolbar" class="toolbar">
     <Style src ="ShipLogEditor.uss"/>
-    <editor:ToolbarButton name="import" text="Import..." class="toolbar_button"/>
-    <editor:ToolbarButton name="centerCamera" text="Reset Camera"/>
-    <engine:Label name="zoomLabel" text="Zoom"/>
-    <editor:ToolbarButton name="subtractZoom" text="-"/>
+    <editor:ToolbarButton name="import" text="  Import...  " class="toolbar_button"/>
+    <editor:ToolbarButton name="centerCamera" text="  Reset Camera  "/>
+    <editor:ToolbarButton name="createEntry" text="  Create New Entry...  "/>
+    <engine:Label name="zoomLabel" text="   Zoom   "/>
+    <editor:ToolbarButton name="subtractZoom" text=" - "/>
     <engine:Label name="zoomText" text="100%"/>
-    <editor:ToolbarButton name="addZoom" text="+"/>  
+    <editor:ToolbarButton name="addZoom" text=" + "/>  
   </editor:Toolbar>
   <engine:Box name="bg" class="bg">
       <Style src ="ShipLogEditor.uss"/>

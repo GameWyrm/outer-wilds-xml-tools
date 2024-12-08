@@ -206,15 +206,15 @@ namespace XmlTools
             return returnedFact;
         }
 
-        public void AddEntry(string entryID, string entryName, ShipLogEntry.Entry parentEntry = null, bool logWarnings = true)
+        public void AddEntry(string entryID, string entryName, string curiosity, ShipLogEntry.Entry parentEntry = null, bool logWarnings = true)
         {
-            if (!string.IsNullOrEmpty(entryID)) return;
+            if (string.IsNullOrEmpty(entryID)) return;
 
             if (entry.entries == null) entry.entries = new ShipLogEntry.Entry[0];
 
             if (GetEntry(entryID) != null)
             {
-                if (logWarnings) Debug.LogError($"Entry with name {entryID} already exists, aborting.");
+                if (logWarnings) EditorUtility.DisplayDialog("Error", $"Entry with name {entryID} already exists!", "OK");
                 return;
             }
             else
@@ -222,6 +222,7 @@ namespace XmlTools
                 ShipLogEntry.Entry newEntry = new ShipLogEntry.Entry();
                 newEntry.entryID = entryID;
                 newEntry.name = entryName;
+                newEntry.curiosity = curiosity;
                 newEntry.exploreFacts = new ShipLogEntry.ExploreFact[0];
                 newEntry.rumorFacts = new ShipLogEntry.RumorFact[0];
                 newEntry.childEntries = new ShipLogEntry.Entry[0];

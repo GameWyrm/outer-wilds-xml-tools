@@ -18,11 +18,15 @@ MonoBehaviour:
   - HN2_DEVICE
   - HN2_HN
   - HN2_Intro
+  - HN2_Intro/HN2_Intro_Child
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
   - HN2_DM/HN2_MG
+  - HN2_DM/HN2_DM_Child
+  - HN2_HN_Child
+  - HN2_NEW_ENTRY
   allParentEntriesPaths:
   - HN2_DEVICE
   - HN2_HN
@@ -31,15 +35,21 @@ MonoBehaviour:
   - HN2_LB
   - HN2_EG
   - HN2_DM
+  - HN2_HN_Child
+  - HN2_NEW_ENTRY
   allEntries:
   - HN2_DEVICE
   - HN2_HN
   - HN2_Intro
+  - HN2_Intro_Child
   - HN2_GC
   - HN2_LB
   - HN2_EG
   - HN2_DM
   - HN2_MG
+  - HN2_DM_Child
+  - HN2_HN_Child
+  - HN2_NEW_ENTRY
   allExploreFactsList:
   - HN2_DEVICE/HN2_DEVICE/HN2_Device1
   - HN2_DEVICE/HN2_DEVICE/HN2_Device2

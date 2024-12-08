@@ -2919,6 +2919,12 @@ MonoBehaviour:
   - HN2_DM_10
   - HN2_Log_Dorms_11
   - HN2_cool_fact
+  - Test Child
+  - Child of $HN2LogHNName
+  - Magi Child
+  - NEW_TEST_RUMOR
+  - HN2_TEST_RUMOR
+  - Brand new entry
   shipLogValues:
   - The Magistarium
   - My ship has received the coordinates of a mysterious vessel above the Solar System
@@ -3004,3 +3010,9 @@ MonoBehaviour:
   - 
   - This is the eleventh fact
   - Testing dialogue here
+  - Test Name
+  - 
+  - 
+  - I found some information about this entry.
+  - Whoa a rumor name
+  - 

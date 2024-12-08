@@ -245,14 +245,14 @@ namespace XmlTools
 
         public Color GetCuriosityHighlightColor(string curiosity)
         {
-            if (curiosities == null || curiosityHighlightColors == null) return Color.grey;
-            if (string.IsNullOrEmpty(curiosity)) return Color.grey;
+            if (curiosities == null || curiosityHighlightColors == null) return new Color(0.75f, 0.75f, 0.75f, 1);
+            if (string.IsNullOrEmpty(curiosity)) return new Color(0.75f, 0.75f, 0.75f, 1);
             if (curiosities.Contains(curiosity))
             {
                 int index = curiosities.IndexOf(curiosity);
                 return curiosityHighlightColors[index];
             }
-            else return Color.grey;
+            else return new Color(0.75f, 0.75f, 0.75f, 1);
         }
 
         public void SetCuriosityHighlightColor(string curiosity, Color color)

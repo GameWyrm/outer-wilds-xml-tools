@@ -95,6 +95,9 @@ namespace XmlTools
             var centerCameraButton = root.Q<Button>("centerCamera");
             centerCameraButton.clicked += OnClickCenterCamera;
 
+            var newEntryButton = root.Q<Button>("createEntry");
+            newEntryButton.clicked += OnClickNewEntry;
+
             var zoomInButton = root.Q<Button>("addZoom");
             zoomInButton.clicked += OnClickZoomIn;
 
@@ -208,6 +211,11 @@ namespace XmlTools
 
         }
 
+        private void OnClickNewEntry()
+        {
+            NewEntryDialogue.ShowWindow("NEW_ENTRY_ID", "New Entry", "");
+        }
+
         private void OnClickZoomIn()
         {
             zoom += 0.25f;
@@ -225,7 +233,7 @@ namespace XmlTools
         private void UpdateZoom()
         {
             scaleRoot.transform.scale = Vector3.one * zoom;
-            zoomText.text = Mathf.RoundToInt(100 * zoom) + "%";
+            zoomText.text = $"  {Mathf.RoundToInt(100 * zoom)}%  ";
         }
 
         protected override List<VisualElement> GetTargetNodes(string nodeName)
