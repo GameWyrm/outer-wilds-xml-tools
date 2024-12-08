@@ -12,11 +12,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21272c404528bae488ad8c68c914a0e4, type: 3}
   m_Name: Ship Log Manager
   m_EditorClassIdentifier: 
-  datas: []
-  allEntryPaths: []
-  allParentEntriesPaths: []
-  allExploreFactsList: []
-  allRumorFactsList: []
-  curiosities: []
-  curiosityColors: []
-  curiosityHighlightColors: []
+  datas:
+  - {fileID: 11400000, guid: 14028d16309fffc4896045dd0d1af550, type: 2}
+  allEntryPaths:
+  - HN2_DEVICE
+  - HN2_HN
+  - HN2_Intro
+  - HN2_GC
+  - HN2_LB
+  - HN2_EG
+  - HN2_DM
+  - HN2_DM/HN2_MG
+  allParentEntriesPaths:
+  - HN2_DEVICE
+  - HN2_HN
+  - HN2_Intro
+  - HN2_GC
+  - HN2_LB
+  - HN2_EG
+  - HN2_DM
+  allEntries:
+  - HN2_DEVICE
+  - HN2_HN
+  - HN2_Intro
+  - HN2_GC
+  - HN2_LB
+  - HN2_EG
+  - HN2_DM
+  - HN2_MG
+  allExploreFactsList:
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device1
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device2
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device3
+  - HN2_DEVICE/HN2_HN/HN2_HN1
+  - HN2_DEVICE/HN2_HN/HN2_HN2
+  - HN2_DEVICE/HN2_Intro/HN2_Intro1
+  - HN2_DEVICE/HN2_Intro/HN2_Intro2
+  - HN2_DEVICE/HN2_Intro/HN2_Intro3
+  - HN2_DEVICE/HN2_Intro/HN2_Intro4
+  - HN2_DEVICE/HN2_Intro/HN2_Intro5
+  - HN2_DEVICE/HN2_GC/HN2_GC1
+  - HN2_DEVICE/HN2_GC/HN2_GC2
+  - HN2_DEVICE/HN2_LB/HN2_LB1
+  - HN2_DEVICE/HN2_LB/HN2_LB2
+  - HN2_DEVICE/HN2_LB/HN2_LB3
+  - HN2_DEVICE/HN2_LB/HN2_LB4
+  - HN2_DEVICE/HN2_LB/HN2_LB5
+  - HN2_DEVICE/HN2_LB/HN2_LB6
+  - HN2_DEVICE/HN2_EG/HN2_EG1
+  - HN2_DEVICE/HN2_EG/HN2_EG2
+  - HN2_DEVICE/HN2_DM/HN2_DM1
+  - HN2_DEVICE/HN2_DM/HN2_DM2
+  - HN2_DEVICE/HN2_DM/HN2_DM3
+  - HN2_DEVICE/HN2_DM/HN2_DM4
+  - HN2_DEVICE/HN2_DM/HN2_DM5
+  - HN2_DEVICE/HN2_DM/HN2_DM6
+  - HN2_DEVICE/HN2_DM/HN2_DM7
+  - HN2_DEVICE/HN2_DM/HN2_DM8
+  - HN2_DEVICE/HN2_DM/HN2_DM9
+  - HN2_DEVICE/HN2_DM/$HN2LogDormsName_9
+  - HN2_DEVICE/HN2_DM/HN2_DM_10
+  - HN2_DEVICE/HN2_DM/HN2_Log_Dorms_11
+  - HN2_DEVICE/HN2_DM/HN2_cool_fact
+  allRumorFactsList:
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorChamber
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorLibrary
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorEngine
+  - HN2_DEVICE/HN2_DEVICE/HN2_Device_RumorMagi
+  - HN2_DEVICE/HN2_Intro/HN2_IntroRumor
+  - HN2_DEVICE/HN2_GC/HN2_GC_Rumor
+  - HN2_DEVICE/HN2_EG/HN2_EG_Rumor
+  curiosities:
+  - HN2_DEVICE
+  curiosityColors:
+  - {r: 0.5803922, g: 0.1882353, b: 1, a: 1}
+  curiosityHighlightColors:
+  - {r: 0.7490196, g: 0.5294118, b: 1, a: 1}

@@ -30,28 +30,28 @@ MonoBehaviour:
       - rumorID: HN2_Device_RumorChamber
         sourceID: HN2_GC
         rumorName: $HN2LogEndNameRumor
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogEndRumorChamber
       - rumorID: HN2_Device_RumorLibrary
         sourceID: HN2_LB
         rumorName: $HN2LogEndNameRumor
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogEndRumorLibrary
       - rumorID: HN2_Device_RumorEngine
         sourceID: HN2_EG
         rumorName: $HN2LogEndNameRumor
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogEndRumorEngine
       - rumorID: HN2_Device_RumorMagi
         sourceID: HN2_MG
         rumorName: $HN2LogEndNameRumor
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogEndRumorMagi
@@ -106,7 +106,7 @@ MonoBehaviour:
       - rumorID: HN2_IntroRumor
         sourceID: HN2_HN
         rumorName: 
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogIntroRumor
@@ -147,7 +147,7 @@ MonoBehaviour:
       - rumorID: HN2_GC_Rumor
         sourceID: HN2_Intro
         rumorName: 
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogGrandChamberRumor
@@ -214,7 +214,7 @@ MonoBehaviour:
       - rumorID: HN2_EG_Rumor
         sourceID: HN2_Intro
         rumorName: $HN2LogEngineRumorName
-        rumorNamePriority: 
+        rumorNamePriority: 0
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogEngineRumor
@@ -277,6 +277,22 @@ MonoBehaviour:
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogDorms9
+      - exploreID: $HN2LogDormsName_9
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+        text: $HN2LogDormsName_9
+      - exploreID: HN2_DM_10
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+        text: HN2_DM_10
+      - exploreID: HN2_Log_Dorms_11
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 1
+        text: HN2_Log_Dorms_11
+      - exploreID: HN2_cool_fact
+        m_ignoreMoreToExplore: 
+        ignoreMoreToExplore: 0
+        text: HN2_cool_fact
       childEntries:
       - entryID: HN2_MG
         name: $HN2LogMagiName
@@ -293,7 +309,7 @@ MonoBehaviour:
         - rumorID: HN2_MG_Rumor
           sourceID: HN2_Intro
           rumorName: 
-          rumorNamePriority: 
+          rumorNamePriority: 0
           m_ignoreMoreToExplore: 
           ignoreMoreToExplore: 0
           text: $HN2LogMagiRumor
@@ -376,6 +392,10 @@ MonoBehaviour:
   - HN2_DM7
   - HN2_DM8
   - HN2_DM9
+  - $HN2LogDormsName_9
+  - HN2_DM_10
+  - HN2_Log_Dorms_11
+  - HN2_cool_fact
   - HN2_MG1
   - HN2_MG2
   - HN2_MG3
@@ -417,6 +437,10 @@ MonoBehaviour:
   - HN2_DMHN2_DM7
   - HN2_DMHN2_DM8
   - HN2_DMHN2_DM9
+  - HN2_DM$HN2LogDormsName_9
+  - HN2_DMHN2_DM_10
+  - HN2_DMHN2_Log_Dorms_11
+  - HN2_DMHN2_cool_fact
   - HN2_DM/HN2_MGHN2_MG1
   - HN2_DM/HN2_MGHN2_MG2
   - HN2_DM/HN2_MGHN2_MG3
@@ -435,6 +459,6 @@ MonoBehaviour:
   - name: HN2_EG
     position: {x: -450, y: -197}
   - name: HN2_DM
-    position: {x: 391, y: -400}
+    position: {x: 445, y: -524}
   - name: HN2_MG
-    position: {x: 309, y: -342}
+    position: {x: 364, y: -453}

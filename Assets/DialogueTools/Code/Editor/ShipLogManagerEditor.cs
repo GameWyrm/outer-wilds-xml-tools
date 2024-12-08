@@ -185,15 +185,29 @@ namespace XmlTools
                     {
                         sources.Add(entry);
                     }
-                    
-                    foreach (var fact in selectedEntry.rumorFacts)
+
+                    int clearIndex = -1;
+                    for (int i = 0; i < selectedEntry.rumorFacts.Length; i++)
                     {
-                        if (GUIBuilder.CreateRumorFactItem(fact, sources, out bool requireRedraw))
+                        var fact = selectedEntry.rumorFacts[i];
+                        if (GUIBuilder.CreateRumorFactItem(fact, sources, out bool requireRedraw, out bool shouldClear))
                         {
+                            if (shouldClear)
+                            {
+                                clearIndex = i;
+                            }
                             setDirty = true;
                         }
                         if (requireRedraw) setRedraw = true;
                         EditorGUILayout.Space(20);
+                    }
+
+                    if (clearIndex != -1)
+                    {
+                        List<ShipLogEntry.RumorFact> factList = new List<ShipLogEntry.RumorFact>(selectedEntry.rumorFacts);
+                        factList.RemoveAt(clearIndex);
+                        selectedEntry.rumorFacts = factList.ToArray();
+                        updateInfo = true;
                     }
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
@@ -202,17 +216,34 @@ namespace XmlTools
                 showExploreFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showExploreFacts, "Explore Facts");
                 if (showExploreFacts)
                 {
-                    foreach (var fact in selectedEntry.exploreFacts)
+                    int clearIndex = -1;
+                    for (int i = 0; i < selectedEntry.exploreFacts.Length; i++)
                     {
-                        if (GUIBuilder.CreateExploreFactItem(fact)) setDirty = true;
+                        var fact = selectedEntry.exploreFacts[i];
+
+                        if (GUIBuilder.CreateExploreFactItem(fact, out bool shouldClear)) setDirty = true;
+                        if (shouldClear)
+                        {
+                            clearIndex = i;
+                        }
                         EditorGUILayout.Space(20);
                     }
 
+                    if (clearIndex != -1)
+                    {
+                        List<ShipLogEntry.ExploreFact> factList = new List<ShipLogEntry.ExploreFact>(selectedEntry.exploreFacts);
+                        factList.RemoveAt(clearIndex);
+                        selectedEntry.exploreFacts = factList.ToArray();
+                        updateInfo = true;
+                    }
+
+                    EditorGUILayout.HelpBox("IDs can not be edited after creation.", MessageType.Info);
                     string newFactName = EditorGUILayout.DelayedTextField("Create new fact with custom ID:", "");
                     bool autoFact = GUILayout.Button("Create new fact with automatic ID");
                     if (newFactName != "" || autoFact)
                     {
-                        if (newFactName == "") newFactName = $"{selectedEntry.name}_{selectedEntry.exploreFacts.Length}";
+                        if (newFactName == "") newFactName = $"{selectedEntry.entryID}_{selectedEntry.exploreFacts.Length}";
+                        newFactName = newFactName.Replace(' ', '_');
                         string newText = newFactName;
                         int attempts = 0;
                         while (language.dialogueKeys.Contains(newText))

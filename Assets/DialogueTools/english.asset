@@ -2915,6 +2915,10 @@ MonoBehaviour:
   - $HN2LogHNName
   - $HN2LogHN1
   - $HN2LogHN2
+  - $HN2LogDormsName_9
+  - HN2_DM_10
+  - HN2_Log_Dorms_11
+  - HN2_cool_fact
   shipLogValues:
   - The Magistarium
   - My ship has received the coordinates of a mysterious vessel above the Solar System
@@ -2996,3 +3000,7 @@ MonoBehaviour:
   - After discovering a mysterious alien ship, my own ship received coordinates for
     a certain system that also happens to neighbor the Outer Wilds. I can get there
     using my ship's canonical warp drive.
+  - 
+  - 
+  - This is the eleventh fact
+  - Testing dialogue here

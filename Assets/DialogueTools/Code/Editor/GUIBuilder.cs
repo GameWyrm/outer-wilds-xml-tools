@@ -388,13 +388,24 @@ namespace XmlTools
         /// </summary>
         /// <param name="inputFact"></param>
         /// <returns></returns>
-        public static bool CreateRumorFactItem(ShipLogEntry.RumorFact inputFact, List<string> possibleSources, out bool requireRedraw)
+        public static bool CreateRumorFactItem(ShipLogEntry.RumorFact inputFact, List<string> possibleSources, out bool requireRedraw, out bool shouldClear)
         {
+            shouldClear = false;
             bool dirty = false;
             requireRedraw = false;
             Language selectedLanguage = XMLEditorSettings.Instance.GetSelectedLanguage();
 
+            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(inputFact.rumorID, EditorStyles.boldLabel);
+            if (GUILayout.Button("X", GUILayout.Width(20)))
+            {
+                if (EditorUtility.DisplayDialog("Delete Fact?", $"Are you sure you want to permanently delete fact \"{inputFact.rumorID}\"? You cannot undo this action.", "Yes", "No"))
+                {
+                    shouldClear = true;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.Space();
             if (!possibleSources.Contains("(None)")) possibleSources.Insert(0, "(None)");
             string newSource = CreateDropdown("Source ID", inputFact.sourceID, possibleSources.ToArray());
@@ -436,9 +447,19 @@ namespace XmlTools
         /// </summary>
         /// <param name="inputFact"></param>
         /// <returns></returns>
-        public static bool CreateExploreFactItem(ShipLogEntry.ExploreFact inputFact)
+        public static bool CreateExploreFactItem(ShipLogEntry.ExploreFact inputFact, out bool shouldClear)
         {
+            shouldClear = false;
+            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(inputFact.exploreID, EditorStyles.boldLabel);
+            if (GUILayout.Button("X", GUILayout.Width(20)))
+            {
+                if (EditorUtility.DisplayDialog("Delete Fact?", $"Are you sure you want to permanently delete fact \"{inputFact.exploreID}\"? You cannot undo this action.", "Yes", "No"))
+                {
+                    shouldClear = true;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
             bool newIgnoreMoreToExplore = EditorGUILayout.ToggleLeft("Ignore More To Explore", inputFact.ignoreMoreToExplore);
             string newText = CreateTranslatedArrayItem("Text", inputFact.text, XMLEditorSettings.Instance.GetSelectedLanguage(), false, false, out _);
