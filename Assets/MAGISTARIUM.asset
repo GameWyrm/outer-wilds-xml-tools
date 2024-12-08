@@ -484,7 +484,7 @@ MonoBehaviour:
   - HN2_DM/HN2_MGHN2_MG_Rumor
   nodes:
   - name: HN2_DEVICE
-    position: {x: 0, y: -22}
+    position: {x: 0, y: -21}
   - name: HN2_HN
     position: {x: 28, y: -690}
   - name: HN2_Intro
@@ -492,10 +492,10 @@ MonoBehaviour:
   - name: HN2_GC
     position: {x: -6, y: -376}
   - name: HN2_LB
-    position: {x: 127, y: 515}
+    position: {x: 127, y: 516}
   - name: HN2_EG
     position: {x: -450, y: -197}
   - name: HN2_DM
-    position: {x: 451, y: -529}
+    position: {x: 451, y: -531}
   - name: HN2_MG
     position: {x: 364, y: -453}

@@ -92,6 +92,9 @@ namespace XmlTools
 
         protected override void ConstructGUILate()
         {
+            var newFileButton = root.Q<Button>("newFile");
+            newFileButton.clicked += OnClickNewFile;
+
             var centerCameraButton = root.Q<Button>("centerCamera");
             centerCameraButton.clicked += OnClickCenterCamera;
 
@@ -162,6 +165,11 @@ namespace XmlTools
                     }
                 }
             }
+        }
+
+        private void OnClickNewFile()
+        {
+            NewPlanetDialogue.ShowWindow();
         }
 
         protected override void OnClickImport()

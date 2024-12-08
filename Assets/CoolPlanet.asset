@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4d450735b8744459eadc96f4254a35, type: 3}
+  m_Name: CoolPlanet
+  m_EditorClassIdentifier: 
+  entry:
+    planetID: CoolPlanet
+    entries:
+    - entryID: HN2_TEST_PLANET
+      name: Test_Planet
+      curiosity: 
+      m_isCuriosity: 
+      isCuriosity: 0
+      m_ignoreMoreToExplore: 
+      ignoreMoreToExplore: 0
+      m_parentIgnoreNotRevealed: 
+      parentIgnoreNotRevealed: 0
+      ignoreMoreToExploreCondition: 
+      altPhotoCondition: 
+      rumorFacts: []
+      exploreFacts: []
+      childEntries: []
+  entryPaths: []
+  entryIDs: []
+  entriesWhoAreChildren: []
+  rootEntries: []
+  factIDs: []
+  factPaths: []
+  nodes:
+  - name: HN2_TEST_PLANET
+    position: {x: 0, y: 0}

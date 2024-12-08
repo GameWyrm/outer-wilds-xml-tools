@@ -3,10 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:engine="UnityEngine.UIElements"
     xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
+    xsi:noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd"
 >
   <editor:Toolbar name="toolbar" class="toolbar">
     <Style src ="ShipLogEditor.uss"/>
+    <editor:ToolbarButton name="newFile" text="  Create New Shiplog File...  " class="toolbar_button"/>
     <editor:ToolbarButton name="import" text="  Import...  " class="toolbar_button"/>
     <editor:ToolbarButton name="centerCamera" text="  Reset Camera  "/>
     <editor:ToolbarButton name="createEntry" text="  Create New Entry...  "/>
