@@ -305,7 +305,7 @@ namespace XmlTools
 
         public void RemoveEntry(string entryID)
         {
-            if (!string.IsNullOrEmpty(entryID)) return;
+            if (string.IsNullOrEmpty(entryID)) return;
             string[] pathElements = entryID.Split('/');
 
             ShipLogEntry.Entry entryToRemove = GetEntry(entryID);
@@ -364,6 +364,7 @@ namespace XmlTools
                 }
             }
 
+            nodes.Remove(nodes.Find(x => x.name == entryToRemove.entryID));
             parentEntries.Remove(entryToRemove);
 
             if (parentEntry == null)
@@ -375,6 +376,7 @@ namespace XmlTools
                 parentEntry.childEntries = parentEntries.ToArray();
             }
             BuildInfo();
+            Selection.activeObject = null;
         }
 
         /// <summary>

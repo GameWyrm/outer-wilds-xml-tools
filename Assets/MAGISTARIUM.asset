@@ -358,34 +358,6 @@ MonoBehaviour:
         rumorFacts: []
         exploreFacts: []
         childEntries: []
-    - entryID: HN2_HN_Child
-      name: Child of $HN2LogHNName
-      curiosity: 
-      m_isCuriosity: 
-      isCuriosity: 0
-      m_ignoreMoreToExplore: 
-      ignoreMoreToExplore: 0
-      m_parentIgnoreNotRevealed: 
-      parentIgnoreNotRevealed: 0
-      ignoreMoreToExploreCondition: 
-      altPhotoCondition: 
-      rumorFacts: []
-      exploreFacts: []
-      childEntries: []
-    - entryID: HN2_NEW_ENTRY
-      name: Brand new entry
-      curiosity: HN2_DEVICE
-      m_isCuriosity: 
-      isCuriosity: 0
-      m_ignoreMoreToExplore: 
-      ignoreMoreToExplore: 0
-      m_parentIgnoreNotRevealed: 
-      parentIgnoreNotRevealed: 0
-      ignoreMoreToExploreCondition: 
-      altPhotoCondition: 
-      rumorFacts: []
-      exploreFacts: []
-      childEntries: []
   entryPaths:
   - HN2_DEVICE
   - HN2_HN
@@ -397,8 +369,6 @@ MonoBehaviour:
   - HN2_DM
   - HN2_DM/HN2_MG
   - HN2_DM/HN2_DM_Child
-  - HN2_HN_Child
-  - HN2_NEW_ENTRY
   entryIDs:
   - HN2_DEVICE
   - HN2_HN
@@ -410,8 +380,6 @@ MonoBehaviour:
   - HN2_DM
   - HN2_MG
   - HN2_DM_Child
-  - HN2_HN_Child
-  - HN2_NEW_ENTRY
   entriesWhoAreChildren:
   - HN2_Intro_Child
   - HN2_MG
@@ -424,8 +392,6 @@ MonoBehaviour:
   - HN2_LB
   - HN2_EG
   - HN2_DM
-  - HN2_HN_Child
-  - HN2_NEW_ENTRY
   factIDs:
   - HN2_Device1
   - HN2_Device2
@@ -518,7 +484,7 @@ MonoBehaviour:
   - HN2_DM/HN2_MGHN2_MG_Rumor
   nodes:
   - name: HN2_DEVICE
-    position: {x: 0, y: 0}
+    position: {x: 0, y: -22}
   - name: HN2_HN
     position: {x: 28, y: -690}
   - name: HN2_Intro
@@ -530,14 +496,6 @@ MonoBehaviour:
   - name: HN2_EG
     position: {x: -450, y: -197}
   - name: HN2_DM
-    position: {x: 438, y: -526}
+    position: {x: 451, y: -529}
   - name: HN2_MG
     position: {x: 364, y: -453}
-  - name: HN2_DM_Child
-    position: {x: 349, y: -642}
-  - name: HN2_HN_Child
-    position: {x: 346, y: -831}
-  - name: HN2_Intro_Child
-    position: {x: -341, y: -830}
-  - name: HN2_NEW_ENTRY
-    position: {x: 245, y: 8}
