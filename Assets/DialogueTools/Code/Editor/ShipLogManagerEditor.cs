@@ -209,6 +209,33 @@ namespace XmlTools
                         selectedEntry.rumorFacts = factList.ToArray();
                         updateInfo = true;
                     }
+
+                    EditorGUILayout.HelpBox("IDs cannot be edited after creation.", MessageType.Warning);
+                    string newFactName = EditorGUILayout.DelayedTextField("Create new fact with custom ID:", "");
+                    bool autoFact = GUILayout.Button("Create new fact with automatic ID");
+                    if (newFactName != "" || autoFact)
+                    {
+                        if (newFactName == "") newFactName = $"{selectedEntry.entryID}_{selectedEntry.rumorFacts.Length}";
+                        newFactName = newFactName.Replace(' ', '_');
+                        string newText = newFactName;
+                        int attempts = 0;
+                        while (language.dialogueKeys.Contains(newText))
+                        {
+                            newText += "_1";
+                            if (attempts > 1000)
+                            {
+                                Debug.LogError("Are you insane or trying to break this?");
+                                break;
+                            }
+                        }
+
+                        ShipLogEntry.RumorFact newFact = new ShipLogEntry.RumorFact(newFactName, newText);
+                        List<ShipLogEntry.RumorFact> facts = new List<ShipLogEntry.RumorFact>(selectedEntry.rumorFacts);
+                        facts.Add(newFact);
+                        selectedEntry.rumorFacts = facts.ToArray();
+
+                        updateInfo = true;
+                    }
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -237,7 +264,7 @@ namespace XmlTools
                         updateInfo = true;
                     }
 
-                    EditorGUILayout.HelpBox("IDs can not be edited after creation.", MessageType.Info);
+                    EditorGUILayout.HelpBox("IDs cannot be edited after creation.", MessageType.Warning);
                     string newFactName = EditorGUILayout.DelayedTextField("Create new fact with custom ID:", "");
                     bool autoFact = GUILayout.Button("Create new fact with automatic ID");
                     if (newFactName != "" || autoFact)

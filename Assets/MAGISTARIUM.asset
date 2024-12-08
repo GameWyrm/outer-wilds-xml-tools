@@ -281,10 +281,6 @@ MonoBehaviour:
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 0
         text: $HN2LogDormsName_9
-      - exploreID: HN2_DM_10
-        m_ignoreMoreToExplore: 
-        ignoreMoreToExplore: 0
-        text: HN2_DM_10
       - exploreID: HN2_Log_Dorms_11
         m_ignoreMoreToExplore: 
         ignoreMoreToExplore: 1
@@ -393,7 +389,6 @@ MonoBehaviour:
   - HN2_DM8
   - HN2_DM9
   - $HN2LogDormsName_9
-  - HN2_DM_10
   - HN2_Log_Dorms_11
   - HN2_cool_fact
   - HN2_MG1
@@ -438,7 +433,6 @@ MonoBehaviour:
   - HN2_DMHN2_DM8
   - HN2_DMHN2_DM9
   - HN2_DM$HN2LogDormsName_9
-  - HN2_DMHN2_DM_10
   - HN2_DMHN2_Log_Dorms_11
   - HN2_DMHN2_cool_fact
   - HN2_DM/HN2_MGHN2_MG1

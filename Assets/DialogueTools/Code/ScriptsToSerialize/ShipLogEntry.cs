@@ -62,6 +62,26 @@ namespace XmlTools
         [Serializable]
         public class RumorFact
         {
+            public RumorFact()
+            {
+                this.rumorID = "";
+                this.sourceID = "";
+                this.rumorName = "";
+                this.rumorNamePriority = 0;
+                this.ignoreMoreToExplore = false;
+                this.text = "";
+            }
+
+            public RumorFact(string ID, string text)
+            {
+                this.rumorID = ID;
+                this.sourceID = "";
+                this.rumorName = "";
+                this.rumorNamePriority = 0;
+                this.ignoreMoreToExplore = false;
+                this.text = text;
+            }
+
             [XmlElement("ID")]
             public string rumorID;
 
