@@ -62,6 +62,7 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\EditorReferences.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\GUIBuilder.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\LanguageEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NewEntryDialogue.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NodeManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NodeWindow.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\PannerManipulator.cs" />

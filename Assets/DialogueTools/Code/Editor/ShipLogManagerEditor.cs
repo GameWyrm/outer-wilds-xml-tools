@@ -337,6 +337,14 @@ namespace XmlTools
                                 setRedraw = true;
                             }
                         }
+
+                        if (GUILayout.Button("Create New Entry"))
+                        {
+                            string defaultID = $"{selectedEntry.entryID}_Child";
+                            string defaultName = $"Child of {selectedEntry.name}";
+
+                            NewEntryDialogue.ShowWindow(defaultID, defaultName, true);
+                        }
                     }
                     else
                     {
