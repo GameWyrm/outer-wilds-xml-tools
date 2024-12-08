@@ -54,10 +54,11 @@ namespace XmlTools
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
 
-            if (selectedEntry != null)
+            if (ShipLogEditor.Instance != null && selectedEntry != null)
             {
                 EditorGUILayout.Space(20);
 
+                // Parent display
                 if (parentEntry != null)
                 {
                     GUIBuilder.CreateEntryButton("Parent entry: " + parentEntry.entryID, parentEntry.entryID);
@@ -69,6 +70,29 @@ namespace XmlTools
 
                 EditorGUILayout.Space(20);
 
+                // Transform
+                NodeData node = selectedData.GetNode(selectedEntry.entryID);
+                Vector2 newPosition = EditorGUILayout.Vector2Field("Position", node.position);
+                if (newPosition != node.position)
+                {
+                    node.position = newPosition;
+                    setRedraw = true;
+                }
+                if (parentEntry != null)
+                {
+                    NodeData parentNode = selectedData.GetNode(parentEntry.entryID);
+                    Vector2 localPosition = node.position - parentNode.position;
+                    Vector2 newLocalPosition = EditorGUILayout.Vector2Field("Local Position", localPosition);
+                    if (newLocalPosition != localPosition)
+                    {
+                        node.position = parentNode.position + newLocalPosition;
+                        setRedraw = true;
+                    }
+                }
+
+                EditorGUILayout.Space(20);
+
+                // Language
                 XMLEditorSettings settings = XMLEditorSettings.Instance;
                 Language language = settings.GetSelectedLanguage(); 
                 settings.selectedLanguage = EditorGUILayout.Popup("Language: ", settings.selectedLanguage, settings.supportedLanguages.Select(x => x.name).ToArray());
@@ -76,6 +100,7 @@ namespace XmlTools
 
                 EditorGUILayout.LabelField(selectedEntry.entryID, EditorStyles.boldLabel);
 
+                // Name
                 string newName = GUIBuilder.CreateTranslatedArrayItem("Entry Name", selectedEntry.name, language, false, false, out _);
                 if (newName != selectedEntry.name)
                 {
@@ -83,6 +108,7 @@ namespace XmlTools
                     setRedraw = true;
                 }
 
+                // Curiosity
                 string newCuriosity = GUIBuilder.CreateDropdown("Curiosity", selectedEntry.curiosity, instance.curiosities.ToArray());
                 if (newCuriosity != selectedEntry.curiosity)
                 {
@@ -90,6 +116,7 @@ namespace XmlTools
                     setDirty = true;
                 }
 
+                // Is Curiosity
                 bool newIsCuriosity = EditorGUILayout.ToggleLeft("Is Curiosity", selectedEntry.isCuriosity);
                 if (newIsCuriosity != selectedEntry.isCuriosity)
                 {
@@ -106,6 +133,7 @@ namespace XmlTools
                     setDirty = true;
                 }
 
+                // Ignore More To Explore
                 bool entryIgnoreMoreToExplore = EditorGUILayout.ToggleLeft("Ignore More To Explore", selectedEntry.ignoreMoreToExplore);
                 if (entryIgnoreMoreToExplore)
                 {
@@ -113,6 +141,7 @@ namespace XmlTools
                     setDirty = true;
                 }
 
+                // Entry Ignore Parent
                 bool entryIgnoreParent = EditorGUILayout.ToggleLeft("Parent Ignore Not Revealed", selectedEntry.parentIgnoreNotRevealed);
                 if (entryIgnoreParent)
                 {
@@ -120,6 +149,7 @@ namespace XmlTools
                     setDirty = true;
                 }
 
+                // Ignore More To Explore Condition
                 List<string> allConditions = new List<string>();
                 allConditions.Add("(None)");
                 allConditions.Add("");
@@ -135,6 +165,7 @@ namespace XmlTools
                     setDirty = true;
                 }
 
+                // Alt Photo Condition
                 string altPhotoCondition = GUIBuilder.CreateDropdown("Alternate Photo Condition", selectedEntry.altPhotoCondition, allConditions.ToArray());
                 if (altPhotoCondition != selectedEntry.altPhotoCondition)
                 {
@@ -143,13 +174,30 @@ namespace XmlTools
                     setDirty = true;
                 }
 
+                // Rumors
                 showRumorFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showRumorFacts, "Rumor Facts");
                 if (showRumorFacts)
                 {
-                    // TODO display rumors
+                    List<string> sources = new List<string>();
+                    sources.Add("(None)");
+                    foreach (string entry in instance.allEntries)
+                    {
+                        sources.Add(entry);
+                    }
+                    
+                    foreach (var fact in selectedEntry.rumorFacts)
+                    {
+                        if (GUIBuilder.CreateRumorFactItem(fact, sources, out bool requireRedraw))
+                        {
+                            setDirty = true;
+                        }
+                        if (requireRedraw) setRedraw = true;
+                        EditorGUILayout.Space(20);
+                    }
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
 
+                // Explore Facts
                 showExploreFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showExploreFacts, "Explore Facts");
                 if (showExploreFacts)
                 {
@@ -161,6 +209,7 @@ namespace XmlTools
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
 
+                // Children
                 showChildEntries = EditorGUILayout.BeginFoldoutHeaderGroup(showChildEntries, "Child Entries");
                 if (showChildEntries)
                 {
@@ -180,20 +229,33 @@ namespace XmlTools
                         EditorGUILayout.LabelField("No children for this entry.");
                     }
 
-                    List<string> eligibleEntries = new List<string>();
-                    eligibleEntries.Add("(None)");
-                    eligibleEntries.AddRange(selectedData.rootEntries);
-                    string newChild = GUIBuilder.CreateDropdown("Add Child Entry", "", eligibleEntries.ToArray());
-                    if (newChild != "" && newChild != "(None)")
+                    if (parentEntry == null)
                     {
-                        if (EditorUtility.DisplayDialog("Confirm", $"Are you sure you want to make {newChild} a child of {selectedEntry.entryID}?", "Yes", "No"))
+                        List<string> eligibleEntries = new List<string>();
+                        eligibleEntries.Add("(None)");
+                        foreach (var entryName in selectedData.rootEntries)
                         {
-                            var newChildEntry = selectedData.GetEntry(newChild);
-                            selectedData.MoveEntry(newChildEntry, selectedEntry, parentEntry);
-                            setRedraw = true;
+                            var entry = selectedData.GetEntry(entryName);
+                            if (entry != null && entry.entryID != selectedEntry.entryID && (entry.childEntries == null || entry.childEntries.Length == 0))
+                            {
+                                eligibleEntries.Add(entryName);
+                            }
+                        }
+                        string newChild = GUIBuilder.CreateDropdown("Add Child Entry", "", eligibleEntries.ToArray());
+                        if (newChild != "" && newChild != "(None)")
+                        {
+                            if (EditorUtility.DisplayDialog("Confirm", $"Are you sure you want to make {newChild} a child of {selectedEntry.entryID}?", "Yes", "No"))
+                            {
+                                var newChildEntry = selectedData.GetEntry(newChild);
+                                selectedData.MoveEntry(newChildEntry, selectedEntry, parentEntry);
+                                setRedraw = true;
+                            }
                         }
                     }
-
+                    else
+                    {
+                        EditorGUILayout.HelpBox("Child entries should not be added to entries that are already children.", MessageType.Warning);
+                    }
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }

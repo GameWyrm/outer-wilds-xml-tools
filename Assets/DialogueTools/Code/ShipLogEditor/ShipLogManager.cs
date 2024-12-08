@@ -26,6 +26,8 @@ namespace XmlTools
         public List<string> allEntryPaths;
         [SerializeField]
         public List<string> allParentEntriesPaths;
+        [SerializeField]
+        public List<string> allEntries;
 
         [SerializeField]
         public List<string> allExploreFactsList;
@@ -91,6 +93,7 @@ namespace XmlTools
         {
             allEntryPaths = new List<string>();
             allParentEntriesPaths = new List<string>();
+            allEntries = new List<string>();
 
             foreach (var data in datas)
             {
@@ -98,6 +101,10 @@ namespace XmlTools
                 {
                     allEntryPaths.Add(entry);
                     if (!entry.Contains("/")) allParentEntriesPaths.Add(entry);
+                }
+                foreach (var entry in data.entryIDs)
+                {
+                    allEntries.Add(entry);
                 }
             }
         }
@@ -107,6 +114,7 @@ namespace XmlTools
         /// </summary>
         public void BuildInfo()
         {
+            if (datas == null) datas = new List<EntryData>();
             foreach (var item in datas)
             {
                 item.BuildEntryDataPaths(false);

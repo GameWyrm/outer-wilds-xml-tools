@@ -145,5 +145,10 @@ namespace XmlTools
         /// <param name="node"></param>
         /// <param name="newPosition"></param>
         public abstract void MoveNode(VisualElement node, Vector2 newPosition);
+
+        public NodeData GetNode(string nodeName)
+        {
+            return nodes.Find(x => x.name == nodeName);
+        }
     }
 }

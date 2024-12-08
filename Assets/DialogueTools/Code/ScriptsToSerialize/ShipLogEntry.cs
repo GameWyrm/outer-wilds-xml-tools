@@ -72,7 +72,7 @@ namespace XmlTools
             public string rumorName;
 
             [XmlElement("RumorNamePriority")]
-            public string rumorNamePriority;
+            public int rumorNamePriority;
 
             /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
             [XmlElement("IgnoreMoreToExplore"), HideInInspector]

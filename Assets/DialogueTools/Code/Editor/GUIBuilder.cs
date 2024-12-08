@@ -384,6 +384,54 @@ namespace XmlTools
         }
 
         /// <summary>
+        /// Creates a Rumor Fact entry item. Returns true if the fact was edited this OnInspectorGui step
+        /// </summary>
+        /// <param name="inputFact"></param>
+        /// <returns></returns>
+        public static bool CreateRumorFactItem(ShipLogEntry.RumorFact inputFact, List<string> possibleSources, out bool requireRedraw)
+        {
+            bool dirty = false;
+            requireRedraw = false;
+            Language selectedLanguage = XMLEditorSettings.Instance.GetSelectedLanguage();
+
+            EditorGUILayout.LabelField(inputFact.rumorID, EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+            if (!possibleSources.Contains("(None)")) possibleSources.Insert(0, "(None)");
+            string newSource = CreateDropdown("Source ID", inputFact.sourceID, possibleSources.ToArray());
+            if (newSource != inputFact.sourceID)
+            {
+                requireRedraw = true;
+                inputFact.sourceID = newSource;
+            }
+            string newName = CreateTranslatedArrayItem("Rumor Name", inputFact.rumorName, selectedLanguage, false, false, out _);
+            if (newName != inputFact.rumorName)
+            {
+                dirty = true;
+                inputFact.rumorName = newName;
+            }
+            int newPriority = EditorGUILayout.DelayedIntField("Rumor Name Priority", inputFact.rumorNamePriority);
+            if (newPriority != inputFact.rumorNamePriority)
+            {
+                dirty = true;
+                inputFact.rumorNamePriority = newPriority;
+            }
+            bool newIgnoreMoreToExplore = EditorGUILayout.ToggleLeft("Ignore More To Explore", inputFact.ignoreMoreToExplore);
+            if (newIgnoreMoreToExplore != inputFact.ignoreMoreToExplore)
+            {
+                dirty = true;
+                inputFact.ignoreMoreToExplore = newIgnoreMoreToExplore;
+            }
+            string newText = CreateTranslatedArrayItem("Text", inputFact.text, selectedLanguage, false, false, out _);
+            if (newText != inputFact.text)
+            {
+                dirty = true;
+                inputFact.text = newText;
+            }
+
+            return requireRedraw || dirty;
+        }
+
+        /// <summary>
         /// Creates an Explore Fact entry item. Returns true if the fact was edited this OnInspectorGui step.
         /// </summary>
         /// <param name="inputFact"></param>

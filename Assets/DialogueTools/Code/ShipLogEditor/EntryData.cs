@@ -514,6 +514,11 @@ namespace XmlTools
             }
         }
 
+        public NodeData GetNode(string nodeName)
+        {
+            return nodes.Find(x => x.name == nodeName);
+        }
+
         public static string GetCuriosityName(string factPath)
         {
             return factPath.Split('/')[0];
@@ -538,5 +543,6 @@ namespace XmlTools
             string[] factElements = factPath.Split('/');
             return factPath.Split('/')[factElements.Length - 1];
         }
+
     }
 }

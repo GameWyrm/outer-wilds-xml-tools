@@ -15,6 +15,8 @@ namespace XmlTools
 
         private Label zoomText;
         private string selectedNodeName;
+        private ShipLogEntry.Entry selectedEntry;
+        private EntryData selectedData;
 
         [MenuItem("Tools/XML Editors/Ship Log Editor")]
         public static void ShowWindow()
@@ -258,15 +260,15 @@ namespace XmlTools
                     oldBG.style.backgroundColor = manager.GetCuriosityColor(oldEntry.curiosity);
                 }
             }
-            ShipLogEntry.Entry entry = manager.GetEntry(id, out EntryData data, out ShipLogEntry.Entry parent);
-            if (entry == null) return;
+            selectedEntry = manager.GetEntry(id, out selectedData, out ShipLogEntry.Entry parent);
+            if (selectedEntry == null) return;
             VisualElement bg = newSelection.Q<VisualElement>("bg");
-            bg.style.backgroundColor = manager.GetCuriosityHighlightColor(entry.curiosity);
+            bg.style.backgroundColor = manager.GetCuriosityHighlightColor(selectedEntry.curiosity);
             selectedNode = newSelection;
             selectedNodeName = newSelection.name;
-            ShipLogManagerEditor.selectedEntry = entry;
+            ShipLogManagerEditor.selectedEntry = selectedEntry;
             ShipLogManagerEditor.parentEntry = parent;
-            ShipLogManagerEditor.selectedData = data;
+            ShipLogManagerEditor.selectedData = selectedData;
             Selection.activeObject = manager;
             EditorUtility.SetDirty(manager);
         }
@@ -286,7 +288,12 @@ namespace XmlTools
 
         public override void MoveNode(VisualElement node, Vector2 newPosition)
         {
-            Debug.LogWarning("Can't move nodes yet");
+            newPosition = new Vector2(Mathf.FloorToInt(newPosition.x), -Mathf.FloorToInt(newPosition.y));
+            if (selectedEntry == null) return;
+            NodeData data = selectedData.GetNode(node.name);
+            data.position = newPosition;
+            EditorUtility.SetDirty(selectedData);
+            EditorUtility.SetDirty(ShipLogManager.Instance);
         }
     }
 }
