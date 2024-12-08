@@ -27,6 +27,7 @@ namespace XmlTools
         {
             bool setDirty = false;
             bool setRedraw = false;
+            bool updateInfo = false;
             showCuriosities = EditorGUILayout.BeginFoldoutHeaderGroup(showCuriosities, "Curiosities");
             if (showCuriosities)
             {
@@ -209,17 +210,27 @@ namespace XmlTools
 
                     string newFactName = EditorGUILayout.DelayedTextField("Create new fact with custom ID:", "");
                     bool autoFact = GUILayout.Button("Create new fact with automatic ID");
-                    if (newFactName != "" ||  autoFact)
+                    if (newFactName != "" || autoFact)
                     {
                         if (newFactName == "") newFactName = $"{selectedEntry.name}_{selectedEntry.exploreFacts.Length}";
                         string newText = newFactName;
+                        int attempts = 0;
                         while (language.dialogueKeys.Contains(newText))
                         {
                             newText += "_1";
+                            if (attempts > 1000)
+                            {
+                                Debug.LogError("Are you insane or trying to break this?");
+                                break;
+                            }
                         }
 
                         ShipLogEntry.ExploreFact newFact = new ShipLogEntry.ExploreFact(newFactName, newText);
-
+                        List<ShipLogEntry.ExploreFact> facts = new List<ShipLogEntry.ExploreFact>(selectedEntry.exploreFacts);
+                        facts.Add(newFact);
+                        selectedEntry.exploreFacts = facts.ToArray();
+                        
+                        updateInfo = true;
                     }
 
                 }
@@ -264,6 +275,7 @@ namespace XmlTools
                             {
                                 var newChildEntry = selectedData.GetEntry(newChild);
                                 selectedData.MoveEntry(newChildEntry, selectedEntry, parentEntry);
+                                updateInfo = true;
                                 setRedraw = true;
                             }
                         }
@@ -276,6 +288,11 @@ namespace XmlTools
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }
 
+            if (updateInfo)
+            {
+                setDirty = true;
+                ShipLogManager.Instance.BuildInfo();
+            }
             if (setRedraw)
             {
                 EditorUtility.SetDirty(instance);

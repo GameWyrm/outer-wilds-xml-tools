@@ -86,6 +86,13 @@ namespace XmlTools
         [Serializable]
         public class ExploreFact
         {
+            public ExploreFact()
+            {
+                this.exploreID = "";
+                this.ignoreMoreToExplore = false;
+                this.text = "";
+            }
+
             public ExploreFact(string ID, string text)
             {
                 this.exploreID = ID;
