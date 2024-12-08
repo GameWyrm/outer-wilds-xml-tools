@@ -206,7 +206,7 @@ namespace XmlTools
             return returnedFact;
         }
 
-        public void AddEntry(string entryID, string entryName, bool logWarnings = true)
+        public void AddEntry(string entryID, string entryName, ShipLogEntry.Entry parentEntry = null, bool logWarnings = true)
         {
             if (!string.IsNullOrEmpty(entryID)) return;
 
@@ -226,9 +226,23 @@ namespace XmlTools
                 newEntry.rumorFacts = new ShipLogEntry.RumorFact[0];
                 newEntry.childEntries = new ShipLogEntry.Entry[0];
 
-                List<ShipLogEntry.Entry> oldEntries = new List<ShipLogEntry.Entry>(entry.entries);
-                oldEntries.Add(newEntry);
-                entry.entries = oldEntries.ToArray();
+                if (parentEntry == null)
+                {
+                    List<ShipLogEntry.Entry> oldEntries = new List<ShipLogEntry.Entry>(entry.entries);
+                    oldEntries.Add(newEntry);
+                    entry.entries = oldEntries.ToArray();
+
+                    nodes.Add(new NodeData(entryID, Vector2.zero));
+                }
+                else
+                {
+                    List<ShipLogEntry.Entry> oldEntries = new List<ShipLogEntry.Entry>(parentEntry.childEntries);
+                    oldEntries.Add(newEntry);
+                    parentEntry.childEntries = oldEntries.ToArray();
+
+                    var parentNode = GetNode(parentEntry.entryID);
+                    nodes.Add(new NodeData(entryID, new Vector2(parentNode.position.x, parentNode.position.y - 200)));
+                }
                 BuildInfo();
             }
         }

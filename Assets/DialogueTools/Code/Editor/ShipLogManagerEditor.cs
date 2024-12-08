@@ -343,7 +343,7 @@ namespace XmlTools
                             string defaultID = $"{selectedEntry.entryID}_Child";
                             string defaultName = $"Child of {selectedEntry.name}";
 
-                            NewEntryDialogue.ShowWindow(defaultID, defaultName, true);
+                            NewEntryDialogue.ShowWindow(defaultID, defaultName, selectedEntry, selectedData);
                         }
                     }
                     else

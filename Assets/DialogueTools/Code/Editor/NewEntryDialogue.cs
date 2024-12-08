@@ -1,49 +1,59 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using XmlTools;
 
-public class NewEntryDialogue : EditorWindow
+namespace XmlTools
 {
-    public static NewEntryDialogue Instance;
-
-    private string entryID;
-    private string entryName;
-    private string curiosity;
-
-    public static void ShowWindow(string defaultID, string defaultName, bool isChild)
+    public class NewEntryDialogue : EditorWindow
     {
-        Vector2 size = new Vector2(200, 100);
+        public static NewEntryDialogue Instance;
 
-        Instance = GetWindow<NewEntryDialogue>();
-        Instance.minSize = size;
-        Instance.maxSize = size;
-        Instance.entryID = defaultID;
-        Instance.entryName = defaultName;
-        Instance.titleContent = new GUIContent($"Create New{(isChild ? " Child " : " ")}Entry");
-    }
+        private string entryID;
+        private string entryName;
+        private string curiosity;
+        private ShipLogEntry.Entry parent;
+        private EntryData activeData;
 
-    private void OnGUI()
-    {
-        entryID = EditorGUILayout.DelayedTextField("ID:", entryID);
-        entryName = EditorGUILayout.DelayedTextField("Name:", entryName);
+        public static void ShowWindow(string defaultID, string defaultName, ShipLogEntry.Entry parent = null, EntryData data = null)
+        {
+            Vector2 size = new Vector2(400, 150);
 
-        List<string> curiositiesList = new List<string>();
-        curiositiesList.Add("(None)");
-        curiositiesList.AddRange(ShipLogManager.Instance.curiosities);
-        curiosity = GUIBuilder.CreateDropdown("Curiosity", curiosity, curiositiesList.ToArray());
+            Instance = GetWindow<NewEntryDialogue>();
+            Instance.minSize = size;
+            Instance.maxSize = size;
+            Instance.entryID = defaultID;
+            Instance.entryName = defaultName;
+            Instance.activeData = data;
+            Instance.titleContent = new GUIContent($"Create New{(parent != null ? " Child " : " ")}Entry");
+        }
 
-        if (GUILayout.Button("Create Entry")) CreateEntry();
-    }
+        private void OnGUI()
+        {
+            // TODO add selection for EntryData
+            EditorGUILayout.Space(20);
+            entryID = EditorGUILayout.DelayedTextField("ID:", entryID);
+            EditorGUILayout.Space();
+            entryName = EditorGUILayout.DelayedTextField("Name:", entryName);
+            EditorGUILayout.Space();
 
-    private void CreateEntry()
-    {
+            List<string> curiositiesList = new List<string>();
+            curiositiesList.Add("(None)");
+            curiositiesList.AddRange(ShipLogManager.Instance.curiosities);
+            curiosity = GUIBuilder.CreateDropdown("Curiosity", curiosity, curiositiesList.ToArray());
+            EditorGUILayout.Space(20);
 
-    }
+            if (GUILayout.Button("Create Entry")) CreateEntry();
+        }
 
-    private void OnLostFocus()
-    {
-        Instance = null;
-        Close();
+        private void CreateEntry()
+        {
+            activeData.AddEntry(entryID, entryName, parent);
+        }
+
+        private void OnLostFocus()
+        {
+            Instance = null;
+            Close();
+        }
     }
 }
