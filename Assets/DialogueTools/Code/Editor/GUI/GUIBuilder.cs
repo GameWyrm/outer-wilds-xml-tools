@@ -383,6 +383,44 @@ namespace XmlTools
             return result;
         }
 
+        public static string[] CreateLogSelectorArray(string label, string[] existingFacts, ref bool isShowing, out bool setDirty)
+        {
+            List<string> logs = new List<string>(existingFacts);
+            setDirty = false;
+            isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, label);
+            if (isShowing)
+            {
+                int clearIndex = -1;
+                for (int i = 0; i < logs.Count; i++)
+                {
+                    string newLog = CreateLogSelector($"{label} {i}", logs[i], true, out bool shouldSetDirty, out bool shouldClear);
+                    if (shouldSetDirty)
+                    {
+                        logs[i] = newLog;
+                        setDirty = true;
+                    }
+                    if (shouldClear)
+                    {
+                        clearIndex = i;
+                    }
+                }
+
+                if (clearIndex > -1)
+                {
+                    logs.RemoveAt(clearIndex);
+                }
+
+                string addedLog = CreateLogSelector($"Add New {label}", "", false, out bool newLogCreated, out _);
+                if (newLogCreated)
+                {
+                    logs.Add(addedLog);
+                    setDirty = true;
+                }
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            return logs.ToArray();
+        }
+
         #endregion
 
         #region ShipLogEditorElements
