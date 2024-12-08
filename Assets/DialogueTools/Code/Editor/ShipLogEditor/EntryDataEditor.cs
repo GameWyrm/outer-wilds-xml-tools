@@ -79,14 +79,17 @@ namespace XmlTools
         }
 
         /// <summary>
-        /// Fix self-closing tags
+        /// Fix self-closing tags and other data
         /// </summary>
         /// <param name="entry"></param>
         private void FixTags(ShipLogEntry.Entry entry)
         {
+            if (entry.curiosity == "") entry.curiosity = null;
             entry.m_isCuriosity = entry.isCuriosity ? "" : null;
             entry.m_ignoreMoreToExplore = entry.ignoreMoreToExplore ? "" : null;
             entry.m_parentIgnoreNotRevealed = entry.parentIgnoreNotRevealed ? "" : null;
+            if (entry.ignoreMoreToExploreCondition == "") entry.ignoreMoreToExploreCondition = null;
+            if (entry.altPhotoCondition == "") entry.altPhotoCondition = null;
 
             foreach (var fact in entry.exploreFacts)
             {
@@ -96,6 +99,11 @@ namespace XmlTools
             foreach (var fact in entry.rumorFacts)
             {
                 fact.m_ignoreMoreToExplore = fact.ignoreMoreToExplore ? "" : null;
+                if (fact.rumorName == "")
+                {
+                    fact.rumorName = null;
+                    // Can't figure out how to make the priority not show up though
+                }
             }
 
             if (entry.childEntries != null && entry.childEntries.Length > 0)

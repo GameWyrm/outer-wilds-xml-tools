@@ -31,16 +31,22 @@ namespace XmlTools
             /// <summary> Do not use unless serializing, use isCuriosity instead</summary>
             [XmlElement("IsCuriosity"), HideInInspector]
             public string m_isCuriosity;
+
+            [XmlIgnore]
             public bool isCuriosity;
 
             /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
             [XmlElement("IgnoreMoreToExplore"), HideInInspector]
             public string m_ignoreMoreToExplore;
+
+            [XmlIgnore]
             public bool ignoreMoreToExplore;
 
             /// <summary> Do not use unless serializing, use parentIgnoreNotRevealed instead</summary>
             [XmlElement("ParentIgnoreNotRevealed"), HideInInspector]
             public string m_parentIgnoreNotRevealed;
+
+            [XmlIgnore]
             public bool parentIgnoreNotRevealed;
 
             [XmlElement("IgnoreMoreToExploreCondition")]
@@ -97,6 +103,8 @@ namespace XmlTools
             /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
             [XmlElement("IgnoreMoreToExplore"), HideInInspector]
             public string m_ignoreMoreToExplore;
+
+            [XmlIgnore]
             public bool ignoreMoreToExplore;
 
             [XmlElement("Text")]
@@ -126,6 +134,8 @@ namespace XmlTools
             /// <summary> Do not use unless serializing, use ignoreMoreToExplore instead</summary>
             [XmlElement("IgnoreMoreToExplore"), HideInInspector]
             public string m_ignoreMoreToExplore;
+
+            [XmlIgnore]
             public bool ignoreMoreToExplore;
 
             [XmlElement("Text")]
