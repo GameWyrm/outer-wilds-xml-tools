@@ -121,8 +121,6 @@ namespace XmlTools
             }
             GenerateFactsLists();
             GeneratePaths();
-
-            // TODO rebuild shiplog editor
         }
 
         public ShipLogEntry.Entry GetEntry(string entryName)

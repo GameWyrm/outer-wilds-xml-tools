@@ -244,6 +244,7 @@ namespace XmlTools
                     nodes.Add(new NodeData(entryID, new Vector2(parentNode.position.x, parentNode.position.y - 200)));
                 }
                 BuildInfo();
+                EditorUtility.SetDirty(this);
             }
         }
 

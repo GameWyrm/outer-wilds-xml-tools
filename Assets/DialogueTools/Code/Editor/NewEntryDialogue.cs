@@ -48,6 +48,11 @@ namespace XmlTools
         private void CreateEntry()
         {
             activeData.AddEntry(entryID, entryName, parent);
+
+            if (ShipLogEditor.Instance != null)
+            {
+                ShipLogEditor.Instance.BuildNodeTree();
+            }
         }
 
         private void OnLostFocus()

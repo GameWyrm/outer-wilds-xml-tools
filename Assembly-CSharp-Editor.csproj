@@ -56,20 +56,42 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\DialogueTools\Code\Editor\ArrowManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueTreeEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueTreeAsset.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueTreeEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\Language.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\EditorReferences.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\GUIBuilder.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\Casing.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\EntryType.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\LanguageType.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\ArrowManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\GUIBuilder.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\NodeManipulator.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\NodeWindow.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\PannerManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\LanguageEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NewEntryDialogue.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NodeManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NodeWindow.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\PannerManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogManagerEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NodeData.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueNode.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueTree.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\NomaiText.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\ShipLogEntry.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\StarSystem.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\Translation.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\EntryData.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogManager.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogManagerEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettings.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettingsEditor.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\XMLUserSettings.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\XMLUserSettingsEditor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.uss" />
+    <None Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.uss" />
+    <None Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.uxml" />
+    <None Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.uxml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -677,10 +699,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{4344AC0C-A96C-5837-9A6E-991A9EAAD5EB}</Project>
-      <Name>Assembly-CSharp</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -447,7 +447,7 @@ MonoBehaviour:
   - name: HN2_Intro
     position: {x: -240, y: -618}
   - name: HN2_GC
-    position: {x: -5, y: -343}
+    position: {x: -6, y: -376}
   - name: HN2_LB
     position: {x: 127, y: 515}
   - name: HN2_EG
