@@ -352,6 +352,17 @@ namespace XmlTools
                     }
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
+
+                // Delete Entry button
+                if (GUILayout.Button("DELETE THIS ENTRY"))
+                {
+                    if (EditorUtility.DisplayDialog("Delete Entry?", $"Are you absolutely sure you want to delete {selectedEntry.entryID} and all {selectedEntry.childEntries.Length} of its children? This action cannot be undone.", "Yes", "No"))
+                    {
+                        selectedData.RemoveEntry(selectedEntry.entryID);
+                        updateInfo = true;
+                        setRedraw = true;
+                    }
+                }
             }
 
             if (updateInfo)
