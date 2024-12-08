@@ -206,6 +206,22 @@ namespace XmlTools
                         if (GUIBuilder.CreateExploreFactItem(fact)) setDirty = true;
                         EditorGUILayout.Space(20);
                     }
+
+                    string newFactName = EditorGUILayout.DelayedTextField("Create new fact with custom ID:", "");
+                    bool autoFact = GUILayout.Button("Create new fact with automatic ID");
+                    if (newFactName != "" ||  autoFact)
+                    {
+                        if (newFactName == "") newFactName = $"{selectedEntry.name}_{selectedEntry.exploreFacts.Length}";
+                        string newText = newFactName;
+                        while (language.dialogueKeys.Contains(newText))
+                        {
+                            newText += "_1";
+                        }
+
+                        ShipLogEntry.ExploreFact newFact = new ShipLogEntry.ExploreFact(newFactName, newText);
+
+                    }
+
                 }
                 EditorGUILayout.EndFoldoutHeaderGroup();
 
