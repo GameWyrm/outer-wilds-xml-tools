@@ -370,7 +370,7 @@ namespace XmlTools
             EditorGUILayout.LabelField(label);
             if (GUILayout.Button("Select Entry"))
             {
-                ShipLogEditor.Instance.SelectNode(targetEntry);
+                ShipLogEditor.Instance.SelectNodeByName(targetEntry);
             }
             if (haveRemoveButton)
             {

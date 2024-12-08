@@ -118,6 +118,11 @@ namespace XmlTools
             isFocused = true;
         }
 
+        public virtual void OnPan(Vector2 newPosition)
+        {
+            // optional
+        }
+
         /// <summary>
         /// Runs when you click the "Import" button on the toolbar
         /// </summary>

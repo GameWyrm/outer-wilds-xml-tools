@@ -37,6 +37,7 @@ namespace XmlTools
             pointerStartPosition = e.position;
             background.CapturePointer(e.pointerId);
             enabled = true;
+            window.OnPan(panRoot.transform.position);
         }
 
         private void OnPointerMove(PointerMoveEvent e)
@@ -46,6 +47,7 @@ namespace XmlTools
                 Vector3 pointerDelta = e.position - pointerStartPosition;
 
                 panRoot.transform.position = panRootStartPosition + ((Vector2)pointerDelta / window.zoom);
+                window.OnPan(panRoot.transform.position);
             }
         }
 

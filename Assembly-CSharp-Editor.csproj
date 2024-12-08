@@ -79,6 +79,7 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\StarSystem.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\Translation.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\EntryData.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\EntryDataEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogManager.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogManagerEditor.cs" />

@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace XmlTools
 {
@@ -17,6 +18,7 @@ namespace XmlTools
         private static bool showExploreFacts;
         private static bool showRumorFacts;
         private static bool showChildEntries;
+        private static string parsedData;
 
         private void OnEnable()
         {
@@ -364,6 +366,68 @@ namespace XmlTools
                     }
                 }
             }
+            else
+            {
+                EditorGUILayout.Space(20);
+                EditorGUILayout.HelpBox("To export ship log xml and position JSON, select the corresponding Ship Log asset.", MessageType.Info);
+
+                bool shouldValidate = false;
+                foreach (var data in instance.datas)
+                {
+                    if (data == null)
+                    {
+                        shouldValidate = true;
+                        break;
+                    }
+
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField(data.name);
+                    if (GUILayout.Button("Select Asset"))
+                    {
+                        Selection.activeObject = data;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                if (shouldValidate) instance.ValidateData();
+
+                EditorGUILayout.Space(20);
+
+                EditorGUILayout.LabelField("Curiosity JSON", EditorStyles.boldLabel);
+
+                if (string.IsNullOrEmpty(parsedData))
+                {
+                    if (GUILayout.Button("Parse Curiosity Data"))
+                    {
+                        List<StarSystem.CuriosityColorInfo> curiosityInfos = new List<StarSystem.CuriosityColorInfo>();
+                        for (int i = 0; i < instance.curiosities.Count; i++)
+                        {
+                            var curiosity = instance.curiosities[i];
+
+                            StarSystem.CuriosityColorInfo info = new StarSystem.CuriosityColorInfo();
+
+                            info.id = curiosity;
+                            info.color = instance.GetCuriosityColor(curiosity);
+                            info.highlightColor = instance.GetCuriosityHighlightColor(curiosity);
+
+                            curiosityInfos.Add(info);
+                        }
+
+                        StarSystem system = new StarSystem();
+                        system.curiosities = curiosityInfos.ToArray();
+
+                        parsedData = "\"curiosities\": " + JsonConvert.SerializeObject(system.curiosities, Formatting.Indented);
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button("Copy To Clipboard"))
+                    {
+                        EditorGUIUtility.systemCopyBuffer = parsedData;
+                    }
+
+                    EditorGUILayout.TextArea(parsedData, GUILayout.ExpandHeight(true));
+                }
+            }
 
             if (updateInfo)
             {
@@ -374,10 +438,12 @@ namespace XmlTools
             {
                 EditorUtility.SetDirty(instance);
                 if (ShipLogEditor.Instance != null) ShipLogEditor.Instance.BuildNodeTree();
+                parsedData = "";
             }
             else if (setDirty)
             {
                 EditorUtility.SetDirty(instance);
+                parsedData = "";
             }
         }
     }

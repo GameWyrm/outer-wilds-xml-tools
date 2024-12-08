@@ -42,7 +42,6 @@ namespace XmlTools
         [SerializeField]
         private List<Color> curiosityHighlightColors;
 
-
         private static ShipLogManager instance;
 
         private void GenerateFactsLists()

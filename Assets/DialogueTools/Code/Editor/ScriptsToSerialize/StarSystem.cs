@@ -74,6 +74,19 @@ namespace XmlTools
         {
             public float x;
             public float y;
+
+            public static implicit operator Vector2(MVector2 v)
+            {
+                return new Vector2(v.x, v.y);
+            }
+
+            public static implicit operator MVector2(Vector2 v)
+            {
+                MVector2 vector = new MVector2();
+                vector.x = v.x;
+                vector.y = v.y;
+                return vector;
+            }
         }
 
         public EntryPositionInfo[] entryPositions;

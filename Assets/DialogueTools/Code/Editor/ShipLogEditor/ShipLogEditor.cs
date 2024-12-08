@@ -247,6 +247,12 @@ namespace XmlTools
             zoomText.text = $"  {Mathf.RoundToInt(100 * zoom)}%  ";
         }
 
+        public override void OnPan(Vector2 newPosition)
+        {
+            SelectNodeByName("");
+            EditorUtility.SetDirty(ShipLogManager.Instance);
+        }
+
         protected override List<VisualElement> GetTargetNodes(string nodeName)
         {
             ShipLogEntry.Entry entry = ShipLogManager.Instance.GetEntry(nodeName);
@@ -267,7 +273,6 @@ namespace XmlTools
 
         public override void SelectNode(VisualElement newSelection)
         {
-            string id = newSelection.name;
             ShipLogManager manager = ShipLogManager.Instance;
             if (selectedNode != null)
             {
@@ -279,6 +284,18 @@ namespace XmlTools
                     oldBG.style.backgroundColor = manager.GetCuriosityColor(oldEntry.curiosity);
                 }
             }
+
+            if (newSelection == null)
+            {
+                ShipLogManagerEditor.selectedEntry = null;
+                ShipLogManagerEditor.parentEntry = null;
+                ShipLogManagerEditor.selectedData = null;
+                Selection.activeObject = manager;
+                EditorUtility.SetDirty(manager);
+                return;
+            }
+            string id = newSelection.name;
+
             selectedEntry = manager.GetEntry(id, out selectedData, out ShipLogEntry.Entry parent);
             if (selectedEntry == null) return;
             VisualElement bg = newSelection.Q<VisualElement>("bg");
@@ -292,16 +309,24 @@ namespace XmlTools
             EditorUtility.SetDirty(manager);
         }
 
-        public void SelectNode(string nodeName)
+        public void SelectNodeByName(string nodeName)
         {
-            VisualElement element = nodeElements[nodeName];
+            VisualElement element = null;
+            if (nodeElements.ContainsKey(nodeName))
+            {
+                element = nodeElements[nodeName];
+            }
             if (element != null)
             {
                 SelectNode(nodeElements[nodeName]);
             }
             else
             {
-                EditorUtility.DisplayDialog("Error!", $"No suitable node {nodeName} found!", "OK");
+                if (nodeName == "")
+                {
+                    SelectNode(null);
+                }
+                else EditorUtility.DisplayDialog("Error!", $"No suitable node {nodeName} found!", "OK");
             }
         }
 
