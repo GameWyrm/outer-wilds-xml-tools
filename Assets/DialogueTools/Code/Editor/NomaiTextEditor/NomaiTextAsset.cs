@@ -44,12 +44,21 @@ namespace XmlTools
         [SerializeField]
         private List<NodeData> nodeDatas;
 
-
-
         public void SetNodePosition(string nodeName, Vector2 position)
         {
             var node = NodeDatas.First(x => x.name == nodeName);
             node.position = position;
+        }
+
+        public List<string> GetTextIDs()
+        {
+            List<string> result = new List<string>();
+            if (text.textBlocks == null) return null;
+            foreach (var block in text.textBlocks)
+            {
+                result.Add(block.textID.ToString());
+            }
+            return result;
         }
     }
 }

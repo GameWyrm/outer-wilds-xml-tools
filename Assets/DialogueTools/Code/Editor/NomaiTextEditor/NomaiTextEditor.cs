@@ -93,11 +93,13 @@ namespace XmlTools
                 string savePath = EditorUtility.SaveFilePanelInProject("Save Nomai Text as...", "New Nomai Text", "asset", "Select a location to save your Nomai Text to.");
 
                 // fix self-closing tags
+                if (nomaiText.textBlocks == null) nomaiText.textBlocks = new NomaiText.TextBlock[0];
                 foreach (var node in nomaiText.textBlocks)
                 {
                     node.isLocationA = node.m_isLocationA != null;
                     node.isLocationB = node.m_isLocationB != null;
                 }
+                if (nomaiText.shipLogConditions == null) nomaiText.shipLogConditions = new NomaiText.ShipLogCondition[0];
                 foreach (var node in nomaiText.shipLogConditions)
                 {
                     node.isLocationA = node.m_isLocationA != null;
@@ -228,14 +230,14 @@ namespace XmlTools
 
         private void OnDestroy()
         {
-            // TODO set to proper editor DialogueTreeEditor.activeNode = null;
+            NomaiTextAssetEditor.activeText = null;
             isFocused = false;
             AssetDatabase.SaveAssets();
         }
 
         private void OnSelectionChange()
         {
-            // TODO set to proper editor DialogueTreeEditor.activeNode = null;
+            NomaiTextAssetEditor.activeText = null;
         }
 
         private void OnFocus()
@@ -275,13 +277,13 @@ namespace XmlTools
 
             NomaiText.TextBlock node = selection.text.textBlocks.First(x => x.textID.ToString() == createdNode.name);
 
-            if (node.isLocationA)
+            if (node.isLocationB)
             {
-                child.style.backgroundColor = defaultColor;
+                child.style.backgroundColor = altColor;
             }
             else
             {
-                child.style.backgroundColor = altColor;
+                child.style.backgroundColor = defaultColor;
             }
         }
 
@@ -306,7 +308,7 @@ namespace XmlTools
                 {
                     var oldText = GetTextBlock(parentID);
 
-                    selectedNode.style.backgroundColor = oldText.isLocationA ? defaultColor : altColor;
+                    selectedNode.style.backgroundColor = oldText.isLocationB ? altColor : defaultColor;
                 }
                 else
                 {
@@ -319,7 +321,11 @@ namespace XmlTools
             {
                 var newText = GetTextBlock(selectionID);
 
-                child.style.backgroundColor = newText.isLocationA ? defaultHighlight : altHighlightColor;
+                NomaiTextAssetEditor.SelectionUpdate(newText);
+                Selection.activeObject = selection;
+                EditorUtility.SetDirty(selection);
+
+                child.style.backgroundColor = newText.isLocationB ? altHighlightColor : defaultHighlight;
             }
             else
             {
@@ -327,13 +333,6 @@ namespace XmlTools
             }
 
             selectedNode = newSelection;
-
-            // TODO update editor
-            /*
-            DialogueTreeEditor.SelectionUpdate(GetDialogueNode(selectedNode.name));
-            Selection.activeObject = selection;
-            EditorUtility.SetDirty(selection);
-            */
         }
 
         public override void MoveNode(VisualElement node, Vector2 newPosition)

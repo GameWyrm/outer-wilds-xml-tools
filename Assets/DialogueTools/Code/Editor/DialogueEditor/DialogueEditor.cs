@@ -301,6 +301,7 @@ namespace XmlTools
             if (node == null) Debug.LogError("Obtained node is null!");
             return node;
         }
+
         protected override void OnCreateNode(VisualElement createdNode)
         {
             VisualElement child = createdNode.ElementAt(0);

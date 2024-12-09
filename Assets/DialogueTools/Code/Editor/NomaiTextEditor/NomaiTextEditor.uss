@@ -16,7 +16,7 @@
     height: 10000px;
     position: absolute;
     margin-top: 30px;
-    background-color: rgb(40, 0, 158);
+    background-color: rgb(15, 9, 38);
     cursor: pan;
 }
 

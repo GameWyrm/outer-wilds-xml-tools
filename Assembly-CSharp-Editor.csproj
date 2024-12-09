@@ -64,6 +64,7 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\Enums\Casing.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\Enums\EntryType.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\Enums\LanguageType.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\NomaiLocation.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\GUI\ArrowManipulator.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\GUI\GUIBuilder.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\GUI\NodeManipulator.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\NewEntryDialogue.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NodeData.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextAsset.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextAssetEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueTree.cs" />

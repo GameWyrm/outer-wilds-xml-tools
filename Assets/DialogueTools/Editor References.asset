@@ -24,3 +24,5 @@ MonoBehaviour:
     type: 3}
   ShipLogVisualTree: {fileID: 9197481963319205126, guid: 8bb1fe4976407d84493cca9c41587801,
     type: 3}
+  NomaiTextVisualTree: {fileID: 9197481963319205126, guid: 80725edc439b2ad49ad77bf14af9587b,
+    type: 3}
