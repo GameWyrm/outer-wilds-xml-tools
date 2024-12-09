@@ -294,9 +294,9 @@ namespace XmlTools
             List<VisualElement> elements = new List<VisualElement>();
             var node = selection.text.textBlocks.First(x => x.textID.ToString() == nodeName);
 
-            if (node.parentID != null)
+            if (!string.IsNullOrEmpty(node.parentID))
             {
-                elements.Add(nodeElements[node.parentID.ToString()]);
+                elements.Add(nodeElements[node.parentID]);
             }
 
             return elements;
@@ -306,9 +306,9 @@ namespace XmlTools
         {
             if (selectedNode != null)
             {
-                if (int.TryParse(selectedNode.name, out int parentID))
+                if (int.TryParse(selectedNode.name, out int oldID))
                 {
-                    var oldText = GetTextBlock(parentID);
+                    var oldText = GetTextBlock(oldID);
 
                     selectedNode.ElementAt(0).style.backgroundColor = oldText.isLocationB ? altColor : defaultColor;
                 }

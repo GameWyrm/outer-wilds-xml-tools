@@ -10,83 +10,96 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f74cd0185dfa5c6458435ad540baa89c, type: 3}
-  m_Name: Home3
+  m_Name: HomeWall3
   m_EditorClassIdentifier: 
   text:
     textBlocks:
     - textID: 1
+      parentID: 
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_1
     - textID: 2
+      parentID: 1
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_2
     - textID: 3
+      parentID: 2
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_A1
     - textID: 4
+      parentID: 3
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
-      isLocationB: 0
+      isLocationB: 1
       text: $HN2HomeWall3_A2
     - textID: 5
+      parentID: 4
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_A3
     - textID: 6
+      parentID: 2
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
-      isLocationB: 0
+      isLocationB: 1
       text: $HN2HomeWall3_B1
     - textID: 7
+      parentID: 6
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_B2
     - textID: 8
+      parentID: 7
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_B3
     - textID: 9
+      parentID: 2
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_C1
     - textID: 10
+      parentID: 9
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_C2
     - textID: 11
+      parentID: 2
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_D1
     - textID: 12
+      parentID: 11
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_D2
     - textID: 13
+      parentID: 12
       m_isLocationA: 
       isLocationA: 0
       m_isLocationB: 
@@ -95,28 +108,28 @@ MonoBehaviour:
     shipLogConditions: []
   nodeDatas:
   - name: 1
-    position: {x: 150, y: 50}
+    position: {x: 144, y: 619}
   - name: 2
-    position: {x: 500, y: 50}
+    position: {x: 507, y: 640}
   - name: 3
-    position: {x: 850, y: 50}
+    position: {x: 571, y: 382}
   - name: 4
-    position: {x: 1200, y: 50}
+    position: {x: 595, y: 249}
   - name: 5
-    position: {x: 150, y: 250}
+    position: {x: 638, y: 113}
   - name: 6
-    position: {x: 500, y: 250}
+    position: {x: 805, y: 482}
   - name: 7
-    position: {x: 850, y: 250}
+    position: {x: 1011, y: 364}
   - name: 8
-    position: {x: 1200, y: 250}
+    position: {x: 1248, y: 294}
   - name: 9
-    position: {x: 150, y: 450}
+    position: {x: 345, y: 499}
   - name: 10
-    position: {x: 500, y: 450}
+    position: {x: 241, y: 319}
   - name: 11
-    position: {x: 850, y: 450}
+    position: {x: 907, y: 621}
   - name: 12
-    position: {x: 1200, y: 450}
+    position: {x: 1122, y: 517}
   - name: 13
-    position: {x: 150, y: 650}
+    position: {x: 1299, y: 606}

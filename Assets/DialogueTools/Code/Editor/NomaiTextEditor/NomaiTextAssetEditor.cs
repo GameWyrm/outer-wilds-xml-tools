@@ -58,20 +58,10 @@ namespace XmlTools
             // ParentID
             List<string> nodes = new List<string>(selectedAsset.GetTextIDs());
             if (nodes.Contains(activeText.textID.ToString())) nodes.Remove(activeText.textID.ToString());
-            string newParentID = GUIBuilder.CreateDropdown("Parent ID", activeText.parentID.ToString(), nodes.ToArray());
-            if (newParentID != activeText.parentID.ToString())
+            string newParentID = GUIBuilder.CreateDropdown("Parent ID", activeText.parentID, nodes.ToArray());
+            if (newParentID != activeText.parentID)
             {
-                if (!string.IsNullOrEmpty(newParentID))
-                {
-                    if (int.TryParse(newParentID.ToString(), out int newParentIDInt))
-                    {
-                        activeText.parentID = newParentIDInt;
-                    }
-                }
-                else
-                {
-                    activeText.parentID = null;
-                }
+                activeText.parentID = newParentID;
                 setRedraw = true;
             }
 

@@ -22,9 +22,9 @@ namespace XmlTools
             public int textID;
 
             [XmlElement("ParentID")]
-            public int? parentID;
+            public string parentID;
             [XmlIgnore]
-            public bool parentIDSpecified { get { return parentID != null; } }
+            public bool parentIDSpecified { get { return parentID != ""; } }
 
             /// <summary> Do not use unless serializing, use isLocationA instead</summary>
             [XmlElement("LocationA")]
