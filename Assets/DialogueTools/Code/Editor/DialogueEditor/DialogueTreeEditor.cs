@@ -185,44 +185,11 @@ namespace XmlTools
             EditorGUILayout.Space();
 
             // Reveal Facts
-            showRevealFacts = EditorGUILayout.BeginFoldoutHeaderGroup(showRevealFacts, "Reveal Facts");
-            if (activeNode.revealFacts != null && activeNode.revealFacts.factIDs != null && showRevealFacts)
-            {
-                bool factsHaveBeenChanged = false;
-                int clearIndex = -1;
-                string[] facts = activeNode.revealFacts.factIDs;
-                for (int i = 0; i < facts.Length; i++)
-                {
-                    string newFactName = GUIBuilder.CreateLogSelector($"Reveal Fact {i}", facts[i], true, out factsHaveBeenChanged, out bool shouldClear);
-                    if (factsHaveBeenChanged)
-                    {
-                        facts[i] = newFactName;
-                        setDirty = true;
-                    }
-                    if (shouldClear)
-                    {
-                        clearIndex = i;
-                    }
-                }
+            if (activeNode.revealFacts == null) activeNode.revealFacts = new DialogueNode.RevealFacts();
+            if (activeNode.revealFacts.factIDs == null) activeNode.revealFacts.factIDs = new string[0];
+            activeNode.revealFacts.factIDs = GUIBuilder.CreateLogSelectorArray("Reveal Fact", activeNode.revealFacts.factIDs, ref showRevealFacts, out bool shouldSetDirty);
+            if (shouldSetDirty) setDirty = true;
 
-                if (clearIndex > -1)
-                {
-                    List<string> factsList = new List<string>(facts);
-                    factsList.RemoveAt(clearIndex);
-                    activeNode.revealFacts.factIDs = factsList.ToArray();
-                    setDirty = true;
-                }
-
-                string newFact = GUIBuilder.CreateLogSelector("Add New Fact", "", false, out bool factSet, out _);
-                if (factSet)
-                {
-                    List<string> factsList = new List<string>(facts);
-                    factsList.Add(newFact);
-                    activeNode.revealFacts.factIDs = factsList.ToArray();
-                    setDirty = true;
-                }
-            }
-            EditorGUILayout.EndFoldoutHeaderGroup();
             EditorGUILayout.Space();
 
             // Set Persistent Condition
@@ -349,16 +316,9 @@ namespace XmlTools
                     if (string.IsNullOrEmpty(optionName)) optionName = "EXIT";
                     EditorGUILayout.LabelField($"------------------ Option {optionName} ------------------");
 
-                    // TODO replace with log selector
-                    //showRequiredLogConditions[i] = EditorGUILayout.BeginFoldoutHeaderGroup(showRequiredLogConditions[i], "Required Ship Log Conditions");
-                    //if (showRequiredLogConditions[i] && option.requiredLogConditions != null)
-                    //{
-                    //    for (int j = 0; j < option.requiredLogConditions.Length; j++)
-                    //    {
-                    //        EditorGUILayout.DelayedTextField($"Required Condition {j}", option.requiredLogConditions[j]);
-                    //    }
-                    //}
-                    //EditorGUILayout.EndFoldoutHeaderGroup();
+                    option.requiredLogConditions = GUIBuilder.CreateLogSelectorArray("Required Ship Log", option.requiredLogConditions, ref showRequiredLogConditions[i], out bool requiredLogSetDirty);
+
+                    if (requiredLogSetDirty) setDirty = true;
 
                     if (option.requiredPersistentConditions == null) option.requiredPersistentConditions = new string[0];
                     option.requiredPersistentConditions = GUIBuilder.CreateDropdownArray(ref showRequiredPersistentConditions[i], "Required Persistent Conditions", "Condition", option.requiredPersistentConditions, persistentConditions);

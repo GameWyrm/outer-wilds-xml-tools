@@ -387,7 +387,7 @@ namespace XmlTools
         {
             List<string> logs = new List<string>(existingFacts);
             setDirty = false;
-            isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, label);
+            isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, label + "s");
             if (isShowing)
             {
                 int clearIndex = -1;

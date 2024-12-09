@@ -22,16 +22,20 @@ namespace XmlTools
             public int textID;
 
             [XmlElement("ParentID")]
-            public int parentID;
+            public int? parentID;
+            [XmlIgnore]
+            public bool parentIDSpecified { get { return parentID != null; } }
 
             /// <summary> Do not use unless serializing, use isLocationA instead</summary>
             [XmlElement("LocationA")]
             public string m_isLocationA;
+            [XmlIgnore]
             public bool isLocationA;
 
             /// <summary> Do not use unless serializing, use isLocationB instead</summary>
             [XmlElement("LocationB")]
             public string m_isLocationB;
+            [XmlIgnore]
             public bool isLocationB;
 
             [XmlElement("Text")]
@@ -44,11 +48,13 @@ namespace XmlTools
             /// <summary> Do not use unless serializing, use isLocationA instead</summary>
             [XmlElement("LocationA")]
             public string m_isLocationA;
+            [XmlIgnore]
             public bool isLocationA;
 
             /// <summary> Do not use unless serializing, use isLocationB instead</summary>
             [XmlElement("LocationB")]
             public string m_isLocationB;
+            [XmlIgnore]
             public bool isLocationB;
 
             [XmlElement("RevealFact")]

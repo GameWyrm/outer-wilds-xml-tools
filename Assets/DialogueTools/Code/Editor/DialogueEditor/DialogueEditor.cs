@@ -199,7 +199,6 @@ namespace XmlTools
                 AssetDatabase.Refresh();
                 Debug.Log($"Exported dialogue xml to {savePath}");
             }
-
         }
 
         private void OnClickNewTree()
@@ -296,7 +295,7 @@ namespace XmlTools
             isFocused = true;
         }
 
-        private DialogueNode GetNode(string name)
+        private DialogueNode GetDialogueNode(string name)
         {
             DialogueNode node = dialogueTree.dialogueNodes.First(x => x.nodeName == name);
             if (node == null) Debug.LogError("Obtained node is null!");
@@ -390,7 +389,7 @@ namespace XmlTools
             newChild.EnableInClassList("node_selected", true);
             selectedNode = newSelection;
 
-            DialogueTreeEditor.SelectionUpdate(GetNode(selectedNode.name));
+            DialogueTreeEditor.SelectionUpdate(GetDialogueNode(selectedNode.name));
             Selection.activeObject = selection;
             EditorUtility.SetDirty(selection);
         }

@@ -72,6 +72,8 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\LanguageEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NewEntryDialogue.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\NodeData.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextAsset.cs" />
+    <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueNode.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueTree.cs" />
     <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\NomaiText.cs" />
@@ -90,10 +92,12 @@
     <Compile Include="Assets\DialogueTools\Code\Editor\XMLUserSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.uxml" />
     <None Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.uss" />
     <None Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.uss" />
     <None Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.uxml" />
     <None Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.uxml" />
+    <None Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.uss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

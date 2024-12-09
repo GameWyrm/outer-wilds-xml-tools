@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd"
+>
+  <editor:Toolbar name="toolbar" class="toolbar">
+    <Style src ="NomaiTextEditor.uss"/>
+    <editor:ToolbarButton name="import" text="Import..." class="toolbar_button"/>
+    <editor:ToolbarButton name="export" text="Export..." class="toolbar_button"/>
+    <editor:ToolbarButton name="newTree" text="Create New Tree..." class="toolbar_button"/>
+    <editor:ToolbarButton name="newNode" text="Create New Node" class="toolbar_button"/>
+    <editor:ToolbarButton name="resetNodes" text="Reset Node Positions" class="toolbar_button"/>
+  </editor:Toolbar>
+  <engine:Box name="bg" class="bg">
+    <Style src ="NomaiTextEditor.uss"/>
+  </engine:Box>
+</engine:UXML>

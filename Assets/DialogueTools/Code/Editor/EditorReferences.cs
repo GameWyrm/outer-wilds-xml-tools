@@ -30,5 +30,6 @@ namespace XmlTools
         public StyleSheet ShipLogStyle;
         public VisualTreeAsset DialogueVisualTree;
         public VisualTreeAsset ShipLogVisualTree;
+        public VisualTreeAsset NomaiTextVisualTree;
     }
 }
