@@ -84,11 +84,19 @@ namespace XmlTools
             for (int i = 0; i < nodes.Count; i++)
             {
                 VisualElement sourceNode = nodeElements[nodes[i].name];
-                List<VisualElement> targetNodes = GetTargetNodes(nodes[i].name);
+                List<VisualElement> targetNodes = GetTargetNodes(nodes[i].name, out bool flip);
 
                 foreach (var targetNode in targetNodes)
                 {
-                    arrowsRoot.Add(GUIBuilder.CreateArrow(sourceNode, targetNode, out ArrowManipulator manipulator));
+                    ArrowManipulator manipulator;
+                    if (flip)
+                    {
+                        arrowsRoot.Add(GUIBuilder.CreateArrow(targetNode, sourceNode, out manipulator));
+                    }
+                    else
+                    {
+                        arrowsRoot.Add(GUIBuilder.CreateArrow(sourceNode, targetNode, out manipulator));
+                    }
                     nodeManipulators[sourceNode.name].arrows.Add(manipulator);
                     nodeManipulators[targetNode.name].arrows.Add(manipulator);
                 }
@@ -138,8 +146,9 @@ namespace XmlTools
         /// Returns the nodes that should be the target of connected arrows
         /// </summary>
         /// <param name="nodeName"></param>
+        /// <param name="flip">If true, the source node is the target, rather than the parent.</param>
         /// <returns></returns>
-        protected abstract List<VisualElement> GetTargetNodes(string nodeName);
+        protected abstract List<VisualElement> GetTargetNodes(string nodeName, out bool flip);
 
         /// <summary>
         /// Runs when a node is selected, and determines how it should act when selected

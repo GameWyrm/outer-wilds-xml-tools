@@ -95,11 +95,11 @@ MonoBehaviour:
     shipLogConditions: []
   nodeDatas:
   - name: 1
-    position: {x: 170, y: 91}
+    position: {x: 150, y: 50}
   - name: 2
-    position: {x: 509, y: 96}
+    position: {x: 500, y: 50}
   - name: 3
-    position: {x: 833, y: 92}
+    position: {x: 850, y: 50}
   - name: 4
     position: {x: 1200, y: 50}
   - name: 5

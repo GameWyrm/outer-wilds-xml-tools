@@ -61,11 +61,18 @@ namespace XmlTools
             string newParentID = GUIBuilder.CreateDropdown("Parent ID", activeText.parentID.ToString(), nodes.ToArray());
             if (newParentID != activeText.parentID.ToString())
             {
-                if (int.TryParse(newParentID.ToString(), out int newParentIDInt))
+                if (!string.IsNullOrEmpty(newParentID))
                 {
-                    activeText.parentID = newParentIDInt;
-                    setRedraw = true;
+                    if (int.TryParse(newParentID.ToString(), out int newParentIDInt))
+                    {
+                        activeText.parentID = newParentIDInt;
+                    }
                 }
+                else
+                {
+                    activeText.parentID = null;
+                }
+                setRedraw = true;
             }
 
             // Location
@@ -77,7 +84,7 @@ namespace XmlTools
             NomaiLocation newLoc = (NomaiLocation)EditorGUILayout.EnumPopup("Location", loc);
             if (newLoc != loc)
             {
-                setDirty = true;
+                setRedraw = true;
                 switch (newLoc)
                 {
                     case NomaiLocation.None:

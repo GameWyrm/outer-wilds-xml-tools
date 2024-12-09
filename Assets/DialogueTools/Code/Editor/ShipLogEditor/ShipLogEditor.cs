@@ -77,7 +77,7 @@ namespace XmlTools
             for (int i = 0; i < nodes.Count; i++)
             {
                 VisualElement sourceNode = nodeElements[nodes[i].name];
-                List<VisualElement> targetNodes = GetTargetNodes(nodes[i].name);
+                List<VisualElement> targetNodes = GetTargetNodes(nodes[i].name, out _);
 
                 foreach (var targetNode in targetNodes)
                 {
@@ -261,8 +261,10 @@ namespace XmlTools
             EditorUtility.SetDirty(ShipLogManager.Instance);
         }
 
-        protected override List<VisualElement> GetTargetNodes(string nodeName)
+        protected override List<VisualElement> GetTargetNodes(string nodeName, out bool flip)
         {
+            flip = false;
+
             ShipLogEntry.Entry entry = ShipLogManager.Instance.GetEntry(nodeName);
             if (entry == null) return null;
             List<VisualElement> targetNodes = new List<VisualElement>();

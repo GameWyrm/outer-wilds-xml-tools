@@ -287,16 +287,18 @@ namespace XmlTools
             }
         }
 
-        protected override List<VisualElement> GetTargetNodes(string nodeName)
+        protected override List<VisualElement> GetTargetNodes(string nodeName, out bool flip)
         {
-            List<VisualElement> elements = new List<VisualElement>();
+            flip = true;
 
+            List<VisualElement> elements = new List<VisualElement>();
             var node = selection.text.textBlocks.First(x => x.textID.ToString() == nodeName);
 
             if (node.parentID != null)
             {
-                elements.Add(nodeElements[node.textID.ToString()]);
+                elements.Add(nodeElements[node.parentID.ToString()]);
             }
+
             return elements;
         }
 
@@ -308,11 +310,11 @@ namespace XmlTools
                 {
                     var oldText = GetTextBlock(parentID);
 
-                    selectedNode.style.backgroundColor = oldText.isLocationB ? altColor : defaultColor;
+                    selectedNode.ElementAt(0).style.backgroundColor = oldText.isLocationB ? altColor : defaultColor;
                 }
                 else
                 {
-                    selectedNode.style.backgroundColor = new Color(0.24f, 0.24f, 0.24f);
+                    selectedNode.ElementAt(0).style.backgroundColor = new Color(0.24f, 0.24f, 0.24f);
                 }
             }
 

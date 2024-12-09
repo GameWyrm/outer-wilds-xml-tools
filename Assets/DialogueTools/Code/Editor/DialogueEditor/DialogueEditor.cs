@@ -343,8 +343,9 @@ namespace XmlTools
             }
         }
 
-        protected override List<VisualElement> GetTargetNodes(string nodeName)
+        protected override List<VisualElement> GetTargetNodes(string nodeName, out bool flip)
         {
+            flip = false;
             List<VisualElement> elements = new List<VisualElement>();
 
             var node = selection.tree.dialogueNodes.First(x => x.nodeName == nodeName);
