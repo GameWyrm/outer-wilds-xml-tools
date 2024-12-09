@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Web;
+using System;
 
 namespace XmlTools
 {
@@ -543,6 +543,84 @@ namespace XmlTools
         {
             color = EditorGUILayout.ColorField(label, color);
             return color;
+        }
+        #endregion
+
+        #region NomaiTextEditorElements
+        public static NomaiText.ShipLogCondition[] CreateNomaiConditionsArray(NomaiText.ShipLogCondition[] conditions, NomaiTextAsset asset, out bool setDirty)
+        {
+            setDirty = false;
+
+            if (conditions == null) conditions = new NomaiText.ShipLogCondition[0];
+            int clearIndex = -1;
+            for (int i = 0; i < conditions.Length; i++)
+            {
+                var condition = conditions[i];
+                condition = CreateNomaiConditionItem($"Log Set {i}", condition, asset, out bool shouldClear, out bool shouldSetDirty);
+                if (shouldClear) clearIndex = i;
+                if (shouldSetDirty) setDirty = true;
+            }
+
+            if (clearIndex > -1)
+            {
+                // TODO clear data
+            }
+
+            // TODO add new set button
+            return conditions;
+        }
+
+        private static NomaiText.ShipLogCondition CreateNomaiConditionItem(string label, NomaiText.ShipLogCondition condition, NomaiTextAsset asset, out bool shouldClear, out bool setDirty)
+        {
+            shouldClear = false;
+            setDirty = false;
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label);
+            if (GUILayout.Button("X", GUILayout.Width(20))) shouldClear = true;
+            EditorGUILayout.EndHorizontal();
+
+            bool newLocA = EditorGUILayout.ToggleLeft("Reveal for A source", condition.isLocationA);
+            if (newLocA != condition.isLocationA)
+            {
+                condition.isLocationA = newLocA;
+                setDirty = true;
+            }
+
+            bool newLocB = EditorGUILayout.ToggleLeft("Reveal for B source", condition.isLocationB);
+            if (newLocB != condition.isLocationB)
+            {
+                condition.isLocationB = newLocB;
+                setDirty = true;
+            }
+
+            if (condition.revealFacts == null) condition.revealFacts = new NomaiText.RevealFact[0];
+            foreach (var fact in condition.revealFacts)
+            {
+                string newLog = CreateLogSelector("Reveal Fact", fact.factID, false, out bool shouldSetDirty, out _);
+                if (shouldSetDirty)
+                {
+                    setDirty = true;
+                    fact.factID = newLog;
+                }
+                fact.condition = fact.condition.Replace(" ", "");
+                string[] selectedIDs = fact.condition.Split(',');
+                List<string> everyID = asset.GetTextIDs();
+                int mask = 0;
+                foreach (string id in selectedIDs)
+                {
+                    if (everyID.Contains(id))
+                    {
+                        mask += Mathf.CeilToInt(Mathf.Pow(everyID.IndexOf(id), 10));
+                    }
+                }
+                Debug.Log(mask);
+                mask = Convert.ToInt32(mask);
+                Debug.Log(mask);
+
+                int newFlags = EditorGUILayout.MaskField(mask, everyID.ToArray());
+            }
+            return condition;
         }
         #endregion
 

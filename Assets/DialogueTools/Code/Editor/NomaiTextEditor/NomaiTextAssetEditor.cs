@@ -43,6 +43,7 @@ namespace XmlTools
             {
                 DrawNodeData();
             }
+            DrawConditionData();
         }
 
         private void DrawNodeData()
@@ -109,6 +110,21 @@ namespace XmlTools
                 EditorUtility.SetDirty(selectedAsset);
             }
             else if (setDirty)
+            {
+                EditorUtility.SetDirty(selectedAsset);
+            }
+        }
+
+        private void DrawConditionData()
+        {
+            EditorGUILayout.LabelField("Ship Log", EditorStyles.boldLabel);
+
+            if (selectedAsset.text.shipLogConditions == null) selectedAsset.text.shipLogConditions = new NomaiText.ShipLogCondition[0];
+            GUIBuilder.CreateNomaiConditionsArray(selectedAsset.text.shipLogConditions, selectedAsset, out bool setDirty);
+
+
+
+            if (setDirty)
             {
                 EditorUtility.SetDirty(selectedAsset);
             }
