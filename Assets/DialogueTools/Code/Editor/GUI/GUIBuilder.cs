@@ -375,6 +375,7 @@ namespace XmlTools
                 EditorGUILayout.EndHorizontal();
             }
             string result = CreateDropdown("", existingFact, allFacts.ToArray());
+            if (result == null) result = "";
             if (!clearable) EditorGUILayout.EndHorizontal();
             string[] elements = result.Split('/');
             result = elements[elements.Length - 1];
@@ -561,12 +562,22 @@ namespace XmlTools
                 if (shouldSetDirty) setDirty = true;
             }
 
+            List<NomaiText.ShipLogCondition> newConditions = new List<NomaiText.ShipLogCondition>(conditions);
             if (clearIndex > -1)
             {
-                // TODO clear data
+                newConditions.RemoveAt(clearIndex);
+                setDirty = true;
             }
 
-            // TODO add new set button
+            if (GUILayout.Button("Add new condition set"))
+            {
+                NomaiText.ShipLogCondition newCondition = new NomaiText.ShipLogCondition();
+                newCondition.revealFacts = new NomaiText.RevealFact[0];
+                newConditions.Add(newCondition);
+                setDirty = true;
+            }
+            conditions = newConditions.ToArray();
+
             return conditions;
         }
 
@@ -577,7 +588,13 @@ namespace XmlTools
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(label);
-            if (GUILayout.Button("X", GUILayout.Width(20))) shouldClear = true;
+            if (GUILayout.Button("X", GUILayout.Width(20)))
+            {
+                if (EditorUtility.DisplayDialog("Remove Condition Set?", "Are you sure you want to remove this condition set? This action cannot be undone.", "Yes", "No"))
+                {
+                    shouldClear = true;
+                }
+            }
             EditorGUILayout.EndHorizontal();
 
             bool newLocA = EditorGUILayout.ToggleLeft("Reveal for A source", condition.isLocationA);
@@ -595,14 +612,18 @@ namespace XmlTools
             }
 
             if (condition.revealFacts == null) condition.revealFacts = new NomaiText.RevealFact[0];
-            foreach (var fact in condition.revealFacts)
+            List<NomaiText.RevealFact> workingFacts = new List<NomaiText.RevealFact>(condition.revealFacts);
+            int clearIndex = -1;
+            for (int i = 0; i < workingFacts.Count; i++)
             {
-                string newLog = CreateLogSelector("Reveal Fact", fact.factID, false, out bool shouldSetDirty, out _);
+                var fact = workingFacts[i];
+                string newLog = CreateLogSelector("Reveal Fact", fact.factID, true, out bool shouldSetDirty, out bool shouldClearFact);
                 if (shouldSetDirty)
                 {
                     setDirty = true;
                     fact.factID = newLog;
                 }
+                if (shouldClearFact) clearIndex = i;
                 fact.condition = fact.condition.Replace(" ", "");
                 string[] selectedIDs = fact.condition.Split(',');
                 List<string> everyID = asset.GetTextIDs();
@@ -614,12 +635,41 @@ namespace XmlTools
                         mask += Mathf.CeilToInt(Mathf.Pow(everyID.IndexOf(id), 10));
                     }
                 }
-                Debug.Log(mask);
-                mask = Convert.ToInt32(mask);
-                Debug.Log(mask);
+                mask = Convert.ToInt32(mask.ToString(), 2);
 
                 int newFlags = EditorGUILayout.MaskField(mask, everyID.ToArray());
+
+                if (newFlags != mask)
+                {
+                    string flags = Convert.ToString(newFlags, 2);
+
+                    if (int.TryParse(flags, out mask))
+                    {
+                        fact.condition = "";
+                        int index = 0;
+                        while (mask > 0)
+                        {
+                            if (mask % 10 > 0)
+                            {
+                                fact.condition += everyID[index] + ",";
+                            }
+                            mask = Mathf.FloorToInt(mask / 10);
+                            index++;
+                            // emergency exit
+                            if (index > 100) break;
+                        }
+                        fact.condition = fact.condition.TrimEnd(',');
+                    }
+                }
             }
+            if (GUILayout.Button("Add New Reveal Fact"))
+            {
+                workingFacts.Add(new NomaiText.RevealFact());
+                setDirty = true;
+            }
+
+            condition.revealFacts = workingFacts.ToArray();
+
             return condition;
         }
         #endregion

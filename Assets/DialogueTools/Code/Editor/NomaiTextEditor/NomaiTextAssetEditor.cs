@@ -120,12 +120,12 @@ namespace XmlTools
             EditorGUILayout.LabelField("Ship Log", EditorStyles.boldLabel);
 
             if (selectedAsset.text.shipLogConditions == null) selectedAsset.text.shipLogConditions = new NomaiText.ShipLogCondition[0];
-            GUIBuilder.CreateNomaiConditionsArray(selectedAsset.text.shipLogConditions, selectedAsset, out bool setDirty);
-
-
+            NomaiText.ShipLogCondition[] newConditions = GUIBuilder.CreateNomaiConditionsArray(selectedAsset.text.shipLogConditions, selectedAsset, out bool setDirty);
 
             if (setDirty)
             {
+                selectedAsset.text.shipLogConditions = newConditions;
+
                 EditorUtility.SetDirty(selectedAsset);
             }
         }
