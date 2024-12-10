@@ -627,39 +627,23 @@ namespace XmlTools
                 fact.condition = fact.condition.Replace(" ", "");
                 string[] selectedIDs = fact.condition.Split(',');
                 List<string> everyID = asset.GetTextIDs();
-                int mask = 0;
-                foreach (string id in selectedIDs)
+                bool[] bools = new bool[everyID.Count];
+                int bitmask = CreateBitmask(selectedIDs, everyID);
+
+                int newFlags = EditorGUILayout.MaskField(bitmask, everyID.ToArray());
+
+                if (newFlags != bitmask)
                 {
-                    if (everyID.Contains(id))
+                    fact.condition = "";
+                    bool[] bits = GetDataFromBitmask(newFlags, everyID.Count);
+                    for (int j = 0; j < bits.Length; j++)
                     {
-                        mask += Mathf.CeilToInt(Mathf.Pow(everyID.IndexOf(id), 10));
-                    }
-                }
-                mask = Convert.ToInt32(mask.ToString(), 2);
-
-                int newFlags = EditorGUILayout.MaskField(mask, everyID.ToArray());
-
-                if (newFlags != mask)
-                {
-                    string flags = Convert.ToString(newFlags, 2);
-
-                    if (int.TryParse(flags, out mask))
-                    {
-                        fact.condition = "";
-                        int index = 0;
-                        while (mask > 0)
+                        if (bits[j] == true)
                         {
-                            if (mask % 10 > 0)
-                            {
-                                fact.condition += everyID[index] + ",";
-                            }
-                            mask = Mathf.FloorToInt(mask / 10);
-                            index++;
-                            // emergency exit
-                            if (index > 100) break;
+                            fact.condition += everyID[j] + ",";
                         }
-                        fact.condition = fact.condition.TrimEnd(',');
                     }
+                    fact.condition = fact.condition.TrimEnd(',');
                 }
             }
             if (GUILayout.Button("Add New Reveal Fact"))
@@ -718,6 +702,30 @@ namespace XmlTools
             }
 
             return text;
+        }
+
+        private static int CreateBitmask(string[] selectedIDs, List<string> allIDs)
+        {
+            int bitmask = 0;
+
+            for (int i = 0; i < selectedIDs.Length; i++)
+            {
+                if (allIDs.Contains(selectedIDs[i]))
+                {
+                    bitmask |= (1 << allIDs.IndexOf(selectedIDs[i]));
+                }
+            }
+            return bitmask;
+        }
+
+        private static bool[] GetDataFromBitmask(int bitmask, int length)
+        {
+            bool[] boolArray = new bool[length];
+            for (int i = 0; i < length; i++)
+            {
+                boolArray[i] = (bitmask & (1 << i)) != 0;
+            }
+            return boolArray;
         }
 
         #endregion

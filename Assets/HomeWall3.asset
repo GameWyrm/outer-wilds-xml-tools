@@ -105,7 +105,14 @@ MonoBehaviour:
       m_isLocationB: 
       isLocationB: 0
       text: $HN2HomeWall3_D3
-    shipLogConditions: []
+    shipLogConditions:
+    - m_isLocationA: 
+      isLocationA: 0
+      m_isLocationB: 
+      isLocationB: 0
+      revealFacts:
+      - factID: HN2_GC1
+        condition: 1,2,3
   nodeDatas:
   - name: 1
     position: {x: 144, y: 619}
