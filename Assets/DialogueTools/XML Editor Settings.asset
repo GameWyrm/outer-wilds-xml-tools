@@ -20,9 +20,5 @@ MonoBehaviour:
   conditionCase: 2
   shipLogCase: 2
   translationCase: 0
-  loopConditions:
-  - HN2_REDUCEDFRIGHT
-  - HN2_ENDMAGISTER
-  persistentConditions:
-  - DEFAULT
-  - HN2_P_HORRORDOOR
+  loopConditions: []
+  persistentConditions: []

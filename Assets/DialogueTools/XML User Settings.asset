@@ -15,4 +15,4 @@ MonoBehaviour:
   modPath: C:/Users/daron/source/repos/HearthsNeighbor2
   modIconsPath: C:/Users/daron/source/repos/HearthsNeighbor2/HearthsNeighbor2/shiplogs
   vanillaIconsPath: G:/My Files/Documents/UnityProjects/Outer Wilds Rip/OuterWildsFullRip/Assets/Texture2D
-  shipLogFont: {fileID: 12800000, guid: 596dfcb0333418746bbd0c82dea4d77b, type: 3}
+  shipLogFont: {fileID: 0}
