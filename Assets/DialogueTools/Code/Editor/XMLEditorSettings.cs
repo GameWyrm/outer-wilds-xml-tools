@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace XmlTools
 {
-    [CreateAssetMenu(fileName = "XML Editor Settings", menuName = "Tools/XML Editor Settings"), Serializable]
+    //[CreateAssetMenu(fileName = "XML Editor Settings", menuName = "Tools/XML Editor Settings"), Serializable]
     public class XMLEditorSettings : ScriptableObject
     {
         public static XMLEditorSettings Instance

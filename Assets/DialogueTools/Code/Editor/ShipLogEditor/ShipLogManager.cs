@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace XmlTools
 {
-    [CreateAssetMenu(fileName = "Ship Log Manager", menuName = "Tools/Ship Log Manager")]
+    //[CreateAssetMenu(fileName = "Ship Log Manager", menuName = "Tools/Ship Log Manager")]
     public class ShipLogManager : ScriptableObject
     {
         [SerializeField]

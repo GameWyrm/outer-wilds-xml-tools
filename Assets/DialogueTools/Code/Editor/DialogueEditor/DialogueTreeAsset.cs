@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace XmlTools
 {
-    [CreateAssetMenu(fileName = "New Dialogue Tree", menuName = "Tools/Dialogue Tree", order = 0)]
+    //[CreateAssetMenu(fileName = "New Dialogue Tree", menuName = "Tools/Dialogue Tree", order = 0)]
     public class DialogueTreeAsset : ScriptableObject
     {
         [HideInInspector]

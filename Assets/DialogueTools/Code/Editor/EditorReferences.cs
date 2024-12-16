@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace XmlTools
 {
     // Do not touch this file unless you know what you are doing
-    [CreateAssetMenu(fileName = "Editor References", menuName = "Tools/Editor References", order = 99)]
+    //[CreateAssetMenu(fileName = "Editor References", menuName = "Tools/Editor References", order = 99)]
     public class EditorReferences : ScriptableObject
     {
         public static EditorReferences Instance
