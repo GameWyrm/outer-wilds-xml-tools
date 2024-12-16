@@ -12,6 +12,13 @@ namespace XmlTools
     {
 
         #region nodeTree
+        /// <summary>
+        /// Creates a Dialogue Node visual element
+        /// </summary>
+        /// <param name="nodeName">The text shown on the node</param>
+        /// <param name="nodeManipulators">The list of manipulators that nodes will be added to</param>
+        /// <param name="window">The window this belongs to</param>
+        /// <returns>The created node</returns>
         public static VisualElement CreateDialogueNode(string nodeName, Dictionary<string, NodeManipulator> nodeManipulators, NodeWindow window)
         {
             var settings = EditorReferences.Instance;
@@ -41,6 +48,15 @@ namespace XmlTools
             return nodeParent;
         }
 
+        /// <summary>
+        /// Creates a Ship Log Node Visual element, with an image and title
+        /// </summary>
+        /// <param name="nodeName">The internal name of the node</param>
+        /// <param name="labelText">The text shown on the node</param>
+        /// <param name="nodeManipulators">The list of node manipulators this will be added to</param>
+        /// <param name="window">The window this node will be added to</param>
+        /// <param name="entryType">Whether this node is a Curiosity, normal entry, or child entry</param>
+        /// <returns>The created node</returns>
         public static VisualElement CreateShipLogNode(string nodeName, string labelText, Dictionary<string, NodeManipulator> nodeManipulators, NodeWindow window, EntryType entryType)
         {
             var settings = EditorReferences.Instance;
@@ -86,6 +102,13 @@ namespace XmlTools
             return nodeParent;
         }
 
+        /// <summary>
+        /// Creates an arrow that connects two nodes
+        /// </summary>
+        /// <param name="source">Origin node</param>
+        /// <param name="target">Ending node</param>
+        /// <param name="arrowManipulator">The Arrow Manipulator this creates</param>
+        /// <returns>The created arrow</returns>
         public static VisualElement CreateArrow(VisualElement source, VisualElement target, out ArrowManipulator arrowManipulator)
         {
             VisualElement offsetElement = new VisualElement();
@@ -122,7 +145,16 @@ namespace XmlTools
         #endregion
 
         #region DialogueEditorElements
-        public static List<string> CreateArray(ref bool isShowing, List<string> data, string label, string itemLabel, Casing casing, bool useTranslation = false)
+        /// <summary>
+        /// Creates an array of conditions
+        /// </summary>
+        /// <param name="isShowing">Whether it's visible</param>
+        /// <param name="data">The data that you are mutating</param>
+        /// <param name="label">The title of the array</param>
+        /// <param name="itemLabel">The text shown before each item</param>
+        /// <param name="casing"></param>
+        /// <returns></returns>
+        public static List<string> CreateArray(ref bool isShowing, List<string> data, string label, string itemLabel, Casing casing)
         {
             int clearValue = -1;
             if (data == null) data = new List<string>();
@@ -153,10 +185,20 @@ namespace XmlTools
                 GUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
+            GUILayout.Space(20);
 
             return data;
         }
 
+        /// <summary>
+        /// Creates an array of dropdowns
+        /// </summary>
+        /// <param name="isShowing">Whether it's visible</param>
+        /// <param name="title">The text shown at the top</param>
+        /// <param name="itemsLabel">The text shown next ot each item</param>
+        /// <param name="selectedItems">The items that are currently active</param>
+        /// <param name="items">The possible items that will appear in each dropdown</param>
+        /// <returns></returns>
         public static string[] CreateDropdownArray(ref bool isShowing, string title, string itemsLabel, string[] selectedItems, string[] items)
         {
             int clearValue = -1;
@@ -191,10 +233,23 @@ namespace XmlTools
                 }
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
+            GUILayout.Space(20);
 
             return data.ToArray();
         }
 
+        /// <summary>
+        /// Creates an array of translated texts
+        /// </summary>
+        /// <param name="isShowing">Whether the array is showing</param>
+        /// <param name="title">Text shown at the top of the array</param>
+        /// <param name="itemsLabel">Text shown next to each of the items</param>
+        /// <param name="language">The language that's currently active</param>
+        /// <param name="dialogueKeys">List of keys</param>
+        /// <param name="dialogueName">Name of the entry</param>
+        /// <param name="nodeName">The name of the node this entry belongs to</param>
+        /// <param name="dialogue">Whether this should be dialogue, or ship log text</param>
+        /// <returns></returns>
         public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName, bool dialogue)
         {
             int clearValue = -1;
@@ -232,10 +287,18 @@ namespace XmlTools
                 }
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
+            GUILayout.Space(20);
 
             return data.ToArray();
         }
 
+        /// <summary>
+        /// Creates a dropdown of string items
+        /// </summary>
+        /// <param name="label">Text shown next to the dropdown</param>
+        /// <param name="selectedItem">The string shown in the dropdown</param>
+        /// <param name="items">The options within the dropdown</param>
+        /// <returns></returns>
         public static string CreateDropdown(string label, string selectedItem, string[] items)
         {
             int index = -1;
@@ -255,6 +318,16 @@ namespace XmlTools
             return selectedItem;
         }
 
+        /// <summary>
+        /// Creates a translated textbox
+        /// </summary>
+        /// <param name="label">The text shown next to the textbox</param>
+        /// <param name="key">The language key of the text</param>
+        /// <param name="lang">The currently active language</param>
+        /// <param name="clearable">Whether this item should have an X to clear it</param>
+        /// <param name="dialogue">Whether this should be a dialogue or ship log translation</param>
+        /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
+        /// <returns></returns>
         public static string CreateTranslatedArrayItem(string label, string key, Language lang, bool clearable, bool dialogue, out bool shouldClear)
         {
             EditorGUILayout.BeginHorizontal();
@@ -292,6 +365,13 @@ namespace XmlTools
             return newKey;
         }
 
+        /// <summary>
+        /// Creates a text field with a label and can be cleared
+        /// </summary>
+        /// <param name="itemLabel">The text shown next to the textbox</param>
+        /// <param name="data">The text in the textbox</param>
+        /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
+        /// <returns></returns>
         private static string CreateArrayItem(string itemLabel, string data, out bool shouldClear)
         {
             shouldClear = false;
@@ -304,6 +384,14 @@ namespace XmlTools
             return data;
         }
 
+        /// <summary>
+        /// Creates a clearable dropdown item
+        /// </summary>
+        /// <param name="label">The text shown next to the dropdown</param>
+        /// <param name="items">The possible items within the dropdown</param>
+        /// <param name="shownItemIndex">The currently selected index</param>
+        /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
+        /// <returns></returns>
         private static string CreateDropdownArrayItem(string label, List<string> items, int shownItemIndex, out bool shouldClear)
         {
             shouldClear = false;
@@ -320,6 +408,13 @@ namespace XmlTools
             return items[shownItemIndex];
         }
 
+        /// <summary>
+        /// Creates a dropdown
+        /// </summary>
+        /// <param name="label">The text next to the dropdown</param>
+        /// <param name="items">The items within the dropdown</param>
+        /// <param name="shownItemIndex">The index of the currently selected item</param>
+        /// <returns></returns>
         private static string CreateDropdownItem(string label, List<string> items, int shownItemIndex)
         {
             EditorGUILayout.BeginHorizontal();
@@ -329,6 +424,14 @@ namespace XmlTools
             return items[shownItemIndex];
         }
 
+        /// <summary>
+        /// Creates a textbox that lets you select a path on your PC
+        /// </summary>
+        /// <param name="label">The label for the textbox</param>
+        /// <param name="path">The path within the textbox</param>
+        /// <param name="setDirty">Whether this has been edited</param>
+        /// <param name="startingPath">Default path</param>
+        /// <returns></returns>
         public static string CreatePathSetter(string label, string path, out bool setDirty, string startingPath = "")
         {
             setDirty = false;
@@ -353,6 +456,15 @@ namespace XmlTools
             return path;
         }
 
+        /// <summary>
+        /// Creates a dropdown of Ship Logs
+        /// </summary>
+        /// <param name="label">The label shown in front of the dropdown</param>
+        /// <param name="existingFact">The fact that's already selected</param>
+        /// <param name="clearable">Whether this should be clearable</param>
+        /// <param name="setDirty">Whether this has been edited this frame</param>
+        /// <param name="shouldClear">Whether the clear button has been pressed this frame</param>
+        /// <returns></returns>
         public static string CreateLogSelector(string label, string existingFact, bool clearable, out bool setDirty, out bool shouldClear)
         {
             setDirty = false;
@@ -384,6 +496,14 @@ namespace XmlTools
             return result;
         }
 
+        /// <summary>
+        /// Creates an array of Log Selectors
+        /// </summary>
+        /// <param name="label">The text shown before each dropdown (plus an increment)</param>
+        /// <param name="existingFacts">The facts that are currently selected</param>
+        /// <param name="isShowing">Whether this array is currently being shown</param>
+        /// <param name="setDirty">Whether this array was edited this frame</param>
+        /// <returns></returns>
         public static string[] CreateLogSelectorArray(string label, string[] existingFacts, ref bool isShowing, out bool setDirty)
         {
             List<string> logs = new List<string>(existingFacts);
@@ -425,6 +545,14 @@ namespace XmlTools
         #endregion
 
         #region ShipLogEditorElements
+        /// <summary>
+        /// Creates a color selector for curiosities
+        /// </summary>
+        /// <param name="label">The text shown before the selector</param>
+        /// <param name="curiosityColor">The existing curiosity color</param>
+        /// <param name="highlightColor">The existing highlighted color</param>
+        /// <param name="newCuriosityColor">The curiosity color this is being set to</param>
+        /// <param name="newHighlightColor">The highlighted color this is being set to</param>
         public static void CreateColorSetter(string label, Color curiosityColor, Color highlightColor, out Color newCuriosityColor, out Color newHighlightColor)
         {
             EditorGUILayout.LabelField(label);
@@ -456,7 +584,10 @@ namespace XmlTools
         /// <summary>
         /// Creates a Rumor Fact entry item. Returns true if the fact was edited this OnInspectorGui step
         /// </summary>
-        /// <param name="inputFact"></param>
+        /// <param name="inputFact">The Rumor Fact being edited</param>
+        /// <param name="possibleSources">List of facts that can be sources for this fact</param>
+        /// <param name="requireRedraw">If this was edited this frame, so a redraw of the node window is required</param>
+        /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
         /// <returns></returns>
         public static bool CreateRumorFactItem(ShipLogEntry.RumorFact inputFact, List<string> possibleSources, out bool requireRedraw, out bool shouldClear)
         {
@@ -515,7 +646,8 @@ namespace XmlTools
         /// <summary>
         /// Creates an Explore Fact entry item. Returns true if the fact was edited this OnInspectorGui step.
         /// </summary>
-        /// <param name="inputFact"></param>
+        /// <param name="inputFact">The explore fact being edited</param>
+        /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
         /// <returns></returns>
         public static bool CreateExploreFactItem(ShipLogEntry.ExploreFact inputFact, out bool shouldClear)
         {
@@ -540,6 +672,12 @@ namespace XmlTools
             return dirty;
         }
 
+        /// <summary>
+        /// Creates a color field
+        /// </summary>
+        /// <param name="label">Label of the color field</param>
+        /// <param name="color">The existing color</param>
+        /// <returns></returns>
         private static Color CreateColorItem(string label, Color color)
         {
             color = EditorGUILayout.ColorField(label, color);
@@ -548,6 +686,13 @@ namespace XmlTools
         #endregion
 
         #region NomaiTextEditorElements
+        /// <summary>
+        /// Creates an array of conditions for Nomai text
+        /// </summary>
+        /// <param name="conditions">The conditions that already exist</param>
+        /// <param name="asset">The Nomai Text Asset you're editing</param>
+        /// <param name="setDirty">Whether anything here was edited this frame</param>
+        /// <returns></returns>
         public static NomaiText.ShipLogCondition[] CreateNomaiConditionsArray(NomaiText.ShipLogCondition[] conditions, NomaiTextAsset asset, out bool setDirty)
         {
             setDirty = false;
@@ -581,6 +726,15 @@ namespace XmlTools
             return conditions;
         }
 
+        /// <summary>
+        /// Creates an item for the Nomai Condition array
+        /// </summary>
+        /// <param name="label">The text shown next to this item</param>
+        /// <param name="condition">The condition being edited</param>
+        /// <param name="asset">The NomaiTextAsset being edited</param>
+        /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
+        /// <param name="setDirty">Whether this was edited this frame</param>
+        /// <returns></returns>
         private static NomaiText.ShipLogCondition CreateNomaiConditionItem(string label, NomaiText.ShipLogCondition condition, NomaiTextAsset asset, out bool shouldClear, out bool setDirty)
         {
             shouldClear = false;
@@ -659,6 +813,12 @@ namespace XmlTools
         #endregion
 
         #region utilities
+        /// <summary>
+        /// Converts the case of a string
+        /// </summary>
+        /// <param name="text">The text to convert</param>
+        /// <param name="casing"></param>
+        /// <returns></returns>
         private static string ConvertToCase(string text, Casing casing)
         {
             if (string.IsNullOrEmpty(text)) return "";
@@ -704,6 +864,12 @@ namespace XmlTools
             return text;
         }
 
+        /// <summary>
+        /// Creates a bitmask for a list of strings for Nomai text
+        /// </summary>
+        /// <param name="selectedIDs">The currently selected IDs in the dropdown</param>
+        /// <param name="allIDs">List of all IDs in the dropdown</param>
+        /// <returns></returns>
         private static int CreateBitmask(string[] selectedIDs, List<string> allIDs)
         {
             int bitmask = 0;
@@ -718,6 +884,12 @@ namespace XmlTools
             return bitmask;
         }
 
+        /// <summary>
+        /// Retrieves a bitmask as an array of bools
+        /// </summary>
+        /// <param name="bitmask">Input bitmask</param>
+        /// <param name="length">The size of the list</param>
+        /// <returns></returns>
         private static bool[] GetDataFromBitmask(int bitmask, int length)
         {
             bool[] boolArray = new bool[length];
