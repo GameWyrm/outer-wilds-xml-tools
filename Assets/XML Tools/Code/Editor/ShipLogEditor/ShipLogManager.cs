@@ -16,7 +16,7 @@ namespace XmlTools
             {
                 if (instance == null)
                 {
-                    if (AssetDatabase.FindAssets("t:ShipLogManager").Length == 0) return null;
+                    if (AssetDatabase.FindAssets("t:XMLTools.ShipLogManager").Length == 0) return null;
                     instance = AssetDatabase.LoadAssetAtPath<ShipLogManager>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:XmlTools.ShipLogManager")[0]));
                 }
                 return instance;
