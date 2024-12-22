@@ -56,50 +56,50 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueTreeAsset.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueTreeEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\DialogueEditor\Language.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\EditorReferences.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\Casing.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\EntryType.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\LanguageType.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\Enums\NomaiLocation.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\ArrowManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\GUIBuilder.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\NodeManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\NodeWindow.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\GUI\PannerManipulator.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\LanguageEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NewEntryDialogue.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NodeData.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextAsset.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextAssetEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueNode.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\DialogueTree.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\NomaiText.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\ShipLogEntry.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\StarSystem.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ScriptsToSerialize\Translation.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\EntryData.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\EntryDataEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\NewPlanetDialogue.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogManager.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogManagerEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettings.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\XMLEditorSettingsEditor.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\XMLUserSettings.cs" />
-    <Compile Include="Assets\DialogueTools\Code\Editor\XMLUserSettingsEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\DialogueEditor\DialogueEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\DialogueEditor\DialogueTreeAsset.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\DialogueEditor\DialogueTreeEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\DialogueEditor\Language.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\EditorReferences.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\Enums\Casing.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\Enums\EntryType.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\Enums\LanguageType.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\Enums\NomaiLocation.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\GUI\ArrowManipulator.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\GUI\GUIBuilder.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\GUI\NodeManipulator.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\GUI\NodeWindow.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\GUI\PannerManipulator.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\LanguageEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\NewEntryDialogue.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\NodeData.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\NomaiTextEditor\NomaiTextAsset.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\NomaiTextEditor\NomaiTextAssetEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\NomaiTextEditor\NomaiTextEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ScriptsToSerialize\DialogueNode.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ScriptsToSerialize\DialogueTree.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ScriptsToSerialize\NomaiText.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ScriptsToSerialize\ShipLogEntry.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ScriptsToSerialize\StarSystem.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ScriptsToSerialize\Translation.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ShipLogEditor\EntryData.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ShipLogEditor\EntryDataEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ShipLogEditor\NewPlanetDialogue.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ShipLogEditor\ShipLogEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ShipLogEditor\ShipLogManager.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\ShipLogEditor\ShipLogManagerEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\XMLEditorSettings.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\XMLEditorSettingsEditor.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\XMLUserSettings.cs" />
+    <Compile Include="Assets\XML Tools\Code\Editor\XMLUserSettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.uxml" />
-    <None Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.uss" />
-    <None Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.uss" />
-    <None Include="Assets\DialogueTools\Code\Editor\DialogueEditor\DialogueEditor.uxml" />
-    <None Include="Assets\DialogueTools\Code\Editor\ShipLogEditor\ShipLogEditor.uxml" />
-    <None Include="Assets\DialogueTools\Code\Editor\NomaiTextEditor\NomaiTextEditor.uss" />
+    <None Include="Assets\XML Tools\Code\Editor\NomaiTextEditor\NomaiTextEditor.uxml" />
+    <None Include="Assets\XML Tools\Code\Editor\DialogueEditor\DialogueEditor.uss" />
+    <None Include="Assets\XML Tools\Code\Editor\ShipLogEditor\ShipLogEditor.uss" />
+    <None Include="Assets\XML Tools\Code\Editor\DialogueEditor\DialogueEditor.uxml" />
+    <None Include="Assets\XML Tools\Code\Editor\ShipLogEditor\ShipLogEditor.uxml" />
+    <None Include="Assets\XML Tools\Code\Editor\NomaiTextEditor\NomaiTextEditor.uss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -294,9 +294,6 @@
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.39f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\DialogueTools\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="log4netPlastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@1.14.16\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
     </Reference>
@@ -308,6 +305,9 @@
     </Reference>
     <Reference Include="unityplastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@1.14.16\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\XML Tools\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
