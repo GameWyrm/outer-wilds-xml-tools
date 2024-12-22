@@ -9,6 +9,12 @@ namespace XmlTools
         public Dictionary<string, string> ShipLogDictionary;
         public Dictionary<string, string> UIDictionary;
         public Dictionary<string, string> OtherDictionary;
-        public Dictionary<string, string> AchievementTranslations;
+        public Dictionary<string, AchievementTranslation> AchievementTranslations;
+    }
+
+    public class AchievementTranslation
+    {
+        public string Name;
+        public string Description;
     }
 }

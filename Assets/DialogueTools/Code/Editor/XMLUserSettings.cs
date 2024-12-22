@@ -21,7 +21,7 @@ namespace XmlTools
             {
                 if (instance == null)
                 {
-                    instance = AssetDatabase.LoadAssetAtPath<XMLUserSettings>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:XMLUserSettings")[0]));
+                    instance = AssetDatabase.LoadAssetAtPath<XMLUserSettings>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:XmlTools.XMLUserSettings")[0]));
                 }
                 return instance;
             }

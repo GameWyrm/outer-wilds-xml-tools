@@ -14,7 +14,7 @@ namespace XmlTools
             {
                 if (instance == null)
                 {
-                    instance = AssetDatabase.LoadAssetAtPath<EditorReferences>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:EditorReferences")[0]));
+                    instance = AssetDatabase.LoadAssetAtPath<EditorReferences>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:XmlTools.EditorReferences")[0]));
                 }
                 return instance;
             }
