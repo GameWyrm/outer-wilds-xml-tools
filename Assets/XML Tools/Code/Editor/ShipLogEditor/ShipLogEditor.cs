@@ -221,9 +221,14 @@ namespace XmlTools
         {
             BuildNodeTree();
 
-            NodeData highestNode = nodes.OrderByDescending(x => x.position.y).FirstOrDefault();
+            Vector2 defaultPosition = Vector2.zero;
 
-            Vector2 defaultPosition = new Vector2(highestNode.position.x - 500, -highestNode.position.y - 150);
+            if (nodes != null || nodes.Count != 0)
+            {
+                NodeData highestNode = nodes.OrderByDescending(x => x.position.y).FirstOrDefault();
+
+                if (highestNode != null) defaultPosition = new Vector2(highestNode.position.x - 500, -highestNode.position.y - 150);
+            }
 
             zoom = 1;
             UpdateZoom();
