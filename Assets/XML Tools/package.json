@@ -1,0 +1,22 @@
+{
+    "name": "com.github.gamewyrm.xml_tools",
+    "version": "0.1.0",
+    "description": "A suite of tools for editing New Horizons xmls for creating Outer Wilds mods.",
+    "displayName": "Outer Wilds XML Tools",
+    "unity": "2019.4",
+    "author": {
+        "name": "GameWyrm",
+        "url": "https://github.com/GameWyrm"
+    },
+    "documentationURL": "https://github.com/GameWyrm/outer-wilds-xml-tools/wiki",
+    "hideInEditor": false,
+    "keywords": [
+        "xml",
+        "editor",
+        "outer wilds",
+        "new horizons",
+        "json"
+    ],
+    "license": "MIT"
+    
+}
