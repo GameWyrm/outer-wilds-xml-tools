@@ -249,41 +249,77 @@ namespace XmlTools
         /// <param name="dialogueName">Name of the entry</param>
         /// <param name="nodeName">The name of the node this entry belongs to</param>
         /// <param name="dialogue">Whether this should be dialogue, or ship log text</param>
-        /// <returns></returns>
-        public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName, bool dialogue)
+        public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName, bool dialogue, out bool setDirty)
+        {
+            return CreateTranslatedArray(ref isShowing, title, itemsLabel, language, dialogueKeys, dialogueName, nodeName, dialogue, out setDirty, false, out _);
+        }
+
+        /// <summary>
+        /// Creates an array of translated texts
+        /// </summary>
+        /// <param name="isShowing">Whether the array is showing</param>
+        /// <param name="title">Text shown at the top of the array</param>
+        /// <param name="itemsLabel">Text shown next to each of the items</param>
+        /// <param name="language">The language that's currently active</param>
+        /// <param name="dialogueKeys">List of keys</param>
+        /// <param name="dialogueName">Name of the entry</param>
+        /// <param name="nodeName">The name of the node this entry belongs to</param>
+        /// <param name="dialogue">Whether this should be dialogue, or ship log text</param>
+        /// <param name="clearable">Whether this is part of a list and thus should have a clear button.</param>
+        /// <param name="shouldClear">Whether the clear button was pressed.</param>
+        public static string[] CreateTranslatedArray(ref bool isShowing, string title, string itemsLabel, Language language, string[] dialogueKeys, string dialogueName, string nodeName, bool dialogue, out bool setDirty, bool clearable, out bool cleared)
         {
             int clearValue = -1;
+            cleared = false;
+            setDirty = false;
             List<string> data = new List<string>(dialogueKeys);
+            if (clearable) EditorGUILayout.BeginHorizontal();
             isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, title);
+            if (clearable)
+            {
+                if (GUILayout.Button("X", GUILayout.Width(20))) cleared = true;
+                EditorGUILayout.EndHorizontal();
+            }
             if (isShowing)
             {
                 for (int i = 0; i < dialogueKeys.Length; i++)
                 {
-                    CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, true, dialogue, out bool shouldClear);
+                    CreateTranslatedArrayItem($"{itemsLabel} {i + 1}", dialogueKeys[i], language, true, dialogue, out bool shouldClear, out bool shouldSetDirty);
+                    if (shouldSetDirty) setDirty = true;
                     if (shouldClear) clearValue = i;
                 }
-                if (clearValue >= 0) data.RemoveAt(clearValue);
+                if (clearValue >= 0)
+                {
+                    data.RemoveAt(clearValue);
+                    setDirty = true;
+                }
 
                 EditorGUILayout.LabelField($"------------------ ADD NEW {itemsLabel.ToUpper()} ------------------");
                 string prefix = XMLEditorSettings.Instance.modPrefix.ToUpper();
-                if (GUILayout.Button("New Entry (Auto)"))
+                if (GUILayout.Button($"New {itemsLabel} (Auto)"))
                 {
                     string newName = "";
                     if (!string.IsNullOrEmpty(prefix)) newName = prefix + "_";
                     newName += $"{dialogueName.ToUpper()}_{nodeName.ToUpper()}_{data.Count}";
                     data.Add(newName);
+                    setDirty = true;
                 }
-                string newCustomTranslation = EditorGUILayout.DelayedTextField("New Entry", "");
+                string newCustomTranslation = EditorGUILayout.DelayedTextField($"New {itemsLabel}", "");
                 if (!string.IsNullOrEmpty(newCustomTranslation))
                 {
                     if (!newCustomTranslation.ToUpper().StartsWith(prefix)) newCustomTranslation = prefix + "_" + newCustomTranslation;
                     data.Add(newCustomTranslation);
+                    setDirty = true;
                 }
                 if (language.tieredDialogueKeys != null)
                 {
-                    int reuseIndex = EditorGUILayout.Popup("Reuse entry", 0, language.tieredDialogueKeys.ToArray());
+                    int reuseIndex = EditorGUILayout.Popup($"Reuse {itemsLabel}", 0, language.tieredDialogueKeys.ToArray());
                     string reusedTranslation = language.tieredDialogueKeys[reuseIndex];
-                    if (reuseIndex > 0) data.Add(reusedTranslation);
+                    if (reuseIndex > 0)
+                    {
+                        data.Add(reusedTranslation);
+                        setDirty = true;
+                    }
                 }
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -328,14 +364,19 @@ namespace XmlTools
         /// <param name="dialogue">Whether this should be a dialogue or ship log translation</param>
         /// <param name="shouldClear">Whether the clear button was pressed this frame</param>
         /// <returns></returns>
-        public static string CreateTranslatedArrayItem(string label, string key, Language lang, bool clearable, bool dialogue, out bool shouldClear)
+        public static string CreateTranslatedArrayItem(string label, string key, Language lang, bool clearable, bool dialogue, out bool shouldClear, out bool setDirty)
         {
+            shouldClear = false;
+            setDirty = false;
             EditorGUILayout.BeginHorizontal();
             string newKey = EditorGUILayout.DelayedTextField(label, key);
             if (clearable)
             {
-                bool clear = GUILayout.Button("X", GUILayout.Width(20));
-                shouldClear = clear;
+                if (GUILayout.Button("X", GUILayout.Width(20)))
+                {
+                    shouldClear = true;
+                    setDirty = true;
+                }
             }
             else shouldClear = false;
             EditorGUILayout.EndHorizontal();
@@ -358,6 +399,7 @@ namespace XmlTools
                         else language.TryRenameShipLogKey(key, newKey);
                     }
                     Debug.Log($"Renamed key {key} to {newKey}.");
+                    setDirty = true;
                 }
             }
             if (dialogue) lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
@@ -506,6 +548,7 @@ namespace XmlTools
         /// <returns></returns>
         public static string[] CreateLogSelectorArray(string label, string[] existingFacts, ref bool isShowing, out bool setDirty)
         {
+            if (existingFacts == null) existingFacts = new string[0];
             List<string> logs = new List<string>(existingFacts);
             setDirty = false;
             isShowing = EditorGUILayout.BeginFoldoutHeaderGroup(isShowing, label + "s");
@@ -615,8 +658,8 @@ namespace XmlTools
                 requireRedraw = true;
                 inputFact.sourceID = newSource;
             }
-            string newName = CreateTranslatedArrayItem("Rumor Name", inputFact.rumorName, selectedLanguage, false, false, out _);
-            if (newName != inputFact.rumorName)
+            string newName = CreateTranslatedArrayItem("Rumor Name", inputFact.rumorName, selectedLanguage, false, false, out _, out bool shouldSetNewNameDirty);
+            if (shouldSetNewNameDirty)
             {
                 dirty = true;
                 inputFact.rumorName = newName;
@@ -633,8 +676,8 @@ namespace XmlTools
                 dirty = true;
                 inputFact.ignoreMoreToExplore = newIgnoreMoreToExplore;
             }
-            string newText = CreateTranslatedArrayItem("Text", inputFact.text, selectedLanguage, false, false, out _);
-            if (newText != inputFact.text)
+            string newText = CreateTranslatedArrayItem("Text", inputFact.text, selectedLanguage, false, false, out _, out bool shouldSetNewTextDirty);
+            if (shouldSetNewTextDirty)
             {
                 dirty = true;
                 inputFact.text = newText;
@@ -664,7 +707,7 @@ namespace XmlTools
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
             bool newIgnoreMoreToExplore = EditorGUILayout.ToggleLeft("Ignore More To Explore", inputFact.ignoreMoreToExplore);
-            string newText = CreateTranslatedArrayItem("Text", inputFact.text, XMLEditorSettings.Instance.GetSelectedLanguage(), false, false, out _);
+            string newText = CreateTranslatedArrayItem("Text", inputFact.text, XMLEditorSettings.Instance.GetSelectedLanguage(), false, false, out _, out _);
             bool dirty = newIgnoreMoreToExplore != inputFact.ignoreMoreToExplore || newText != inputFact.text;
             inputFact.ignoreMoreToExplore = newIgnoreMoreToExplore;
             inputFact.text = newText;

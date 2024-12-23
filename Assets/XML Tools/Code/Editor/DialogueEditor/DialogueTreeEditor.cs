@@ -178,9 +178,33 @@ namespace XmlTools
 
             // Dialogues
             if (activeNode.dialogues == null) activeNode.dialogues = new DialogueNode.Dialogue[0];
+            int dialoguesClearIndex = -1;
             for (int i = 0; i < activeNode.dialogues.Length; i++)
             {
-                activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", language, activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName, true);
+                activeNode.dialogues[i].pages = GUIBuilder.CreateTranslatedArray(ref showDialogues[i], $"Entries {i}", "Page", language, activeNode.dialogues[i].pages, selectedAsset.tree.nameField, activeNode.nodeName, true, out bool dialogueDirty, true, out bool dialogueCleared);
+                if (dialogueDirty) setDirty = true;
+                if (dialogueCleared)
+                {
+                    dialoguesClearIndex = i;
+                    setDirty = true;
+                }
+            }
+            if (dialoguesClearIndex >= 0)
+            {
+                List<DialogueNode.Dialogue> newLogs = new List<DialogueNode.Dialogue>(activeNode.dialogues);
+                newLogs.RemoveAt(dialoguesClearIndex);
+                activeNode.dialogues = newLogs.ToArray();
+                showDialogues = new bool[activeNode.dialogues.Length];
+            }
+            if (GUILayout.Button("Add New Entry Set"))
+            {
+                List<DialogueNode.Dialogue> newLogs = new List<DialogueNode.Dialogue>(activeNode.dialogues);
+                DialogueNode.Dialogue newlog = new DialogueNode.Dialogue();
+                newlog.pages = new string[0];
+                newLogs.Add(newlog);
+                activeNode.dialogues = newLogs.ToArray();
+                showDialogues = new bool[activeNode.dialogues.Length];
+                setDirty = true;
             }
             EditorGUILayout.Space();
 
@@ -327,7 +351,8 @@ namespace XmlTools
 
                     option.requiredCondition = GUIBuilder.CreateDropdown("Required Loop Condition", option.requiredCondition, loopConditions);
                     option.cancelledCondition = GUIBuilder.CreateDropdown("Cancelled Loop Condition", option.cancelledCondition, loopConditions);
-                    option.text = GUIBuilder.CreateTranslatedArrayItem("Text", option.text, settings.GetSelectedLanguage(), false, true, out _);
+                    option.text = GUIBuilder.CreateTranslatedArrayItem("Text", option.text, settings.GetSelectedLanguage(), false, true, out _, out bool shouldSetOptionDirty);
+                    if (shouldSetOptionDirty) setDirty = true;
                     string oldOptionTarget = option.dialogueTarget;
                     option.dialogueTarget = GUIBuilder.CreateDropdown("Dialogue Target", option.dialogueTarget, nodeNames.ToArray());
                     if (oldOptionTarget != option.dialogueTarget)

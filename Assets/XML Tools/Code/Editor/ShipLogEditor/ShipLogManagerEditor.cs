@@ -104,8 +104,8 @@ namespace XmlTools
                 EditorGUILayout.LabelField(selectedEntry.entryID, EditorStyles.boldLabel);
 
                 // Name
-                string newName = GUIBuilder.CreateTranslatedArrayItem("Entry Name", selectedEntry.name, language, false, false, out _);
-                if (newName != selectedEntry.name)
+                string newName = GUIBuilder.CreateTranslatedArrayItem("Entry Name", selectedEntry.name, language, false, false, out _, out bool shouldSetNameDirty);
+                if (shouldSetNameDirty)
                 {
                     selectedEntry.name = newName;
                     setRedraw = true;

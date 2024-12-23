@@ -94,8 +94,8 @@ namespace XmlTools
             }
 
             // Text
-            string newText = GUIBuilder.CreateTranslatedArrayItem("Text", activeText.text, language, false, true, out _);
-            if (newText != activeText.text)
+            string newText = GUIBuilder.CreateTranslatedArrayItem("Text", activeText.text, language, false, true, out _, out bool shouldSetTextDirty);
+            if (shouldSetTextDirty)
             {
                 setDirty = true;
                 activeText.text = newText;
