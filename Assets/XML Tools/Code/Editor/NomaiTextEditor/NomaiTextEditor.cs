@@ -188,6 +188,7 @@ namespace XmlTools
 
         private void OnClickNewNode()
         {
+            if (selection.text.textBlocks == null) selection.text.textBlocks = new NomaiText.TextBlock[0];
             List<NomaiText.TextBlock> nodes = new List<NomaiText.TextBlock>(selection.text.textBlocks);
             NomaiText.TextBlock newNode = new NomaiText.TextBlock();
             List<string> nodeNames = new List<string>(selection.text.textBlocks.Select(x => x.textID.ToString()));
@@ -263,6 +264,7 @@ namespace XmlTools
 
         private NomaiText.TextBlock GetTextBlock(int id)
         {
+
             NomaiText.TextBlock node = selectedText.textBlocks.First(x => x.textID == id);
             if (node == null) Debug.LogError("Obtained node is null!");
             return node;

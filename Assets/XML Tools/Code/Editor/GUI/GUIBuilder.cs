@@ -821,13 +821,14 @@ namespace XmlTools
                     fact.factID = newLog;
                 }
                 if (shouldClearFact) clearIndex = i;
+                if (fact.condition == null) fact.condition = "";
                 fact.condition = fact.condition.Replace(" ", "");
                 string[] selectedIDs = fact.condition.Split(',');
                 List<string> everyID = asset.GetTextIDs();
                 bool[] bools = new bool[everyID.Count];
                 int bitmask = CreateBitmask(selectedIDs, everyID);
 
-                int newFlags = EditorGUILayout.MaskField(bitmask, everyID.ToArray());
+                int newFlags = EditorGUILayout.MaskField("Arcs", bitmask, everyID.ToArray());
 
                 if (newFlags != bitmask)
                 {
