@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace XmlTools
 {
@@ -48,10 +49,14 @@ namespace XmlTools
 
         private void DrawNodeData()
         {
-            Language language = XMLEditorSettings.Instance.GetSelectedLanguage();
+            var settings = XMLEditorSettings.Instance;
+            Language language = settings.GetSelectedLanguage();
 
             bool setDirty = false;
             bool setRedraw = false;
+
+            settings.selectedLanguage = EditorGUILayout.Popup("Language: ", settings.selectedLanguage, settings.supportedLanguages.Select(x => x.name).ToArray());
+            EditorGUILayout.Space();
 
             // TextID
             EditorGUILayout.LabelField("Block " + activeText.textID.ToString(), EditorStyles.boldLabel);
