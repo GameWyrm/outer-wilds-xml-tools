@@ -210,11 +210,25 @@ namespace XmlTools
                 XMLEditorSettings.Instance.RegisterCondition("DEFAULT", true);
                 DialogueTreeAsset dialogueTreeAsset = ScriptableObject.CreateInstance<DialogueTreeAsset>();
                 dialogueTreeAsset.tree = new DialogueTree();
+                dialogueTreeAsset.tree.dialogueNodes = new DialogueNode[1];
+                dialogueTreeAsset.tree.dialogueNodes[0] = new DialogueNode();
+                var defaultNode = dialogueTreeAsset.tree.dialogueNodes[0];
+                defaultNode.dialogues = new DialogueNode.Dialogue[0];
+                defaultNode.dialogueOptionsList = new DialogueNode.DialogueOptionsList();
+                defaultNode.dialogueOptionsList.dialogueOptions = new DialogueNode.DialogueOption[0];
+                defaultNode.entryConditions = new string[1];
+                defaultNode.entryConditions[0] = "DEFAULT";
+                defaultNode.nodeName = "START";
+                defaultNode.setConditions = new string[0];
+                defaultNode.dialogueTargetShipLogConditions = new string[0];
+                dialogueTreeAsset.NodeDatas = new List<NodeData>();
+                dialogueTreeAsset.NodeDatas.Add(new NodeData("START", new Vector2(200, 200)));
                 AssetDatabase.CreateAsset(dialogueTreeAsset, savePath);
                 AssetDatabase.SaveAssets();
+                nodesRoot.Clear();
                 Selection.activeObject = dialogueTreeAsset;
                 selection = dialogueTreeAsset;
-                nodesRoot.Clear();
+                BuildNodeTree();
 
                 Debug.Log($"Created new Dialogue Tree at {savePath}");
             }
