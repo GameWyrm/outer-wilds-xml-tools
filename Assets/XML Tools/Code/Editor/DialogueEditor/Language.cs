@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
+using System.Text.RegularExpressions;
 
 namespace XmlTools
 {
@@ -53,7 +54,11 @@ namespace XmlTools
             tieredDialogueKeys.Add("Select...");
             foreach (string key in dialogueKeys)
             {
-                tieredDialogueKeys.Add(key.Replace('_', '/'));
+                if (key == null) continue;
+                string newKey = key;
+                newKey = Regex.Replace(newKey, @"(?<![A-Z])([A-Z])(?!.*^(?=\S)[A-Z])", m => $"_{m.Value}");
+                newKey = newKey.TrimStart('_');
+                tieredDialogueKeys.Add(newKey.Replace('_', '/'));
             }
         }
 
@@ -65,6 +70,7 @@ namespace XmlTools
                 translation.DialogueDictionary = new Dictionary<string, string>();
                 for (int i = 0; i < dialogueKeys.Count; i++)
                 {
+                    if (dialogueKeys[i] == null || dialogueKeys[i] == string.Empty) continue;
                     translation.DialogueDictionary.Add(dialogueKeys[i], dialogueValues[i]);
                 }
             }
@@ -73,6 +79,7 @@ namespace XmlTools
                 translation.ShipLogDictionary = new Dictionary<string, string>();
                 for (int i = 0; i < shipLogKeys.Count; i++)
                 {
+                    if (shipLogKeys[i] == null || shipLogKeys[i] == string.Empty) continue;
                     translation.ShipLogDictionary.Add(shipLogKeys[i], shipLogValues[i]);
                 }
             }

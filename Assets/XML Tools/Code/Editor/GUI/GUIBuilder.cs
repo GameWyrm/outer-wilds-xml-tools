@@ -314,7 +314,7 @@ namespace XmlTools
                 if (language.tieredDialogueKeys != null)
                 {
                     int reuseIndex = EditorGUILayout.Popup($"Reuse {itemsLabel}", 0, language.tieredDialogueKeys.ToArray());
-                    string reusedTranslation = language.tieredDialogueKeys[reuseIndex];
+                    string reusedTranslation = language.dialogueKeys[reuseIndex];
                     if (reuseIndex > 0)
                     {
                         data.Add(reusedTranslation);
@@ -402,8 +402,8 @@ namespace XmlTools
                     setDirty = true;
                 }
             }
-            if (dialogue) lang.SetDialogueValue(newKey, EditorGUILayout.TextArea(lang.GetDialogueValue(newKey)));
-            else lang.SetShipLogValue(newKey, EditorGUILayout.TextArea(lang.GetShipLogValue(newKey)));
+            if (dialogue) lang.SetDialogueValue(newKey, EditorGUILayout.DelayedTextField(lang.GetDialogueValue(newKey), GUILayout.ExpandHeight(true)));
+            else lang.SetShipLogValue(newKey, EditorGUILayout.DelayedTextField(lang.GetShipLogValue(newKey), GUILayout.ExpandHeight(true)));
             return newKey;
         }
 

@@ -91,6 +91,8 @@ namespace XmlTools
                 EditorGUILayout.HelpBox(errorText, MessageType.Error);
             }
             if (GUILayout.Button("Open Settings")) OpenSettings();
+            selectedAsset.tree.nameField = GUIBuilder.CreateTranslatedArrayItem("Name of NPC (set to \"SIGN\" for \"Read\" prompt)", selectedAsset.tree.nameField, XMLEditorSettings.Instance.GetSelectedLanguage(), false, true, out _, out bool setDirty);
+            if (setDirty) EditorUtility.SetDirty(selectedAsset);
             if (activeNode == null)
             {
                 // When no node is selected
@@ -315,12 +317,15 @@ namespace XmlTools
 
                 option.text = newKey;
 
+                if (showRequiredLogConditions == null) showRequiredLogConditions = new bool[0];
                 List<bool> newLogBools = new List<bool>(showRequiredLogConditions);
                 newLogBools.Add(false);
                 showRequiredLogConditions = newLogBools.ToArray();
+                if (showRequiredPersistentConditions == null) showRequiredPersistentConditions = new bool[0];
                 List<bool> newReqBools = new List<bool>(showRequiredPersistentConditions);
                 newReqBools.Add(false);
                 showRequiredPersistentConditions = newReqBools.ToArray();
+                if (showCancelledPersistentConditions == null) showCancelledPersistentConditions = new bool[0];
                 List<bool> newCancelledBools = new List<bool>(showCancelledPersistentConditions);
                 newCancelledBools.Add(false);
                 showCancelledPersistentConditions = newCancelledBools.ToArray();
